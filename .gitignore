@@ -1,0 +1,7 @@
+*
+!*/
+!minilibx-linux/**
+!include/*.h
+!src/*.c
+!Makefile
+!.gitignore
