@@ -41,7 +41,7 @@ inline t_vec3	sub_vec(const t_vec3 lhs, const t_vec3 rhs)
 	return (result);
 }
 
-inline t_vec3	mul_vec(const t_vec3 lhs, const double rhs)
+inline t_vec3	scal_mul_vec(const t_vec3 lhs, const double rhs)
 {
 	t_vec3	result;
 
@@ -51,11 +51,11 @@ inline t_vec3	mul_vec(const t_vec3 lhs, const double rhs)
 	return (result);
 }
 
-inline t_vec3	div_vec(const t_vec3 lhs, const double rhs)
+inline t_vec3	scal_div_vec(const t_vec3 lhs, const double rhs)
 {
 	t_vec3	result;
 
-	result = mul_vec(lhs, 1 / rhs);
+	result = scal_mul_vec(lhs, 1 / rhs);
 	return (result);
 }
 
@@ -84,7 +84,7 @@ inline t_vec3	cross(const t_vec3 lhs, const t_vec3 rhs)
 
 inline t_vec3 normalize(const t_vec3 vec)
 {
-	return (div_vec(vec, length_vec(vec)));
+	return (scal_div_vec(vec, length_vec(vec)));
 }
 
 inline t_vec3	random_vec(double min, double max)
@@ -115,7 +115,7 @@ t_vec3	random_unit_vector(void)
 
 t_vec3 reflect(t_vec3 v, t_vec3 n)
 {
-	return (sub_vec(v, mul_vec(n, 2 * dot(v, n))));
+	return (sub_vec(v, scal_mul_vec(n, 2 * dot(v, n))));
 }
 
 // #include <stdio.h>

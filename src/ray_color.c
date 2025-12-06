@@ -15,5 +15,5 @@ t_color ray_color(const t_ray ray, t_hit_table_list *world, int depth)
 	}
 	t_vec3	unit_direction = normalize(ray.direct);
 	double	t = 0.5 * (unit_direction.y + 1.0);
-	return (add_vec(mul_vec(construct_vec(1.0, 1.0, 1.0), (1.0 - t)), mul_vec(construct_vec(0.5, 0.7, 1.0), t)));
+	return (add_vec(scal_mul_vec(construct_vec(1.0, 1.0, 1.0), (1.0 - t)), scal_mul_vec(construct_vec(0.5, 0.7, 1.0), t)));
 }

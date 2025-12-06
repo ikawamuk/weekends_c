@@ -4,7 +4,7 @@ void	assign_sphere_hitrec(t_hit_record *rec, double solution, const t_ray ray, t
 {
 	rec->t = solution;
 	rec->p = at_ray(ray, rec->t);
-	rec->normal = div_vec(sub_vec(rec->p, self->center), self->radius);
+	rec->normal = scal_div_vec(sub_vec(rec->p, self->center), self->radius);
 	rec->mat_ptr = self->mat_ptr;
 	return ;
 }
