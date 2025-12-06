@@ -21,8 +21,8 @@ void	draw_image(void **mlx, t_img *img, bool ppm_mode)
 
 	// set objects in the world
 	t_hit_table_list	world = construct_htl();
-	add_htl(&world, gen_sphere(construct_vec(0,0,-1), 0.5));
-	add_htl(&world, gen_sphere(construct_vec(0,-100.5,-1), 100));
+	add_htl(&world, gen_sphere(construct_vec(0,0,-1), 0.5, NULL));
+	add_htl(&world, gen_sphere(construct_vec(0,-100.5,-1), 100, NULL));
 
 	// Let's draw
 	if (ppm_mode)

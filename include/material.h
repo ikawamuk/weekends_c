@@ -7,7 +7,7 @@
 
 typedef struct s_material
 {
-
+	bool	(*scatter)(void *self);
 }	t_material;
 
 #endif

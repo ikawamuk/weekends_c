@@ -1,12 +1,12 @@
 NAME = weekend_c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCLUDE_DIRS))
-RMDIR	= rm -rf
+CFLAGS = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS))
+RMDIR = rm -rf
 
 SRCDIR = src
 
-SRCFILES	=	main.c \
+SRCFILES =	main.c \
 			draw_image.c \
 			img.c \
 			vec3.c \
@@ -16,15 +16,15 @@ SRCFILES	=	main.c \
 			hit_table_list.c \
 			camera.c \
 			util.c \
-			ray_color.c \
+			ray_color.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
 OBJDIR = obj
 
-OBJS	= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
-INCLUDE_DIRS = $(MLXDIR) include
+INCDIRS = $(MLXDIR) include
 
 MLXDIR = minilibx-linux
 MLX = $(MLXDIR)/mlx.a
@@ -44,15 +44,15 @@ $(NAME): $(OBJS) $(MLX)
 	$(CC) $(CFLAGS) $(OBJS) $(LDLIBS)  -o $@
 
 $(MLX):
-	@MAKEFLAGS= $(MAKE) -C $(MLXDIR)
+	@$(MAKE) -C $(MLXDIR)
 
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-	@MAKEFLAGS= $(MAKE) -C $(MLXDIR) clean
+	@$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
