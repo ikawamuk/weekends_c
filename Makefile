@@ -22,7 +22,7 @@ SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
 OBJDIR = obj
 
-OBJS	= $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
+OBJS	= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 INCLUDE_DIRS = $(MLXDIR) include
 
