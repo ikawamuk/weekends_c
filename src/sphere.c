@@ -1,4 +1,5 @@
 #include "sphere.h"
+#include "define.h"
 
 void	assign_sphere_hitrec(t_hit_record *rec, double solution, const t_ray ray, t_sphere *self)
 {
@@ -21,11 +22,12 @@ bool	hit_sphere(void *s, const t_ray ray, t_hit_record *rec)
 	{
 		double	root = sqrt(discriminant);
 		double	solution = (-half_b - root)/a;
-		if (0.001 < solution)
+		if (HIT_T_MIN < solution) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
 		{
 			assign_sphere_hitrec(rec, solution, ray, self);
 			return (true);
 		}
+		// 以下の部分ほんとに必要？？？->レイの始点が球の内部のとき有効みたい（ex:カメラをガラス球の中に入れる。）
 		solution = (-half_b + root) / a;
 		if (0.001 < solution)
 		{
