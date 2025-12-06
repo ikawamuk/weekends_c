@@ -26,6 +26,7 @@ t_vec3	normalize(const t_vec3 vec);
 t_vec3	random_vec(double min, double max);
 t_vec3	random_in_unit_sphere(void);
 t_vec3	random_unit_vector(void);
+t_vec3 reflect(t_vec3 v, t_vec3 n);
 
 typedef t_vec3 t_point3;
 typedef t_vec3 t_color;

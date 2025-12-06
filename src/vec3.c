@@ -113,6 +113,10 @@ t_vec3	random_unit_vector(void)
 	return (construct_vec(r * cos(a), r * sin(a), z));
 }
 
+t_vec3 reflect(t_vec3 v, t_vec3 n)
+{
+	return (sub_vec(v, mul_vec(n, 2 * dot(v, n))));
+}
 
 // #include <stdio.h>
 // int	main()

@@ -42,6 +42,7 @@ void	clear_htl(t_hit_table_list list)
 	{
 		cur = list.head;
 		list.head = list.head->next;
+		free(cur->data->mat_ptr);
 		free(cur->data);
 		free(cur);
 	}
