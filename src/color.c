@@ -2,10 +2,10 @@
 #include "mlx.h"
 #include "util.h"
 
-int	get_raw_rgb(t_color pixel_color, int samples_per_pixel)
+int	get_raw_rgb(t_color pixel_color)
 {
-	double	scale = 1.0 / samples_per_pixel;
-	int	int_color[3];
+	double	scale = 1.0 / SAMPLES_PER_PIXCEL;
+	int		int_color[3];
 	double	double_color[3];
 
 	double_color[0] = sqrt(pixel_color.x * scale);

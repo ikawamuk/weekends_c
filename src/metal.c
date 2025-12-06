@@ -5,8 +5,8 @@ t_metal	construct_metal(t_color alb)
 {
 	t_metal	met;
 
-	met.mat.scatter = scatter_metal;
-	met.albedo = alb;
+	// met.mat.scatter = scatter_metal;
+	met.albedo = construct_color(alb.x, alb.y, alb.z);
 }
 
 t_metal	*gen_metal(t_color alb)

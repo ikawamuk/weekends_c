@@ -9,7 +9,7 @@ typedef struct ray
 	t_vec3		direct;
 }	t_ray;
 
-t_ray		construct_ray(const t_point3 ori, const t_vec3 dir);
+t_ray		construct_ray(t_point3 ori, t_vec3 dir);
 t_point3	at_ray(const t_ray ray, double t);
 
 #endif

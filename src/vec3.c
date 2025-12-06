@@ -11,7 +11,7 @@ inline t_vec3	construct_vec(double e0, double e1, double e2)
 	return (vec);
 }
 
-inline t_vec3	negative_vec(const t_vec3 vec)
+inline t_vec3	negative_vec(t_vec3 vec)
 {
 	t_vec3	result;
 
@@ -21,7 +21,7 @@ inline t_vec3	negative_vec(const t_vec3 vec)
 	return (result);
 }
 
-inline t_vec3	add_vec(const t_vec3 lhs, const t_vec3 rhs)
+inline t_vec3	add_vec(t_vec3 lhs, t_vec3 rhs)
 {
 	t_vec3	result;
 
@@ -31,7 +31,7 @@ inline t_vec3	add_vec(const t_vec3 lhs, const t_vec3 rhs)
 	return (result);
 }
 
-inline t_vec3	sub_vec(const t_vec3 lhs, const t_vec3 rhs)
+inline t_vec3	sub_vec(t_vec3 lhs, t_vec3 rhs)
 {
 	t_vec3	result;
 
@@ -41,7 +41,7 @@ inline t_vec3	sub_vec(const t_vec3 lhs, const t_vec3 rhs)
 	return (result);
 }
 
-t_vec3	mul_vec(const t_vec3 lhs, const t_vec3 rhs)
+t_vec3	mul_vec(t_vec3 lhs, t_vec3 rhs)
 {
 	t_vec3	result;
 
@@ -51,7 +51,7 @@ t_vec3	mul_vec(const t_vec3 lhs, const t_vec3 rhs)
 	return (result);
 }
 
-t_vec3	div_vec(const t_vec3 lhs, const t_vec3 rhs)
+t_vec3	div_vec(t_vec3 lhs, t_vec3 rhs)
 {
 	t_vec3	result;
 
@@ -61,7 +61,7 @@ t_vec3	div_vec(const t_vec3 lhs, const t_vec3 rhs)
 	return (result);
 }
 
-inline t_vec3	scal_mul_vec(const t_vec3 lhs, const double rhs)
+inline t_vec3	scal_mul_vec(t_vec3 lhs, double rhs)
 {
 	t_vec3	result;
 
@@ -71,7 +71,7 @@ inline t_vec3	scal_mul_vec(const t_vec3 lhs, const double rhs)
 	return (result);
 }
 
-inline t_vec3	scal_div_vec(const t_vec3 lhs, const double rhs)
+inline t_vec3	scal_div_vec(t_vec3 lhs, double rhs)
 {
 	t_vec3	result;
 
@@ -79,22 +79,22 @@ inline t_vec3	scal_div_vec(const t_vec3 lhs, const double rhs)
 	return (result);
 }
 
-inline double	length_vec(const t_vec3 vec)
+inline double	length_vec(t_vec3 vec)
 {
 	return (sqrt(length_squared_vec(vec)));
 }
 
-inline double	length_squared_vec(const t_vec3 vec)
+inline double	length_squared_vec(t_vec3 vec)
 {
 	return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
-inline double	dot(const t_vec3 lhs, const t_vec3 rhs)
+inline double	dot(t_vec3 lhs, t_vec3 rhs)
 {
 	return (lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z);
 }
 
-inline t_vec3	cross(const t_vec3 lhs, const t_vec3 rhs)
+inline t_vec3	cross(t_vec3 lhs, t_vec3 rhs)
 {
 	return (construct_vec(
 		lhs.y * rhs.z - lhs.z * rhs.y,
@@ -102,7 +102,7 @@ inline t_vec3	cross(const t_vec3 lhs, const t_vec3 rhs)
 		lhs.x * rhs.y - lhs.y * rhs.x));
 }
 
-inline t_vec3 normalize(const t_vec3 vec)
+inline t_vec3 normalize(t_vec3 vec)
 {
 	return (scal_div_vec(vec, length_vec(vec)));
 }
@@ -136,6 +136,16 @@ t_vec3	random_unit_vector(void)
 t_vec3 reflect(t_vec3 v, t_vec3 n)
 {
 	return (sub_vec(v, scal_mul_vec(n, 2 * dot(v, n))));
+}
+
+t_color	construct_color(double e0, double e1, double e2)
+{
+	t_color	color;
+
+	color.x = clamp(e0, 0, 1);
+	color.y = clamp(e1, 0, 1);
+	color.z = clamp(e2, 0, 1);
+	return (color);
 }
 
 // #include <stdio.h>

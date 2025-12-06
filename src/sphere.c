@@ -1,12 +1,13 @@
 #include "sphere.h"
 #include "define.h"
 
-void	assign_sphere_hitrec(t_hit_record *rec, double solution, const t_ray ray, t_sphere *self)
+void	assign_sphere_hitrec(t_sphere *self, t_hit_record *rec, double solution, const t_ray ray)
 {
+	rec->ray_in = ray;
 	rec->t = solution;
-	rec->p = at_ray(ray, rec->t);
-	rec->normal = scal_div_vec(sub_vec(rec->p, self->center), self->radius);
-	rec->mat_ptr = self->mat_ptr;
+	rec->p = at_ray(ray, rec->t); // 交点
+	rec->normal = scal_div_vec(sub_vec(rec->p, self->center), self->radius); // 面の向き
+	rec->mat_ptr = self->hit_table.mat_ptr; // 材質
 	return ;
 }
 
@@ -24,36 +25,32 @@ bool	hit_sphere(void *s, const t_ray ray, t_hit_record *rec)
 		double	solution = (-half_b - root)/a;
 		if (HIT_T_MIN < solution) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
 		{
-			assign_sphere_hitrec(rec, solution, ray, self);
+			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);
 		}
 		// 以下の部分ほんとに必要？？？->レイの始点が球の内部のとき有効みたい（ex:カメラをガラス球の中に入れる。）
 		solution = (-half_b + root) / a;
 		if (0.001 < solution)
 		{
-			assign_sphere_hitrec(rec, solution, ray, self);
+			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);
 		}
 	}
-	rec->t = 0;
-	rec->p = construct_vec(0, 0, 0);
-	rec->normal = construct_vec(0, 0, 0);
-	rec->mat_ptr = 0;
 	return (false);
 }
 
-t_sphere	construct_sphere(const t_point3 cen, const double r, t_material *mat_ptr)
+t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 {
 	t_sphere	sphere;
 
 	sphere.hit_table.hit = hit_sphere;
+	sphere.hit_table.mat_ptr = mat_ptr;
 	sphere.center = cen;
 	sphere.radius = r;
-	sphere.hit_table.mat_ptr = mat_ptr;
 	return (sphere);
 }
 
-t_sphere	*gen_sphere(const t_point3 cen, const double r, t_material *mat_ptr)
+t_sphere	*gen_sphere(const t_point3 cen, const double r, void *mat_ptr)
 {
 	t_sphere	*s = malloc(sizeof(*s));
 	if (!s)

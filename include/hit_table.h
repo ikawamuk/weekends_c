@@ -9,6 +9,7 @@ typedef struct s_material t_material;
 
 typedef struct s_hit_record
 {
+	t_ray		ray_in;
 	t_point3	p;
 	t_vec3		normal;
 	t_material	*mat_ptr;
