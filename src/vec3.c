@@ -41,6 +41,26 @@ inline t_vec3	sub_vec(const t_vec3 lhs, const t_vec3 rhs)
 	return (result);
 }
 
+t_vec3	mul_vec(const t_vec3 lhs, const t_vec3 rhs)
+{
+	t_vec3	result;
+
+	result.x = lhs.x * rhs.x;
+	result.y = lhs.y * rhs.y;
+	result.z = lhs.z * rhs.z;
+	return (result);
+}
+
+t_vec3	div_vec(const t_vec3 lhs, const t_vec3 rhs)
+{
+	t_vec3	result;
+
+	result.x = lhs.x / rhs.x;
+	result.y = lhs.y / rhs.y;
+	result.z = lhs.z / rhs.z;
+	return (result);
+}
+
 inline t_vec3	scal_mul_vec(const t_vec3 lhs, const double rhs)
 {
 	t_vec3	result;

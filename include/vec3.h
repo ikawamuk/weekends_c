@@ -16,6 +16,8 @@ t_vec3	construct_vec(double e0, double e1, double e2);
 t_vec3	negative_vec(const t_vec3 vec);
 t_vec3	add_vec(const t_vec3 lhs, const t_vec3 rhs);
 t_vec3	sub_vec(const t_vec3 lhs, const t_vec3 rhs);
+t_vec3	mul_vec(const t_vec3 lhs, const t_vec3 rhs);
+t_vec3	div_vec(const t_vec3 lhs, const t_vec3 rhs);
 t_vec3	scal_mul_vec(const t_vec3 lhs, const double rhs);
 t_vec3	scal_div_vec(const t_vec3 lhs, const double rhs);
 double	length_vec(const t_vec3 vec);
