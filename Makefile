@@ -1,10 +1,12 @@
 NAME = weekend_c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(INCLUDE)
+CFLAGS = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCLUDE_DIRS))
 RMDIR	= rm -rf
 
-SRCS	=	main.c \
+SRCDIR = src
+
+SRCFILES	=	main.c \
 			draw_image.c \
 			img.c \
 			vec3.c \
@@ -16,12 +18,13 @@ SRCS	=	main.c \
 			util.c \
 			ray_color.c \
 
+SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
+
 OBJDIR = obj
 
 OBJS	= $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
 
-
-INCLUDE = $(MLXDIR)
+INCLUDE_DIRS = $(MLXDIR) include
 
 MLXDIR = minilibx-linux
 MLX = $(MLXDIR)/mlx.a
