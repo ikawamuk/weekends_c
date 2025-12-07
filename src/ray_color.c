@@ -3,17 +3,18 @@
 #include "hit_table_list.h"
 #include "material.h"
 #include "util.h"
+#include "world.h"
 
 static bool	killed_by_russian_roulette(t_color *attenuation);
 
-t_color ray_color(t_ray ray, t_color back_ground, const t_hit_table_list *world, int depth)
+t_color ray_color(t_ray ray, const t_world *world, int depth)
 {
 	t_hit_record	rec;
 
 	if (depth >= MAX_DEPTH)
 		return (construct_color(0, 0, 0));
-	if (!world->hit_table.hit(world, ray, &rec))
-		return (back_ground);
+	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
+		return (world->back_ground);
 	t_ray	scattered;
 	t_color	attenuation;
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
@@ -21,7 +22,7 @@ t_color ray_color(t_ray ray, t_color back_ground, const t_hit_table_list *world,
 		return (emmited);
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&attenuation))
 		return (emmited);
-	return (add_vec(emmited, mul_vec(attenuation, ray_color(scattered, back_ground, world, depth + 1))));
+	return (add_vec(emmited, mul_vec(attenuation, ray_color(scattered, world, depth + 1))));
 }
 
 static bool	killed_by_russian_roulette(t_color *attenuation)
