@@ -17,7 +17,9 @@ SRCFILES =	main.c \
 			camera.c \
 			util.c \
 			ray_color.c \
+			material.c \
 			lambertian.c \
+			light.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 

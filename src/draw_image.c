@@ -10,8 +10,9 @@
 #include "camera.h"
 #include "util.h"
 #include "lambertian.h"
+#include "light.h"
 
-t_color ray_color(const t_ray ray, t_hit_table_list *world, int depth);
+t_color ray_color(t_ray ray, t_color back_ground, t_hit_table_list *world, int depth);
 
 void	draw_image(void **mlx, t_img *img, bool ppm_mode)
 {
@@ -19,11 +20,16 @@ void	draw_image(void **mlx, t_img *img, bool ppm_mode)
 	t_camera	camera = construct_camera();
 
 	// set objects in the world
+	const t_color		back_ground = construct_color(0, 0, 0);
 	t_hit_table_list	world = construct_htl();
-	add_htl(&world, gen_sphere(construct_vec(0, 0, -1), 0.5, gen_lambertian(construct_color(0.5, 0, 0))));
-	add_htl(&world, gen_sphere(construct_vec(1, 0,-1), 0.5, gen_lambertian(construct_color(0.4, 0.7, 0.8))));
-	add_htl(&world, gen_sphere(construct_vec(-1,0,-1), 0.5, gen_lambertian(construct_color(0.02, 0.2, 0.02))));
-	add_htl(&world, gen_sphere(construct_vec(0, -100.5, -2), 100, gen_lambertian(construct_color(0.5, 0, 0))));
+	// 地面
+	add_htl(&world, gen_sphere(construct_vec(0, -100.5, -2), 100, gen_lambertian(construct_color(0.5, 0.1, 0.1))));
+	// もの
+	add_htl(&world, gen_sphere(construct_vec(0, 0, -2), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にRの要素がないとき真っ黒担って不自然だった！
+	add_htl(&world, gen_sphere(construct_vec(1, 0,-2), 0.5, gen_lambertian(construct_color(0.4, 0.7, 0.8))));
+	add_htl(&world, gen_sphere(construct_vec(-1,0,-2), 0.5, gen_lambertian(construct_color(0.02, 0.2, 0.02))));
+	// ライト
+	add_htl(&world, gen_sphere(construct_vec(0, 1, -2), 0.5, gen_light(construct_vec(50, 50, 50))));
 
 	// Let's draw
 	if (ppm_mode)
@@ -39,7 +45,7 @@ void	draw_image(void **mlx, t_img *img, bool ppm_mode)
 				double	u = (pixcel.x + random_double(0, 1)) / (WINSIZE_X - 1);
 				double	v = (pixcel.y + random_double(0, 1)) / (WINSIZE_Y - 1);
 				t_ray ray = get_ray(camera, u, v);
-				pixel_color = add_vec(pixel_color, ray_color(ray, &world, 0));
+				pixel_color = add_vec(pixel_color, ray_color(ray, back_ground, &world, 0));
 			}
 			if (ppm_mode)
 				write_ppm(get_raw_rgb(pixel_color));

@@ -7,6 +7,7 @@ t_lambertian	construct_lambertian(t_color alb)
 	t_lambertian	lam;
 
 	lam.material.scatter = scatter_lambertian;
+	lam.material.emitted = emitted_non_light;
 	lam.albedo = construct_color(alb.x, alb.y, alb.z);
 	return (lam);
 }

@@ -5,7 +5,7 @@
 
 typedef struct s_metal
 {
-	t_material	mat;
+	t_material	material;
 	t_color		albedo;
 }	t_metal;
 

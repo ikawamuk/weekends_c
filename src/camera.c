@@ -5,7 +5,7 @@ t_camera	construct_camera(void)
 {
 	t_camera	camera;
 	double		focal_length = 1.0;
-	double		screen_height = 2.0;
+	double		screen_height = 2.0 * 0.7;
 	double		screen_width = screen_height * ASPECT_RATIO;
 
 	camera.origin = construct_vec(0, 0, 0);
