@@ -6,7 +6,7 @@
 
 static bool	killed_by_russian_roulette(t_color *attenuation);
 
-t_color ray_color(t_ray ray, t_color back_ground, t_hit_table_list *world, int depth)
+t_color ray_color(t_ray ray, t_color back_ground, const t_hit_table_list *world, int depth)
 {
 	t_hit_record	rec;
 

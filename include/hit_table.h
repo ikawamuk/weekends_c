@@ -20,7 +20,7 @@ typedef struct s_hit_table t_hit_table;
 
 struct s_hit_table
 {
-	bool		(*hit)(void *self, const t_ray ray, t_hit_record *rec);
+	bool		(*hit)(const void *self, const t_ray ray, t_hit_record *rec);
 	t_material	*mat_ptr;
 };
 

@@ -1,7 +1,7 @@
 #include "sphere.h"
 #include "define.h"
 
-void	assign_sphere_hitrec(t_sphere *self, t_hit_record *rec, double solution, const t_ray ray)
+void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double solution, const t_ray ray)
 {
 	rec->ray_in = ray;
 	rec->t = solution;
@@ -11,9 +11,9 @@ void	assign_sphere_hitrec(t_sphere *self, t_hit_record *rec, double solution, co
 	return ;
 }
 
-bool	hit_sphere(void *s, const t_ray ray, t_hit_record *rec)
+bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec)
 {
-	t_sphere	*self = s;
+	const t_sphere	*self = s;
 	t_vec3	oc = sub_vec(ray.origin, self->center);
 	double	a = length_squared_vec(ray.direct);
 	double	half_b = dot(oc, ray.direct);

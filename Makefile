@@ -7,7 +7,7 @@ RMDIR = rm -rf
 SRCDIR = src
 
 SRCFILES =	main.c \
-			draw_image.c \
+			draw.c \
 			img.c \
 			vec3.c \
 			color.c \
@@ -20,6 +20,7 @@ SRCFILES =	main.c \
 			material.c \
 			lambertian.c \
 			light.c \
+			set_world.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 

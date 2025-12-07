@@ -49,9 +49,9 @@ void	clear_htl(t_hit_table_list list)
 	return ;
 }
 
-bool	hit_htl(void *s, const t_ray ray, t_hit_record *rec)
+bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec)
 {
-	t_hit_table_list	*self = s;
+	const t_hit_table_list	*self = s;
 	t_hit_table_node	*tail_p = self->head;
 	t_hit_record		temp_rec;
 	bool				hit_anything = false;
