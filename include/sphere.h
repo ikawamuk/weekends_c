@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "hit_table.h"
 #include "vec3.h"
+#include "material.h"
 
 typedef struct s_sphere
 {
@@ -12,8 +13,8 @@ typedef struct s_sphere
 	double		radius;
 }	t_sphere;
 
-t_sphere	construct_sphere(const t_point3 cen, const double r);
-bool		hit_sphere(void *s, const t_ray ray, t_hit_record *rec);
-t_sphere	*gen_sphere(const t_point3 cen, const double r);
+t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr);
+bool		hit_sphere(const void *s, const t_ray ray, t_hit_record *rec);
+t_sphere	*gen_sphere(const t_point3 cen, const double r, void *mat_ptr);
 
 #endif

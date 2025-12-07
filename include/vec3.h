@@ -13,21 +13,26 @@ struct s_vec3
 };
 
 t_vec3	construct_vec(double e0, double e1, double e2);
-t_vec3	negative_vec(const t_vec3 vec);
-t_vec3	add_vec(const t_vec3 lhs, const t_vec3 rhs);
-t_vec3	sub_vec(const t_vec3 lhs, const t_vec3 rhs);
-t_vec3	mul_vec(const t_vec3 lhs, const double rhs);
-t_vec3	div_vec(const t_vec3 lhs, const double rhs);
-double	length_vec(const t_vec3 vec);
-double	length_squared_vec(const t_vec3 vec);
-double	dot(const t_vec3 lhs, const t_vec3 rhs);
-t_vec3	cross(const t_vec3 lhs, const t_vec3 rhs);
-t_vec3	normalize(const t_vec3 vec);
+t_vec3	negative_vec(t_vec3 vec);
+t_vec3	add_vec(t_vec3 lhs, t_vec3 rhs);
+t_vec3	sub_vec(t_vec3 lhs, t_vec3 rhs);
+t_vec3	mul_vec(t_vec3 lhs, t_vec3 rhs);
+t_vec3	div_vec(t_vec3 lhs, t_vec3 rhs);
+t_vec3	scal_mul_vec(t_vec3 lhs, double rhs);
+t_vec3	scal_div_vec(t_vec3 lhs, double rhs);
+double	length_vec(t_vec3 vec);
+double	length_squared_vec(t_vec3 vec);
+double	dot(t_vec3 lhs, t_vec3 rhs);
+t_vec3	cross(t_vec3 lhs, t_vec3 rhs);
+t_vec3	normalize(t_vec3 vec);
 t_vec3	random_vec(double min, double max);
 t_vec3	random_in_unit_sphere(void);
 t_vec3	random_unit_vector(void);
+t_vec3	reflect(t_vec3 v, t_vec3 n);
 
 typedef t_vec3 t_point3;
 typedef t_vec3 t_color;
+
+t_color	construct_color(double e0, double e1, double e2);
 
 #endif

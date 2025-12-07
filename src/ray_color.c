@@ -1,20 +1,36 @@
 #include "vec3.h"
 #include "ray.h"
 #include "hit_table_list.h"
+#include "material.h"
+#include "util.h"
+#include "world.h"
 
-t_color ray_color(const t_ray ray, t_hit_table_list *world, int depth)
+static bool	killed_by_russian_roulette(t_color *attenuation);
+
+t_color ray_color(t_ray ray, const t_world *world, int depth)
 {
 	t_hit_record	rec;
 
-	if (depth <= 0)
-		return (construct_vec(0, 0, 0));
-	if (world->hit_table.hit(world, ray, &rec))
-	{
-		// rec.mat_ptr->sctter()で反射レイを計算。
-		t_point3 target	= add_vec(rec.p, add_vec(rec.normal, random_unit_vector())); // rec.p + rec.normal + random_unit_vect()
-		return (mul_vec(ray_color(construct_ray(rec.p, sub_vec(target, rec.p)), world, depth - 1), 0.5)); // ray_color() * 0.5;
-	}
-	t_vec3	unit_direction = normalize(ray.direct);
-	double	t = 0.5 * (unit_direction.y + 1.0);
-	return (add_vec(mul_vec(construct_vec(1.0, 1.0, 1.0), (1.0 - t)), mul_vec(construct_vec(0.5, 0.7, 1.0), t)));
+	if (depth >= MAX_DEPTH)
+		return (construct_color(0, 0, 0));
+	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
+		return (world->back_ground);
+	t_ray	scattered;
+	t_color	attenuation;
+	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
+	if (!rec.mat_ptr->scatter(rec.mat_ptr, rec, &attenuation, &scattered))
+		return (emmited);
+	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&attenuation))
+		return (emmited);
+	return (add_vec(emmited, mul_vec(attenuation, ray_color(scattered, world, depth + 1))));
+}
+
+static bool	killed_by_russian_roulette(t_color *attenuation)
+{
+	double	live_probability = fmax(fmax(attenuation->x, attenuation->y), attenuation->z);
+	live_probability = clamp(live_probability, LIVE_PROBABILITY_MIN, 1.0);
+	if (live_probability <= random_double(0, 1))
+		return (true);
+	*attenuation = scal_div_vec(*attenuation, live_probability);
+	return (false);
 }

@@ -1,13 +1,13 @@
 NAME = weekend_c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCLUDE_DIRS))
-RMDIR	= rm -rf
+CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS))
+RMDIR = rm -rf
 
 SRCDIR = src
 
-SRCFILES	=	main.c \
-			draw_image.c \
+SRCFILES =	main.c \
+			draw.c \
 			img.c \
 			vec3.c \
 			color.c \
@@ -17,14 +17,18 @@ SRCFILES	=	main.c \
 			camera.c \
 			util.c \
 			ray_color.c \
+			material.c \
+			lambertian.c \
+			light.c \
+			set_world.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
 OBJDIR = obj
 
-OBJS	= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
-INCLUDE_DIRS = $(MLXDIR) include
+INCDIRS = $(MLXDIR) include
 
 MLXDIR = minilibx-linux
 MLX = $(MLXDIR)/mlx.a
@@ -41,18 +45,18 @@ SCAN_BUILD      = scan-build
 all: $(NAME)
 
 $(NAME): $(OBJS) $(MLX)
-	$(CC) $(CFLAGS) $(OBJS) $(LDLIBS)  -o $@
+	$(CC) $(CFLAG) $(OBJS) $(LDLIBS)  -o $@
 
 $(MLX):
-	@MAKEFLAGS= $(MAKE) -C $(MLXDIR)
+	@$(MAKE) -C $(MLXDIR)
 
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAG) -c $< -o $@
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-	@MAKEFLAGS= $(MAKE) -C $(MLXDIR) clean
+	@$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
@@ -61,23 +65,23 @@ re: fclean all
 
 # --- DEBUGGING & TESTING ---
 lldb: fclean
-	@$(MAKE) CFLAGS="$(CFLAGS) $(DFLAGS)" $(NAME)
+	@$(MAKE) CFLAG="$(CFLAG) $(DFLAGS)" $(NAME)
 	@echo "\n\033[1;35mLaunching LLDB for '$(NAME)'...\033[0m"
 	@lldb $(NAME)
 
 asan: fclean
-	@$(MAKE) CFLAGS="$(CFLAGS) $(ASAN_FLAGS)" LDFLAGS="$(ASAN_FLAGS)" $(NAME)
+	@$(MAKE) CFLAG="$(CFLAG) $(ASAN_FLAGS)" LDFLAGS="$(ASAN_FLAGS)" $(NAME)
 	@echo "\n\033[1;35mCompiled with AddressSanitizer. Run './$(NAME)' to test.\033[0m"
 
 valgrind: fclean
-	@$(MAKE) CFLAGS="$(CFLAGS) $(DFLAGS)" $(NAME)
+	@$(MAKE) CFLAG="$(CFLAG) $(DFLAGS)" $(NAME)
 	@echo "\n\033[1;36mRunning Valgrind for '$(NAME)'...\033[0m"
 	$(VALGRIND) $(VALGRIND_FLAGS) ./$(NAME)
 
 test: all
 	@$(MAKE) all
 	@echo "\033[1;36mRunning tests with Valgrind...\033[0m"
-	@$(CC) $(CFLAGS) test.c $(NAME) -o test_runner
+	@$(CC) $(CFLAG) test.c $(NAME) -o test_runner
 	$(VALGRIND) $(VALGRIND_FLAGS) ./test_runner
 	@$(RM) test_runner
 

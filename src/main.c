@@ -2,7 +2,7 @@
 #include "define.h"
 #include "img.h"
 
-void	draw_image(void **mlx, t_img *img, bool ppm_mode);
+void	draw(void **mlx, t_img *img, bool ppm_mode);
 
 void	initialize(void **mlx, void **win, t_img *img)
 {
@@ -21,7 +21,7 @@ int	main(void)
 
 	if (!ppm_mode)
 		initialize(&mlx, &win, &img);
-	draw_image(&mlx, &img, ppm_mode);
+	draw(&mlx, &img, ppm_mode);
 	if (ppm_mode)
 		return (0);
 	mlx_put_image_to_window(mlx, win, img.id, 0, 0);
