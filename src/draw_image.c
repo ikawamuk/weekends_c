@@ -29,7 +29,7 @@ void	draw_image(void **mlx, t_img *img, bool ppm_mode)
 	add_htl(&world, gen_sphere(construct_vec(1, 0,-2), 0.5, gen_lambertian(construct_color(0.4, 0.7, 0.8))));
 	add_htl(&world, gen_sphere(construct_vec(-1,0,-2), 0.5, gen_lambertian(construct_color(0.02, 0.2, 0.02))));
 	// ライト
-	add_htl(&world, gen_sphere(construct_vec(0, 1, -2), 0.5, gen_light(construct_vec(50, 50, 50))));
+	add_htl(&world, gen_sphere(construct_vec(0, 10, -2), 0.5, gen_light(construct_vec(500, 500, 500)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
 
 	// Let's draw
 	if (ppm_mode)
