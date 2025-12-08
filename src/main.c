@@ -17,7 +17,7 @@ int	main(void)
 	void	*mlx;
 	void	*win;
 	t_img	img;
-	bool	ppm_mode = false;
+	bool	ppm_mode = true;
 
 	if (!ppm_mode)
 		initialize(&mlx, &win, &img);

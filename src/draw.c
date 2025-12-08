@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "util.h"
 #include "world.h"
+#include "material.h"
 
 t_color				ray_color(t_ray ray, const t_world *world, int depth);
 t_world				set_world(void);
@@ -32,6 +33,20 @@ void	draw(void **mlx, t_img *img, bool ppm_mode)
 		fprintf(stderr, "\rScanlines remaining: %d/%d ", y + 1, WINSIZE_Y);
 		for (int x = 0; x < WINSIZE_X; x++)
 		{
+			t_hit_record	rec;
+			double	u = (double)x / (WINSIZE_X - 1);
+			double	v = (double)y / (WINSIZE_Y - 1);
+			t_ray ray = get_ray(camera, u, v);
+			if (!world.objects.hit_table.hit(&world.objects.hit_table, ray, &rec))
+			{
+				pixcel_arr[yy + x].normal = construct_vec(0, 0, 0);
+				pixcel_arr[yy + x].albedo = world.back_ground;
+			}
+			else
+			{
+				pixcel_arr[yy + x].normal = rec.normal;
+				rec.mat_ptr->scatter(rec.mat_ptr, rec, &pixcel_arr[yy + x].albedo, &ray);
+			}
 			pixcel_arr[yy + x].color = accumulate_pixcel_color(x, y, camera, &world);
 		}
 	}

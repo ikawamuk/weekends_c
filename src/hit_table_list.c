@@ -5,6 +5,7 @@ t_hit_table_list	construct_htl(void)
 	t_hit_table_list	list;
 
 	list.hit_table.hit = hit_htl;
+	list.hit_table.mat_ptr = NULL;
 	list.head = NULL;
 	return (list);
 }
