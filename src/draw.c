@@ -13,7 +13,7 @@
 t_color				ray_color(t_ray ray, const t_world *world, int depth);
 t_world				set_world(void);
 static t_color		accumulate_pixcel_color(int x, int y, t_camera camera, const t_world *world);
-t_color	*post_proccess(t_pixcel *pixcel_arr);
+t_color				*post_proccess(t_pixcel *pixcel_arr);
 
 void	draw(void **mlx, t_img *img, bool ppm_mode)
 {
@@ -44,22 +44,6 @@ void	draw(void **mlx, t_img *img, bool ppm_mode)
 	fprintf(stderr, "\nDone.\n");
 	clear_htl(world.objects);
 	return ;
-}
-
-t_color	*post_proccess(t_pixcel *pixcel_arr)
-{
-	t_color	*color_arr = malloc(PIXCELS_NUM * sizeof(t_color));
-
-	for (int y = 0; y < WINSIZE_Y; y++)
-	{
-		int yy = y * WINSIZE_X;
-		for (int x = 0;  x < WINSIZE_X; x++)
-		{
-			color_arr[yy + x] = pixcel_arr[yy + x].color;
-		}
-	}
-	free(pixcel_arr);
-	return (color_arr);
 }
 
 static t_color	accumulate_pixcel_color(int x, int y, t_camera camera, const t_world *world)
