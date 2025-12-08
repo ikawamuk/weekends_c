@@ -11,6 +11,7 @@ SRCFILES =		main.c \
 				vec3.c \
 				color.c \
 				ray.c \
+				cylinder.c \
 				sphere.c \
 				plane.c \
 				hit_table_list.c \
