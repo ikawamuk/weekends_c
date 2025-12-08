@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "vec3.h"
 #include "img.h"
-#include "pixcel.h"
 
 void	write_color(void *mlx, t_img *img, t_color *color_arr);
 void	write_ppm(t_color *color_arr);

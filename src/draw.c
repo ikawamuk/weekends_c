@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "define.h"
-#include "pixcel.h"
 #include "img.h"
 #include "color.h"
 #include "vec3.h"
@@ -13,11 +12,10 @@
 t_color				ray_color(t_ray ray, const t_world *world, int depth);
 t_world				set_world(void);
 static t_color		accumulate_pixcel_color(int x, int y, t_camera camera, const t_world *world);
-t_color				*post_proccess(t_pixcel *pixcel_arr);
 
 void	draw(void **mlx, t_img *img, bool ppm_mode)
 {
-	t_pixcel	*pixcel_arr = malloc(PIXCELS_NUM * sizeof(t_pixcel));
+	t_color		*color_arr = malloc(PIXCELS_NUM * sizeof(t_color));
 	t_camera	camera = construct_camera(construct_vec(0, 1, 0), normalize(construct_vec(0, -0.3, -1)), 120);
 
 	// set objects in the world
@@ -32,10 +30,9 @@ void	draw(void **mlx, t_img *img, bool ppm_mode)
 		fprintf(stderr, "\rScanlines remaining: %d/%d ", y + 1, WINSIZE_Y);
 		for (int x = 0; x < WINSIZE_X; x++)
 		{
-			pixcel_arr[yy + x].color = accumulate_pixcel_color(x, y, camera, &world);
+			color_arr[yy + x] = accumulate_pixcel_color(x, y, camera, &world);
 		}
 	}
-	t_color	*color_arr = post_proccess(pixcel_arr);
 	if (ppm_mode)
 		write_ppm(color_arr);
 	else
