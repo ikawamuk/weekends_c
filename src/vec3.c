@@ -1,7 +1,7 @@
 #include "vec3.h"
 #include "util.h"
 
-inline t_vec3	construct_vec(double e0, double e1, double e2)
+t_vec3	construct_vec(double e0, double e1, double e2)
 {
 	t_vec3	vec;
 
@@ -11,7 +11,7 @@ inline t_vec3	construct_vec(double e0, double e1, double e2)
 	return (vec);
 }
 
-inline t_vec3	negative_vec(t_vec3 vec)
+t_vec3	negative_vec(t_vec3 vec)
 {
 	t_vec3	result;
 
@@ -21,7 +21,7 @@ inline t_vec3	negative_vec(t_vec3 vec)
 	return (result);
 }
 
-inline t_vec3	add_vec(t_vec3 lhs, t_vec3 rhs)
+t_vec3	add_vec(t_vec3 lhs, t_vec3 rhs)
 {
 	t_vec3	result;
 
@@ -31,7 +31,7 @@ inline t_vec3	add_vec(t_vec3 lhs, t_vec3 rhs)
 	return (result);
 }
 
-inline t_vec3	sub_vec(t_vec3 lhs, t_vec3 rhs)
+t_vec3	sub_vec(t_vec3 lhs, t_vec3 rhs)
 {
 	t_vec3	result;
 
@@ -61,7 +61,7 @@ t_vec3	div_vec(t_vec3 lhs, t_vec3 rhs)
 	return (result);
 }
 
-inline t_vec3	scal_mul_vec(t_vec3 lhs, double rhs)
+t_vec3	scal_mul_vec(t_vec3 lhs, double rhs)
 {
 	t_vec3	result;
 
@@ -71,7 +71,7 @@ inline t_vec3	scal_mul_vec(t_vec3 lhs, double rhs)
 	return (result);
 }
 
-inline t_vec3	scal_div_vec(t_vec3 lhs, double rhs)
+t_vec3	scal_div_vec(t_vec3 lhs, double rhs)
 {
 	t_vec3	result;
 
@@ -79,22 +79,22 @@ inline t_vec3	scal_div_vec(t_vec3 lhs, double rhs)
 	return (result);
 }
 
-inline double	length_vec(t_vec3 vec)
+double	length_vec(t_vec3 vec)
 {
 	return (sqrt(length_squared_vec(vec)));
 }
 
-inline double	length_squared_vec(t_vec3 vec)
+double	length_squared_vec(t_vec3 vec)
 {
 	return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
-inline double	dot(t_vec3 lhs, t_vec3 rhs)
+double	dot(t_vec3 lhs, t_vec3 rhs)
 {
 	return (lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z);
 }
 
-inline t_vec3	cross(t_vec3 lhs, t_vec3 rhs)
+t_vec3	cross(t_vec3 lhs, t_vec3 rhs)
 {
 	return (construct_vec(
 		lhs.y * rhs.z - lhs.z * rhs.y,
@@ -102,12 +102,12 @@ inline t_vec3	cross(t_vec3 lhs, t_vec3 rhs)
 		lhs.x * rhs.y - lhs.y * rhs.x));
 }
 
-inline t_vec3 normalize(t_vec3 vec)
+t_vec3 normalize(t_vec3 vec)
 {
 	return (scal_div_vec(vec, length_vec(vec)));
 }
 
-inline t_vec3	random_vec(double min, double max)
+t_vec3	random_vec(double min, double max)
 {
 	return (construct_vec(random_double(min, max), random_double(min, max), random_double(min, max)));
 }
