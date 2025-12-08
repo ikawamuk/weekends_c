@@ -28,9 +28,9 @@ t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double v
 	double		screen_height = 2.0 * h;
 	double		screen_width = screen_height * ASPECT_RATIO;
 
-	t_vec3		w = negative_vec(_orient);
-	t_vec3		u = normalize(cross(vup, w));
-	t_vec3		v = cross(w, u);
+	t_vec3		w = negative_vec(_orient); // lookfrom - lookat
+	t_vec3		u = normalize(cross(vup, w)); // 横軸の単位ベクトル
+	t_vec3		v = cross(w, u); // 縦軸の単位ベクトル
 
 	camera.origin = _origin;
 	camera.horizontal = scal_mul_vec(u, screen_width);

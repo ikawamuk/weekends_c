@@ -10,7 +10,6 @@ typedef struct s_camera
 	t_point3	higher_left_corner;
 	t_vec3		horizontal;
 	t_vec3		vertical;
-	double		fov;
 }	t_camera;
 
 t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double vfov);
