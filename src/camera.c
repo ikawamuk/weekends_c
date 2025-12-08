@@ -1,18 +1,42 @@
 #include "camera.h"
 #include "define.h"
+#include "vec3.h"
 
-t_camera	construct_camera(void)
+/*
+@brief 度数法を弧度法に変換
+*/
+double	degrees_to_radians(const double degrees)
 {
+	double	deno;
+
+	deno = 1.0f / 180.0f;
+	return (degrees * M_PI * deno);
+}
+
+#include <stdio.h>
+/* 
+@param _origin: カメラの座標
+@param _orient: カメラの方向ベクトル
+@param vfov: 垂直方向のfield of view
+*/
+t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double vfov)
+{
+	static const t_vec3	vup = (t_vec3){0, 1, 0};
 	t_camera	camera;
-	double		focal_length = 1.0;
-	double		screen_height = 2.0 * 0.7;
+	double		theta = degrees_to_radians(vfov * 0.5);
+	double		h = tan(theta);
+	double		screen_height = 2.0 * h;
 	double		screen_width = screen_height * ASPECT_RATIO;
 
-	camera.origin = construct_vec(0, 0, 0);
-	camera.horizontal = construct_vec(screen_width, 0, 0);
-	camera.vertical = construct_vec(0, screen_height, 0);
-	camera.higher_left_corner = add_vec(sub_vec(camera.origin, scal_div_vec(camera.horizontal, 2)), sub_vec(scal_div_vec(camera.vertical, 2), construct_vec(0, 0, focal_length)));
-	// higher_left_corner = {origin - horizontal/2 } +  {vertical/2 - vec3(0, 0, focal_length)} ;
+	t_vec3		w = negative_vec(_orient);
+	t_vec3		u = normalize(cross(vup, w));
+	t_vec3		v = cross(w, u);
+
+	camera.origin = _origin;
+	camera.horizontal = scal_mul_vec(u, screen_width);
+	camera.vertical = scal_mul_vec(v, screen_height);
+	camera.higher_left_corner = add_vec(sub_vec(camera.origin, scal_div_vec(camera.horizontal, 2)), sub_vec(scal_div_vec(camera.vertical, 2), w));
+	// higher_left_corner = {origin - horizontal/2 } + {vertical/2 - w)} ;
 	return (camera);
 }
 
@@ -21,7 +45,7 @@ t_ray	get_ray(t_camera camera, double u, double v)
 	t_ray	ray;
 
 	ray = construct_ray(camera.origin, 
-		sub_vec(add_vec(camera.higher_left_corner, scal_mul_vec(camera.horizontal, u)), sub_vec(scal_mul_vec(camera.vertical, v), camera.origin)));
-	// {higher_left_corner + u*horizontal}  -  {v*vertical - origin};
+		sub_vec(add_vec(camera.higher_left_corner, scal_mul_vec(camera.horizontal, u)), add_vec(scal_mul_vec(camera.vertical, v), camera.origin)));
+	// {higher_left_corner + u*horizontal}  -  {v*vertical + origin};
 	return (ray);
 }
