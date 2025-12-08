@@ -72,7 +72,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-	@$(MAKE) -C $(MLXDIR) clean
+# 	@$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
