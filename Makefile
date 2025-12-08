@@ -22,6 +22,7 @@ SRCFILES =		main.c \
 				lambertian.c \
 				light.c \
 				set_world.c \
+				post_process.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 

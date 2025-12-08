@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "define.h"
 #include "vec3.h"
 #include "pixcel.h"
