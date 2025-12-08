@@ -13,9 +13,9 @@
 #define M_PI 3.14159265358979323846
 #endif
 #define HIT_T_MIN 1e-3
-#define MAX_DEPTH 100
+#define MAX_DEPTH 50
 #define RR_START_DEPTH 5
-#define SAMPLES_PER_PIXCEL 300
+#define SAMPLES_PER_PIXCEL 500 // ここ上げればきれいになるけど遅くなる
 #define LIVE_PROBABILITY_MIN 0.05
 
 
