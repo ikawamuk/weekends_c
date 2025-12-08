@@ -22,7 +22,7 @@ bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
 	return (true);
 }
 
-t_plane	construct_plane(const t_point3 _cen, const t_point3 _normal, void *mat_ptr)
+t_plane	construct_plane(const t_point3 _cen, const t_vec3 _normal, void *mat_ptr)
 {
 	t_plane	plane;
 
@@ -33,7 +33,7 @@ t_plane	construct_plane(const t_point3 _cen, const t_point3 _normal, void *mat_p
 	return (plane);
 }
 
-t_plane	*gen_plane(const t_point3 _cen, const t_point3 _normal, void *mat_ptr)
+t_plane	*gen_plane(const t_point3 _cen, const t_vec3 _normal, void *mat_ptr)
 {
 	t_plane	*s = malloc(sizeof(t_plane));
 

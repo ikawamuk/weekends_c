@@ -17,7 +17,7 @@ static t_color		accumulate_pixcel_color(t_pixcel pixcel, t_camera camera, const 
 void	draw(void **mlx, t_img *img, bool ppm_mode)
 {
 	t_pixcel	pixcel;
-	t_camera	camera = construct_camera();
+	t_camera	camera = construct_camera(construct_vec(0, 1, 0), normalize(construct_vec(0, -0.3, -1)), 120);
 
 	// set objects in the world
 	t_world	world = set_world();

@@ -12,7 +12,7 @@ typedef struct s_camera
 	t_vec3		vertical;
 }	t_camera;
 
-t_camera	construct_camera(void);
+t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double vfov);
 t_ray		get_ray(t_camera camera, double u, double v);
 
 #endif
