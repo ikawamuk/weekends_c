@@ -23,7 +23,8 @@ bool	scatter_light(void* s, t_hit_record rec, t_color *att, t_ray *sca)
 t_color	emitted_light(void *s, t_hit_record rec)
 {	
 	t_light	*self = s;
-	(void)rec;
+	if (dot(rec.normal, rec.ray_in.direct) > 0)
+		return (construct_color(0, 0, 0));
 	return (self->emit_color);
 }
 

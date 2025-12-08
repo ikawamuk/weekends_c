@@ -16,6 +16,8 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_color *attenuation, t_ray *
 {
 	t_lambertian	*self = s;
 	t_vec3	scatter_direction = add_vec(rec.normal , random_unit_vector());
+	if (dot(rec.normal, rec.ray_in.direct) > 0)
+		scatter_direction = negative_vec(scatter_direction);
 	*scattered = construct_ray(rec.p, scatter_direction);
 	*attenuation = self->albedo;
 	return (true);

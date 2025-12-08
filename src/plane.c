@@ -17,10 +17,7 @@ bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
 	rec->ray_in = ray;
 	rec->t = solution;
 	rec->p = at_ray(ray, rec->t);
-	if (b < 0) // 法線の方向にレイの原点がある
-		rec->normal = self->normal;
-	else // 0 < b: 法線の反対向きにレイの原点がある
-		rec->normal = negative_vec(self->normal);
+	rec->normal = self->normal; // オブジェクトの法線の向きは固定
 	rec->mat_ptr = self->hit_table.mat_ptr;
 	return (true);
 }
