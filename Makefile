@@ -1,6 +1,6 @@
 NAME = weekend_c
 
-CC = cc
+CC = cc 
 RMDIR = rm -rf
 
 SRCDIR = src
