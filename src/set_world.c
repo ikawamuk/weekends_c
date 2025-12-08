@@ -12,17 +12,17 @@ t_world	set_world(void)
 	world.back_ground = construct_color(0.1, 0.1, 0.7);
 	world.objects = construct_htl();
 	// 壁
-	add_htl(&world.objects, gen_plane(construct_vec(0, 0, -3), normalize(construct_vec(0, 0, 1)), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
+	add_htl(&world.objects, gen_plane(construct_vec(0, 0, -5), normalize(construct_vec(0, 0, 1)), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
 	add_htl(&world.objects, gen_plane(construct_vec(2, 0, 0), normalize(construct_vec(-1, 0, 0)), gen_lambertian(construct_color(0.7, 0.2, 0.2))));
 	add_htl(&world.objects, gen_plane(construct_vec(-2, 0, 0), normalize(construct_vec(1, 0, 0)), gen_lambertian(construct_color(0.2, 0.7, 0.2))));
 	// 地面
-	add_htl(&world.objects, gen_plane(construct_vec(0, -0.5, -2), normalize(construct_vec(0, 1, 0)), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
+	add_htl(&world.objects, gen_plane(construct_vec(0, -1.5, -2), normalize(construct_vec(0, 1, 0)), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
 	// add_htl(&world.objects, gen_sphere(construct_vec(0, -100.5, -2), 100, gen_lambertian(construct_color(0.5, 0.1, 0.1))));
 	// もの
-	add_htl(&world.objects, gen_sphere(construct_vec(0, 0, -2), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
+	add_htl(&world.objects, gen_sphere(construct_vec(0, -1, -3), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
 	// add_htl(&world.objects, gen_sphere(construct_vec(1, 0,-2), 0.5, gen_lambertian(construct_color(0.4, 0.7, 0.8))));
 	// add_htl(&world.objects, gen_sphere(construct_vec(-1,0,-2), 0.5, gen_lambertian(construct_color(0.02, 0.2, 0.02))));
 	// ライト
-	add_htl(&world.objects, gen_sphere(construct_vec(0, 10, -2), 0.5, gen_light(construct_vec(1000, 1000, 1000)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
+	add_htl(&world.objects, gen_sphere(construct_vec(0, 4, -3), 0.5, gen_light(construct_vec(40, 40, 40)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
 	return (world);
 }
