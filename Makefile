@@ -1,26 +1,26 @@
 NAME = weekend_c
 
 CC = cc
-CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS))
 RMDIR = rm -rf
 
 SRCDIR = src
 
-SRCFILES =	main.c \
-			draw.c \
-			img.c \
-			vec3.c \
-			color.c \
-			ray.c \
-			sphere.c \
-			hit_table_list.c \
-			camera.c \
-			util.c \
-			ray_color.c \
-			material.c \
-			lambertian.c \
-			light.c \
-			set_world.c \
+SRCFILES =		main.c \
+				draw.c \
+				img.c \
+				vec3.c \
+				color.c \
+				ray.c \
+				sphere.c \
+				plane.c \
+				hit_table_list.c \
+				camera.c \
+				util.c \
+				ray_color.c \
+				material.c \
+				lambertian.c \
+				light.c \
+				set_world.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -28,24 +28,39 @@ OBJDIR = obj
 
 OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
-INCDIRS = $(MLXDIR) include
+INCDIRS = include
 
-MLXDIR = minilibx-linux
-MLX = $(MLXDIR)/mlx.a
+# --- OS DETECTION ---
+UNAME = $(shell uname -s)
 
-LDLIBS = -L./minilibx-linux -lmlx -lX11 -lXext -lm
+ifeq ($(UNAME),Darwin)
+	MLXDIR := minilibx-mac
+	MLX_FLAGS := -framework OpenGL -framework AppKit
+else ifeq ($(UNAME),Linux)
+	MLXDIR := minilibx-linux
+	MLX_FLAGS := -lX11 -lXext
+else
+	$(error Unsupported OS: $(UNAME))
+endif
+
+MLX = $(MLXDIR)/libmlx.a
+
+CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I $(MLXDIR)
+
+LDFLAGS = -L $(MLXDIR)
+LDLIBS = -lmlx -lm $(MLX_FLAGS)
 
 # --- DEBUGGING ---
-VALGRIND        = valgrind
-VALGRIND_FLAGS  = --leak-check=full --track-origins=yes --show-leak-kinds=all
-DFLAGS          = -g -O0
-ASAN_FLAGS      = -g -fsanitize=address
-SCAN_BUILD      = scan-build
+VALGRIND		= valgrind
+VALGRIND_FLAGS	= --leak-check=full --track-origins=yes --show-leak-kinds=all
+DFLAGS			= -g -O0
+ASAN_FLAGS		= -g -fsanitize=address
+SCAN_BUILD		= scan-build
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(MLX)
-	$(CC) $(CFLAG) $(OBJS) $(LDLIBS)  -o $@
+	$(CC) $(CFLAG) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(MLX):
 	@$(MAKE) -C $(MLXDIR)
@@ -89,4 +104,4 @@ scanb: fclean
 	@$(SCAN_BUILD) $(MAKE) all
 
 # --- PHONY TARGETS ---
-.PHONY:         all clean fclean re test debug asan valgrind
+.PHONY:		all clean fclean re test debug asan valgrind

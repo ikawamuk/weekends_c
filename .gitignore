@@ -1,6 +1,7 @@
 *
 !*/
 !minilibx-linux/**
+!minilibx-mac/**
 !include/*.h
 !src/*.c
 !Makefile
