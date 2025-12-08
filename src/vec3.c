@@ -112,7 +112,7 @@ inline t_vec3	random_vec(double min, double max)
 	return (construct_vec(random_double(min, max), random_double(min, max), random_double(min, max)));
 }
 
-t_vec3	random_in_unit_sphere(void)
+inline t_vec3	random_in_unit_sphere(void)
 {
 	t_vec3	p;
 
@@ -125,7 +125,7 @@ t_vec3	random_in_unit_sphere(void)
 	}
 }
 
-t_vec3	random_unit_vector(void)
+inline t_vec3	random_unit_vector(void)
 {
 	double	a = random_double(0, 2 * M_PI);
 	double	z = random_double(-1, 1);
@@ -133,12 +133,12 @@ t_vec3	random_unit_vector(void)
 	return (construct_vec(r * cos(a), r * sin(a), z));
 }
 
-t_vec3 reflect(t_vec3 v, t_vec3 n)
+inline t_vec3 reflect(t_vec3 v, t_vec3 n)
 {
 	return (sub_vec(v, scal_mul_vec(n, 2 * dot(v, n))));
 }
 
-t_color	construct_color(double e0, double e1, double e2)
+inline t_color	construct_color(double e0, double e1, double e2)
 {
 	t_color	color;
 
