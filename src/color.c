@@ -4,26 +4,26 @@
 
 int	get_raw_rgb(t_color pixel_color)
 {
-	double	scale = 1.0 / SAMPLES_PER_PIXCEL;
 	int		int_color[3];
 	double	double_color[3];
 
-	double_color[0] = sqrt(pixel_color.x * scale);
-	double_color[1] = sqrt(pixel_color.y * scale);
-	double_color[2] = sqrt(pixel_color.z * scale);
+	double_color[0] = sqrt(pixel_color.x);
+	double_color[1] = sqrt(pixel_color.y);
+	double_color[2] = sqrt(pixel_color.z);
 	int_color[0] = 256 * clamp(double_color[0], 0.0, 0.999);
 	int_color[1] = 256 * clamp(double_color[1], 0.0, 0.999);
 	int_color[2] = 256 * clamp(double_color[2], 0.0, 0.999);
 	return ((int_color[0] << 16) | (int_color[1] << 8) | int_color[2]);
 }
 
-void	write_color(void *mlx, t_img *img, t_pixcel *pixcel, int raw_rgb)
+void	write_color(void *mlx, char *dst, t_color color, bool ppm_mode)
 {
-	int	mlx_color;
+	int	raw_rgb = get_raw_rgb(color);
 
-	mlx_color = mlx_get_color_value(mlx, raw_rgb);
-	char *dst = img->addr + (pixcel->y * img->line_size + pixcel->x * (img->bits_per_pixcel / 8));
-	*(unsigned int*)dst = mlx_color;
+	if (ppm_mode)
+		write_ppm(raw_rgb);
+	else
+		*(unsigned int*)dst = mlx_get_color_value(mlx, raw_rgb);
 	return ;
 }
 
