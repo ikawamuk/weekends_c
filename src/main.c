@@ -29,7 +29,6 @@ int close_window(void *param)
 	return (0);
 }
 
-
 int	main(void)
 {
 	t_hook_var	var;
