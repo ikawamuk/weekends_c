@@ -2,7 +2,7 @@ NAME = weekend_c
 
 CC = cc 
 
-CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I $(MLXDIR) -O3
+CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I $(MLXDIR) -O3 -march=native
 
 RMDIR = rm -rf
 
