@@ -1,6 +1,9 @@
 NAME = weekend_c
 
 CC = cc 
+
+CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I $(MLXDIR) -O3
+
 RMDIR = rm -rf
 
 SRCDIR = src
@@ -45,8 +48,6 @@ else
 endif
 
 MLX = $(MLXDIR)/libmlx.a
-
-CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I $(MLXDIR)
 
 LDFLAGS = -L $(MLXDIR)
 LDLIBS = -lmlx -lm $(MLX_FLAGS)
