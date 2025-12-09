@@ -1,3 +1,4 @@
+#include "define.h"
 #include "hit_table_list.h"
 #include "cylinder.h"
 #include "plane.h"
@@ -12,20 +13,28 @@ t_world	set_world(void)
 
 	world.back_ground = construct_color(0, 0, 0);
 	world.objects = construct_htl();
+	double	float_height = -1.5;
 	// 柱
-	// add_htl(&world.objects, gen_cylinder(construct_vec(2, 0, -4), normalize(construct_vec(0, 1, 0)), 0.3, 1, gen_lambertian(construct_color(0.9, 0.9, 0.9))));
-	add_htl(&world.objects, gen_cylinder(construct_vec(-2, 0, -4), normalize(construct_vec(0, 1, 0)), 0.3, 1, gen_lambertian(construct_color(0.9, 0.9, 0.9))));
+	double	cylinder_radius = 0.4; 
+	double	cylinder_theta = 1.0f * M_PI / 6.0f;
+	add_htl(&world.objects, gen_cylinder(construct_vec(-3, float_height + cylinder_radius, -4), normalize(construct_vec(cos(cylinder_theta), 0, sin(cylinder_theta))), cylinder_radius, 2, gen_lambertian(construct_color(0.1, 0.2, 0.7))));
+	cylinder_theta -= 2.0f * M_PI / 3.0f;
+	add_htl(&world.objects, gen_cylinder(construct_vec(0, float_height + cylinder_radius, -4), normalize(construct_vec(cos(cylinder_theta), 0, sin(cylinder_theta))), cylinder_radius, 2, gen_lambertian(construct_color(0.1, 0.2, 0.7))));
+	cylinder_theta -= 2.0f * M_PI / 3.0f;
+	add_htl(&world.objects, gen_cylinder(construct_vec(3, float_height + cylinder_radius, -4), normalize(construct_vec(cos(cylinder_theta), 0, sin(cylinder_theta))), cylinder_radius, 2, gen_lambertian(construct_color(0.1, 0.2, 0.7))));
+	// add_htl(&world.objects, gen_cylinder(construct_vec(2, float_height, -4), normalize(construct_vec(0, 1, 0)), 0.3, 1, gen_lambian(construct_color(0.9, 0.9, 0.9))));
+	// add_htl(&world.objects, gen_cylinder(construct_vec(-2, float_height, -4), normalize(construct_vec(0, 1, 0)), 0.3, 1, gen_lambertian(construct_color(0.9, 0.9, 0.9))));
 	// 壁
-	// add_htl(&world.objects, gen_plane(construct_vec(0, 0, -5), normalize(construct_vec(0, 0, 1)), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
-	add_htl(&world.objects, gen_plane(construct_vec(3, 0, 0), normalize(construct_vec(-1, 0, 0)), gen_lambertian(construct_color(0.7, 0.2, 0.2))));
-	// add_htl(&world.objects, gen_plane(construct_vec(-3, 0, 0), normalize(construct_vec(1, 0, 0)), gen_lambertian(construct_color(0.2, 0.7, 0.2))));
+	add_htl(&world.objects, gen_plane(construct_vec(0, 0, -9), normalize(construct_vec(0, 0, 1)), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
+	add_htl(&world.objects, gen_plane(construct_vec(-5, 0, 0), normalize(construct_vec(-1, 0, 0)), gen_lambertian(construct_color(0.7, 0.2, 0.2))));
+	add_htl(&world.objects, gen_plane(construct_vec(5, 0, 0), normalize(construct_vec(1, 0, 0)), gen_lambertian(construct_color(0.2, 0.7, 0.2))));
 	// 地面
-	add_htl(&world.objects, gen_plane(construct_vec(0, -1.5, -2), construct_vec(0, 1, 0), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
+	add_htl(&world.objects, gen_plane(construct_vec(0, float_height, -2), construct_vec(0, 1, 0), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
 	// 天井
 	// add_htl(&world.objects, gen_plane(construct_vec(0, 3.5, -2), construct_vec(0, -1, 0), gen_lambertian(construct_color(0.7, 0.7, 0.7))));
 	// もの
-	add_htl(&world.objects, gen_sphere(construct_vec(0, -1, -3), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
+	// add_htl(&world.objects, gen_sphere(construct_vec(0, -1, -3), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
 	// ライト
-	add_htl(&world.objects, gen_sphere(construct_vec(-2, -1, -7), 0.5, gen_light(construct_vec(35, 35, 35)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
+	add_htl(&world.objects, gen_sphere(construct_vec(0, 3, -2), 0.5, gen_light(construct_vec(90, 90, 90)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
 	return (world);
 }
