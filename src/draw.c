@@ -11,8 +11,9 @@
 
 t_color				ray_color(t_ray ray, const t_world *world, int depth);
 t_world				set_world(void);
-static t_color		accumulate_pixcel_color(int x, int y, t_camera camera, const t_world *world);
+static t_color		get_pixcel_color(int x, int y, t_camera camera, const t_world *world);
 static void			write_loop(void ** mlx, t_img *img, t_color *color_arr, bool ppm_mode);
+static void			pixcel_color_loop(t_color *color_arr, t_camera camera, t_world *world);
 
 void	draw(void **mlx, t_img *img, bool ppm_mode)
 {
@@ -21,18 +22,10 @@ void	draw(void **mlx, t_img *img, bool ppm_mode)
 
 	// set objects in the world
 	t_world	world = set_world();
-
 	// caluculate pixcel color
-	for (int y = 0; y < WINSIZE_Y; y++)
-	{
-		int yy = y * WINSIZE_X;
-		fprintf(stderr, "\rScanlines remaining: %d ", WINSIZE_Y - y - 1);
-		for (int x = 0; x < WINSIZE_X; x++)
-			color_arr[yy + x] = accumulate_pixcel_color(x, y, camera, &world);
-	}
+	pixcel_color_loop(color_arr, camera, &world);
 	// Let's draw
 	write_loop(mlx, img, color_arr, ppm_mode);
-	fprintf(stderr, "\nDone.\n");
 	clear_htl(world.objects);
 	free(color_arr);
 	return ;
@@ -54,7 +47,19 @@ static void	write_loop(void ** mlx, t_img *img, t_color *color_arr, bool ppm_mod
 	return ;
 }
 
-static t_color	accumulate_pixcel_color(int x, int y, t_camera camera, const t_world *world)
+static void	pixcel_color_loop(t_color *color_arr, t_camera camera, t_world *world)
+{
+	for (int y = 0; y < WINSIZE_Y; y++)
+	{
+		int yy = y * WINSIZE_X;
+		fprintf(stderr, "\rScanlines remaining: %d ", WINSIZE_Y - y - 1);
+		for (int x = 0; x < WINSIZE_X; x++)
+			color_arr[yy + x] = get_pixcel_color(x, y, camera, world);
+	}
+	fprintf(stderr, "\nDone.\n");
+}
+
+static t_color	get_pixcel_color(int x, int y, t_camera camera, const t_world *world)
 {
 	static const double	scale = 1.0 / SAMPLES_PER_PIXCEL;
 	t_color	pixcel_color = construct_color(0, 0, 0);
