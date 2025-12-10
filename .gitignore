@@ -6,3 +6,4 @@
 !src/*.c
 !Makefile
 !.gitignore
+!README.md
