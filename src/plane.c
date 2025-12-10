@@ -2,7 +2,7 @@
 #include "define.h"
 #include <stdlib.h>
 
-bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
+bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_range)
 {
 	const t_plane	*self = s;
 	t_vec3			co = sub_vec(self->point, ray.origin);
@@ -12,7 +12,7 @@ bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
 	if (fabs(b) < FLT_EPSILON)
 		return (false);
 	double			solution = a / b;
-	if (solution <= HIT_T_MIN)
+	if (check_range(solution, *t_range) == false)
 		return (false);
 	rec->ray_in = ray;
 	rec->t = solution;

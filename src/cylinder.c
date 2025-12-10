@@ -62,7 +62,7 @@ bool	check_cap(const t_cylinder *self, const t_ray ray, t_point3 cap_center, t_v
 	return (false);
 }
 
-bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
+bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_range)
 {
 	const t_cylinder	*self = (t_cylinder *)s;
 	t_vec3				abc;
@@ -70,7 +70,6 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 	double				root;
 	double				solution;
 	bool				hit_anything = false;
- 	double				closest_t = INFINITY;
 
 	set_variables(self, &ray, &abc);	
 	discriminant = abc.y * abc.y - abc.x * abc.z;
@@ -78,23 +77,23 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 	{
 		root = sqrt(discriminant);
 		solution = (-abc.y - root) / abc.x;
-		if (HIT_T_MIN < solution)
+		if (check_range(solution, *t_range))
 		{
 			if (check_and_set_cylinder_hitrecord(rec, self, ray, solution))
 			{
 				hit_anything = true;
-				closest_t = solution;
+				t_range->max = solution;
 			}
 		}
 		if (!hit_anything)
 		{
 			solution = (-abc.y + root) / abc.x;
-			if (HIT_T_MIN < solution)
+			if (check_range(solution, *t_range))
 			{
 				if (check_and_set_cylinder_hitrecord(rec, self, ray, solution))
 				{
 					hit_anything = true;
-					closest_t = solution;
+					t_range->max = solution;
 				}
 			}
 		}
@@ -103,7 +102,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 	t_vec3	cap_normal = negative_vec(self->direct);
 	if (check_cap(self, ray, self->center, cap_normal, &t_cap))
 	{
-		if (t_cap < closest_t)
+		if (check_range(t_cap, *t_range))
 		{
 			rec->t = t_cap;
 			rec->ray_in = ray;
@@ -111,13 +110,13 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 			rec->normal = cap_normal;
 			rec->mat_ptr = self->hit_table.mat_ptr;
 			hit_anything = true;
-			closest_t = t_cap;
+			t_range->max = t_cap;
 		}
 	}
 	t_point3	top_center = add_vec(self->center, scal_mul_vec(self->direct, self->height));
 	if (check_cap(self, ray, top_center, self->direct, &t_cap))
 	{
-		if (t_cap < closest_t)
+		if (check_range(t_cap, *t_range))
 		{
 			rec->t = t_cap;
 			rec->ray_in = ray;

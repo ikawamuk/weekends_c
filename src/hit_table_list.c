@@ -1,4 +1,6 @@
 #include "hit_table_list.h"
+#include "t_range.h"
+#include "define.h"
 
 t_hit_table_list	construct_htl(void)
 {
@@ -49,23 +51,23 @@ void	clear_htl(t_hit_table_list list)
 	return ;
 }
 
-bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec)
+bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_range)
 {
 	const t_hit_table_list	*self = s;
 	t_hit_table_node	*tail_p = self->head;
 	t_hit_record		temp_rec;
+	t_t_range			temp_range = construct_t_range(HIT_T_MIN, INFINITY);
 	bool				hit_anything = false;
-	double				closest_so_far = INFINITY;
 
+	(void)(t_range);
 	while (tail_p)
 	{
 		if (!tail_p->data)
 			continue ;
-		if (tail_p->data->hit(tail_p->data, ray, &temp_rec)
-		&& temp_rec.t < closest_so_far)
+		if (tail_p->data->hit(tail_p->data, ray, &temp_rec, &temp_range)
+		&& check_range(temp_rec.t, temp_range))
 		{
 			hit_anything = true;
-			closest_so_far = temp_rec.t;
 			*rec = temp_rec;
 		}
 		tail_p = tail_p->next;

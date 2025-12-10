@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "vec3.h"
 #include "ray.h"
+#include "t_range.h"
 
 typedef struct s_material t_material;
 
@@ -20,7 +21,7 @@ typedef struct s_hit_table t_hit_table;
 
 struct s_hit_table
 {
-	bool		(*hit)(const void *self, const t_ray ray, t_hit_record *rec);
+	bool		(*hit)(const void *self, const t_ray ray, t_hit_record *rec, t_t_range *t_range);
 	t_material	*mat_ptr;
 };
 

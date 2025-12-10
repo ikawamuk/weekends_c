@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "hit_table.h"
+#include "t_range.h"
 
 typedef struct s_hit_table_node t_hit_table_node;
 
@@ -22,6 +23,6 @@ typedef struct s_hit_table_list
 t_hit_table_list	construct_htl(void);
 bool				add_htl(t_hit_table_list *list_p, void *d);
 void				clear_htl(t_hit_table_list list);
-bool				hit_htl(const void *s, const t_ray ray, t_hit_record *rec);
+bool				hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_range);
 
 #endif

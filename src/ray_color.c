@@ -13,7 +13,7 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 
 	if (depth >= MAX_DEPTH)
 		return (construct_color(0, 0, 0));
-	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
+	if (!world->objects.hit_table.hit(&world->objects, ray, &rec, NULL))
 		return (world->back_ground);
 	t_ray	scattered;
 	t_color	attenuation;

@@ -17,6 +17,7 @@ SRCFILES =		main.c \
 				cylinder.c \
 				sphere.c \
 				plane.c \
+				t_range.c \
 				hit_table_list.c \
 				camera.c \
 				util.c \
