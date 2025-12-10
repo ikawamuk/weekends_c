@@ -7,7 +7,7 @@
 typedef struct	s_img {
 	void	*id;
 	char	*addr;
-	int		bits_per_pixcel;
+	int		bytes_per_pixcel;
 	int		line_size;
 	int		endian;
 }			t_img;
