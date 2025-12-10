@@ -40,7 +40,7 @@ static void	write_loop(void ** mlx, t_img *img, t_color *color_arr, bool ppm_mod
 		int yy = y * WINSIZE_X;
 		for (int x = 0; x < WINSIZE_X; x++)
 		{
-			char *dst = img->addr + (y * img->line_size + x * (img->bits_per_pixcel / 8));
+			char *dst = img->addr + (y * img->line_size + x * img->bytes_per_pixcel);
 			write_color(*mlx, dst, color_arr[yy + x], ppm_mode);
 		}
 	}
