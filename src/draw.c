@@ -17,14 +17,12 @@ static void			pixcel_color_loop(t_color *color_arr, t_camera camera, t_world *wo
 
 void	draw(void **mlx, t_img *img, bool ppm_mode)
 {
-	t_color		*color_arr = malloc(WINSIZE_X * WINSIZE_Y * sizeof(t_color));
-	t_camera	camera = construct_camera(construct_vec(0, 1, 0), normalize(construct_vec(0, -0.3, -1)), 70);
-
 	// set objects in the world
-	t_world	world = set_world();
-	// caluculate pixcel color
+	t_world		world = set_world();
+	t_camera	camera = construct_camera(construct_vec(0, 1, 0), normalize(construct_vec(0, -0.3, -1)), 70);
+	t_color		*color_arr = malloc(WINSIZE_X * WINSIZE_Y * sizeof(t_color));
+
 	pixcel_color_loop(color_arr, camera, &world);
-	// Let's draw
 	write_loop(mlx, img, color_arr, ppm_mode);
 	clear_htl(world.objects);
 	free(color_arr);
