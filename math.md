@@ -77,7 +77,7 @@ f(x) = P^{-1}(x)
 よって確率密度関数 $p(x)$ に従って分布す乱数を生成する関数 $f(x)$ は、その確率密度関数における累積分布関数 $P(x)$ の逆関数である。
 
 ## 重点サンプリング
-今一度下の積分を考える。
+いまいちど下の積分を考える。
  $x_i$ は区間[a, b]内で確率密度関数 $p(x)$ に従って分布しする。
 ```math
 I=\int_{a}^{b}f(x)dx ≈ \frac{1}{N}\sum_{i=1}^{N}\frac{f(x_i)}{p(x_i)} = \hat{I}_N
@@ -128,7 +128,7 @@ p(x)\geq 0 (a\leq x \leq b), \int_{a}^{b}p(x)dx = 1
 ```math
 \int_{S^2}cos^2θdσ
 ```
-単位球面の面積要素 $dσ$ には $dσ = sinθdθdφ$ という等式が成り立つ。[link](https://www.youtube.com/watch?v=aNoEzONgIYo)  
+単位球面の面積要素 $dσ$ には $dσ = sinθdθdφ$ という等式が成り立つ。 [参照リンク](https://www.youtube.com/watch?v=aNoEzONgIYo)  
 したがって、
 ```math
 \begin{aligned}
