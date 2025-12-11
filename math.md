@@ -10,7 +10,7 @@
 P(a\leq X \leq b) = \int_{a}^{b}f_X
 (x)dx
 ```
-
+したがって確率変数Xが微小区間[$x, x+dx$]に含まれる値を取る確率はf_X(x)dxである。
 <!-- ![image](https://inzkyk.xyz/ray_tracing_in_one_weekend/fig-histogram.jpg) -->
 
 
