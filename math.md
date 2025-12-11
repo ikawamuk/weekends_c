@@ -5,12 +5,12 @@
 ```math
 階級の密度 =\frac{その階級にある項目の数}{全項目の数 ✕ 階級幅}
 ```
-連続型確率変数においては確率変数$X$がある区間[a, b]の間に収まる確率$P(a\leq X \leq b)$を確率密度関数$f_X(x)$の積分によって以下のように表すことができる。
+連続型確率変数においては確率変数$X$がある区間[a, b]の間に収まる確率$P(a\leq X \leq b)$を確率密度関数$p(x)$の積分によって以下のように表すことができる。
 ```math
-P(a\leq X \leq b) = \int_{a}^{b}f_X
+P(a\leq X \leq b) = \int_{a}^{b}p
 (x)dx
 ```
-したがって確率変数Xが微小区間[$x, x+dx$]に含まれる値を取る確率はf_X(x)dxである。
+したがって確率変数Xが微小区間[$x, x+dx$]に含まれる値を取る確率は$p(x)dx$である。
 <!-- ![image](https://inzkyk.xyz/ray_tracing_in_one_weekend/fig-histogram.jpg) -->
 
 
