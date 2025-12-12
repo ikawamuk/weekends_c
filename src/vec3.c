@@ -148,6 +148,19 @@ t_color	construct_color(double e0, double e1, double e2)
 	return (color);
 }
 
+// while文中でベクトルの要素を取るために作成した関数。
+double	axis_vec(t_vec3 v, int axis)
+{
+	if (axis == 0)
+		return (v.x);
+	if (axis == 1)
+		return (v.y);
+	if (axis == 2)
+		return (v.z);
+	return (NAN); 
+}
+
+
 // #include <stdio.h>
 // int	main()
 // {

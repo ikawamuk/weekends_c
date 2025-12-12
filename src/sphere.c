@@ -11,7 +11,7 @@ void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double soluti
 	return ;
 }
 
-bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_range)
+bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_t_range t_range)
 {
 	const t_sphere	*self = s;
 	t_vec3	oc = sub_vec(ray.origin, self->center);
@@ -23,14 +23,14 @@ bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_
 	{
 		double	root = sqrt(discriminant);
 		double	solution = (-half_b - root)/a;
-		if (check_range(solution, *t_range)) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
+		if (check_range(solution, t_range)) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
 		{
 			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);
 		}
 		// 以下の部分ほんとに必要？？？->レイの始点が球の内部のとき有効みたい（ex:カメラをガラス球の中に入れる。）
 		solution = (-half_b + root) / a;
-		if (check_range(solution, *t_range))
+		if (check_range(solution, t_range))
 		{
 			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);
@@ -39,11 +39,23 @@ bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_
 	return (false);
 }
 
+bool	bounding_sphere(const void *s, t_aabb *output_box)
+{
+	const t_sphere	*self = (const t_sphere *)s;
+
+	*output_box = construct_aabb(sub_vec(self->center, \
+				construct_vec(self->radius, self->radius, self->radius)), \
+				add_vec(self->center, \
+				construct_vec(self->radius, self->radius, self->radius)));
+	return (true);
+}
+
 t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 {
 	t_sphere	sphere;
 
 	sphere.hit_table.hit = hit_sphere;
+	sphere.hit_table.bounding_box = bounding_sphere;
 	sphere.hit_table.mat_ptr = mat_ptr;
 	sphere.center = cen;
 	sphere.radius = r;

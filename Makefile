@@ -9,6 +9,9 @@ RMDIR = rm -rf
 SRCDIR = src
 
 SRCFILES =		main.c \
+				aabb.c \
+				box.c \
+				bvh.c \
 				draw.c \
 				img.c \
 				vec3.c \
@@ -20,7 +23,7 @@ SRCFILES =		main.c \
 				t_range.c \
 				hit_table_list.c \
 				camera.c \
-				util.c \
+				rt_utils.c \
 				ray_color.c \
 				material.c \
 				lambertian.c \

@@ -5,6 +5,7 @@
 #include "vec3.h"
 #include "ray.h"
 #include "t_range.h"
+#include "aabb.h"
 
 typedef struct s_material t_material;
 
@@ -21,11 +22,12 @@ typedef struct s_hit_table t_hit_table;
 
 /*
 @param bounding_box そのオブジェクトがaabbを構築できたか?
+					無限の平面はaabbを構築できない。
 */
 struct s_hit_table
 {
-	bool		(*hit)(const void *self, const t_ray ray, t_hit_record *rec, t_t_range *t_range);
-	bool		(*bounding_box)(const void *self, t_t_range t_range, t_aabb *output_box);
+	bool		(*hit)(const void *self, const t_ray ray, t_hit_record *rec, t_t_range t_range);
+	bool		(*bounding_box)(const void *self, t_aabb *output_box); // 本物は時間を引数に持つが、この実装は時間軸を持たないため、省略
 	t_material	*mat_ptr;
 };
 

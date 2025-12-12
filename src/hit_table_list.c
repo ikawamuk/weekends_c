@@ -4,6 +4,8 @@
 #include "aabb.h"
 #include "bvh.h"
 
+bool	bounding_htl(const void *s, t_aabb *outbox);
+
 t_hit_table_list	construct_htl(void)
 {
 	t_hit_table_list	list;
@@ -54,7 +56,7 @@ void	clear_htl(t_hit_table_list list)
 	return ;
 }
 
-bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_range)
+bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_t_range t_range)
 {
 	const t_hit_table_list	*self = s;
 	t_hit_table_node	*tail_p = self->head;
@@ -62,12 +64,12 @@ bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_ran
 	t_t_range			temp_range = construct_t_range(HIT_T_MIN, INFINITY);
 	bool				hit_anything = false;
 
-	(void)(t_range);
+	(void)t_range;
 	while (tail_p)
 	{
 		if (!tail_p->data) // 無限ループの可能性ある?
 			continue ;
-		if (tail_p->data->hit(tail_p->data, ray, &temp_rec, &temp_range)
+		if (tail_p->data->hit(tail_p->data, ray, &temp_rec, temp_range)
 		&& check_range(temp_rec.t, temp_range))
 		{
 			hit_anything = true;
@@ -78,7 +80,7 @@ bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_t_range *t_ran
 	return (hit_anything);
 }
 
-bool	bounding_htl(const void *s, t_t_range t_range, t_aabb *outbox)
+bool	bounding_htl(const void *s, t_aabb *outbox)
 {
 	const t_hit_table_list	*self = (const t_hit_table_list *)s;
 	t_hit_table_node		*curr;
@@ -87,9 +89,10 @@ bool	bounding_htl(const void *s, t_t_range t_range, t_aabb *outbox)
 
 	if (self == NULL || self->head == NULL)
 		return (false);
+	curr = self->head;
 	while (curr)
 	{
-		if (!curr->data->bounding_box(curr->data, t_range, &temp_box))// 難しい。引数をどうしようか迷う。
+		if (!curr->data->bounding_box(curr->data, &temp_box))// 難しい。引数をどうしようか迷う。
 			return (false);
 		if (first_box)
 			*outbox = temp_box;

@@ -30,6 +30,8 @@ t_vec3	random_in_unit_sphere(void);
 t_vec3	random_unit_vector(void);
 t_vec3	reflect(t_vec3 v, t_vec3 n);
 
+double	axis_vec(t_vec3 v, int axis);
+
 typedef t_vec3 t_point3;
 typedef t_vec3 t_color;
 
