@@ -2,7 +2,7 @@
 #include "ray.h"
 #include "hit_table_list.h"
 #include "material.h"
-#include "util.h"
+#include "rt_utils.h"
 #include "world.h"
 
 static bool	killed_by_russian_roulette(t_color *attenuation);

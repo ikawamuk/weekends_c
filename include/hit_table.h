@@ -19,9 +19,13 @@ typedef struct s_hit_record
 
 typedef struct s_hit_table t_hit_table;
 
+/*
+@param bounding_box そのオブジェクトがaabbを構築できたか?
+*/
 struct s_hit_table
 {
 	bool		(*hit)(const void *self, const t_ray ray, t_hit_record *rec, t_t_range *t_range);
+	bool		(*bounding_box)(const void *self, t_t_range t_range, t_aabb *output_box);
 	t_material	*mat_ptr;
 };
 

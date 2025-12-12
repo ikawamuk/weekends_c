@@ -6,7 +6,7 @@
 #include "ray.h"
 #include "hit_table_list.h"
 #include "camera.h"
-#include "util.h"
+#include "rt_utils.h"
 #include "world.h"
 
 t_color				ray_color(t_ray ray, const t_world *world, int depth);
