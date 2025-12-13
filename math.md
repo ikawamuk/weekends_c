@@ -444,8 +444,15 @@ dw = \frac{dA\cdot cos\alpha}{distance^2(p, q)}
 ```math
 p(ω)\cdot dw = p(ω)\cdot \frac{dA\cdot cos\alpha}{distance^2(p, q)} = \frac{dA}{A}
 ```
-つまり
+つまり $0<\alpha<π$ において
 ```math
 p(ω) = \frac{distance^2(p, q)}{cos\alpha\cdot A}
 ```
-が成り立つ。
+が成り立つ。( $π<\alpha\leq 2π においてp(ω) = 0$ )
+
+## 球オブジェクトのサンプリング
+
+## 混合密度
+
+## レイトレーサーのアーキテクチャについて
+
