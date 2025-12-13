@@ -245,14 +245,14 @@ Color_ o &= A\cdot Color_i
 \end{aligned}
 ```
 が得られる。 これは、
-```
-t_color	ray_color(...)
+```c
+t_color	ray_color( /* ... */ )
 {
-	...
-	return (albdo * ray_color(...))
+	// ...
+	return (albdo * ray_color( /* ... */ ));
 }
-に等しい。
 ```
+に等しい。
 
 ## 重点サンプリング付きマテリアル
 いまいちど以下の式みてみよう。
@@ -287,7 +287,25 @@ Color_ o = \frac{Color_i\cdot A\cdot pScatter(ω_o, ω_i)}{p(ω_i)} ≈ \frac{pS
 ## ランダムな方向の生成
 何らかの分布に沿った方向 (単位球上の点) をランダムに生成する方法を見つけよう。ここでは**逆関数法**というやり方を用いてみる。  
 まずは簡単のため z 軸を法線方向として、 $θ$ を法線から測った角度とする。軸を回転させる方法は次節で説明する。考える分布はz軸周りの回転に関して対称な分布だけとする。このときPDFは $θ$ の関数で表せる。  
-方向を引数に取るPDF $p(ω) = f(θ)$ が与えられたとして、 $θ$ 及び $φ$ に関する一次元のPDFを $a(φ)$ , $b(θ)$ とすると
+方向を引数に取るPDF $p(ω) = f(θ)$ が与えられたとして、 $θ$ 及び $φ$ に関する一次元のPDFを $a(φ)$ , $b(θ)$ とすると、 $θ$ と $φ$ は独立した確率変数なので $p(ω) = f(θ) = a(φ)\cdot b(θ) $ と表せる。微小面積 $dσ$ がサンプルされる確率は
+```math
+p(ω)dσ = b(θ)a(φ)dθdφ 
+```
+また $dσ = sinθdθdφ$ より
+```math
+p(ω)dσ = f(θ)sin(θ)dθdφdθdφ 
+```
+$a(φ)$ は区間[ $0$ , $2π$ ]で一様なので $a(φ) = 1/2π$ 。  
+よって
+```math
+\begin{aligned}
+b(θ)a(φ)dθdφ &= f(θ)sin(θ)dθdφ \\
+b(θ)a(φ) &= f(θ)sin(θ) \\
+b(θ)\cdot \frac{1}{2π} &= f(θ)sin(θ) \\
+b(θ) &= 2πf(θ)sinθ
+\end{aligned}
+```
+したがって
 ```math
 \begin{aligned}
 
@@ -308,7 +326,7 @@ u_1 &= P(φ) \\
 ```math
 φ = 2π\cdot u_1
 ```
-を得る。これで $a(φ)$ に沿ったランダムな角度 $φ$ を生成できる。 
+を得る。これで $u_1$ を用いて $a(φ)$ に沿ったランダムな角度 $φ$ を生成できる。 
 同様に区間[0, 1]の一様乱数 $u_2$ に対して $b(θ)$ の累積密度関数の逆関数を求めると
 ```math
 \begin{aligned}
@@ -316,22 +334,61 @@ u_2 &= \int_{0}^{θ}b(t)dt \\
 &= \int_{0}^{θ}2πf(t)sin\ t\ dt
 \end{aligned}
 ```
-ここで $f$ はいまランダムな方向のPDFを表している。
-
-
-
-<!-- したがってある領域 $A$ の内側に入る確率を $F(A)$ とすると $dσ = sinθdθdϕ$ より
+ここで $f$ はいまランダムな方向のPDFを表している。仮にすべての球面上の点に一様な分布を考えよう。単位球の表面積は4πだから一様分布では $p(ω) = f(θ) = 1/4π$ となるので
 ```math
 \begin{aligned}
-F(A) &= \int_{A}p(ω)dσ \\
-&= \int_{0}^{θ}\int_{0}^{φ}f(θ)sinθdθdϕ
-&= \int_{0}^{θ}\int_{0}^{φ}a(φ)b(θ)sinθdθdϕ
+u_2 &= \int_{0}^{θ}2πf(t)sin\ t\ dt \\
+&= \int_{0}^{θ}2π\cdot \frac{1}{4π} sin\ t\ dt \\
+&= \int_{0}^{θ}\frac{1}{2} sin\ t\ dt \\
+&= \frac{-cosθ}{2} - \frac{-cos(0)}{2} \\
+&= \frac{1 - cosθ}{2}
 \end{aligned}
 ```
-である。
+であり $cosθ$ について解くと
+```math
+cosθ = 1 - 2u_2
+```
+を得る。θ より先に cosθ が求まる場合が多いから、この式を θ について解く必要はない。これで $b(θ)$ に沿ったランダムな $cosθ$ を生成できる。  
+方向 (θ,ϕ) に向かう単位ベクトルを生成するには、次の式を使ってデカルト座標系に変換する必要がある
 ```math
 \begin{aligned}
-1 &= \int_{S^2}p(ω_i)dσ
-&= \int_{}^{}
+x &= cosφ\cdot sinθ \\
+y &= sinφ\cdot sinθ \\
+z &= cosθ
 \end{aligned}
-``` -->
+```
+これと恒等式 $cos^2x+sin^2x=1$ を使えば、二つの一様乱数 $u_1$ ​, $u_2$​ を使った表現が求まる。
+```math
+\begin{aligned}
+x &= cos(2π\cdot u_1)\sqrt{1-(1-2u_2)^2} \\
+y &= sin(2π\cdot u_1)\sqrt{1-(1-2u_2)^2} \\
+z &= 1 - 2u_2
+\end{aligned}
+```
+$(1 - 2u_2)^2 = 1 - 4u_2 + 4(u_2)^2$ より
+```math
+\begin{aligned}
+x &= cos(2πu_1)\cdot 2\sqrt{u_2(1-u_2)} \\
+y &= sin(2πu_1)\cdot 2\sqrt{u_2(1-u_2)} \\
+z &= 1 - 2u_2
+\end{aligned}
+```
+となる。これを使って点を生成すると以下のようになる。
+```c
+#include <math.h>
+int	main(void)
+{
+	for (int i = 0; i < 200; i++)
+	{
+		double	u1 = random_double(0.0, 1.0);
+		double	u2 = random_double(0.0, 1.0);
+		double	x = cos(2*M_PI*u1)*2*sqrt(u2*(1-u2));
+		double	y = sin(2*M_PI*u1)*2*sqrt(u2*(1-u2));
+		double	z = 1 - 2*u2;
+		printf("%f %f %f\n", x, y, z);
+	}
+	return (0);
+}
+```
+
+# 正規直行基底
