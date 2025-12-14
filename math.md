@@ -125,41 +125,41 @@ p(x)\geq0\ (a\leq x \leq b)\ ,\quad \int_{a}^{b}p(x)dx = 1
 
 ここでは例題として以下の積分を計算してみよう。
 ```math
-\int_{S^2}cos^2θdσ
+\int_{S^2}cos^2\theta dσ
 ```
-方向 $ω$ は原点と単位球面上の点を結ぶ動径とz軸とのなす角 $θ$ とxy平面への動径の射影とx軸のなす角 $φ$ をもちいて、 $ω = (θ, φ)$ と表すことができる。これは半径が常に1の3次元極座標と言い換えてもよい。  
-単位球面の面積要素 $dσ$ には $dσ = sinθdθdφ$ という等式が成り立つ。 ([参照リンク](https://www.youtube.com/watch?v=aNoEzONgIYo))  
+方向 $ω$ は原点と単位球面上の点を結ぶ動径とz軸とのなす角 $\theta $ とxy平面への動径の射影とx軸のなす角 $\phi$ をもちいて、 $ω = (\theta , \phi)$ と表すことができる。これは半径が常に1の3次元極座標と言い換えてもよい。  
+単位球面の面積要素 $dσ$ には $dσ = sin\theta d\theta d\phi$ という等式が成り立つ。 ([参照リンク](https://www.youtube.com/watch?v=aNoEzONgIYo))  
 したがって、
 ```math
 \begin{aligned}
-\int_{S^2}cos^2θdσ &= \int_{0}^{2π}\int_{0}^{π}cos^2θsinθdθdφ \\
+\int_{S^2}cos^2\theta dσ &= \int_{0}^{2π}\int_{0}^{π}cos^2\theta sin\theta d\theta d\phi \\
 \end{aligned}
 ```
-ここで $u = cosθ$ と置くと $du = -sinθdθ$ である。
-また、 $θ = 0$ のとき $u = 1$ 、 $θ = π$ のとき $u = -1$なので
+ここで $u = cos\theta $ と置くと $du = -sin\theta d\theta $ である。
+また、 $\theta  = 0$ のとき $u = 1$ 、 $\theta  = π$ のとき $u = -1$なので
 ```math
 \begin{aligned}
-\int_{0}^{π}cos^2θsinθdθdφ &= \int_{1}^{-1}u^2(-du) \\
+\int_{0}^{π}cos^2\theta sin\theta d\theta d\phi &= \int_{1}^{-1}u^2(-du) \\
 &= \int_{-1}^{1}u^2du = \biggr[\frac{u^3}{3}\biggr]_{-1}^{1} = \frac{2}{3}
 \end{aligned}
 ```
 また
 ```math
-\int_{0}^{2π}dφ = 2π
+\int_{0}^{2π}d\phi = 2π
 ```
 より
 ```math
 \begin{aligned}
-\int_{0}^{2π}\int_{0}^{π}cos^2θsinθdθdφ &= \Bigr(\int_{0}^{2π}dφ\Bigr)\Bigr(\int_{0}^{π}cos^2θsinθdθdφ\Bigr) \\
+\int_{0}^{2π}\int_{0}^{π}cos^2\theta sin\theta d\theta d\phi &= \Bigr(\int_{0}^{2π}d\phi\Bigr)\Bigr(\int_{0}^{π}cos^2\theta sin\theta d\theta d\phi\Bigr) \\
 &= 2π⋅\frac{2}{3} = \frac{4π}{3}
 \end{aligned}
 ```
 となる。  
 これをモンテカルロ積分で近似的に求めるとどうなるだろうか。
-確率密度 $p(ω)$ にしたがって方向 $ω$ をサンプリングし $cos^2θ/p(ω)$ を計算する。ここでは方向 $ω$ を表す単位球面上の点が一様に選ばれるとすると $p(ω)$ は常に一定でかつ全体に渡る積分が1であるから、 $p(ω) =  1/(単位球面の面積) = 1/4π$ となる。また $cos^2θ$ で $θ$ はz軸との角度を表し、 $ω$ を極座標からxyz空間の直行座標へ変換すると $ω(θ, φ) = (sinθcosϕ, sinθsinϕ, cosθ​)$ のように表されるので、モンテカルロ積分の結果は次のように計算できる。
+確率密度 $p(ω)$ にしたがって方向 $ω$ をサンプリングし $cos^2\theta /p(ω)$ を計算する。ここでは方向 $ω$ を表す単位球面上の点が一様に選ばれるとすると $p(ω)$ は常に一定でかつ全体に渡る積分が1であるから、 $p(ω) =  1/(単位球面の面積) = 1/4π$ となる。また $cos^2\theta $ で $\theta $ はz軸との角度を表し、 $ω$ を極座標からxyz空間の直行座標へ変換すると $ω(\theta , \phi) = (sin\theta cos\phi, sin\theta sin\phi, cos\theta ​)$ のように表されるので、モンテカルロ積分の結果は次のように計算できる。
 ```math
 \begin{aligned}
-\frac{1}{N}\sum_{i=1}^{N}\frac{cos^2θ}{p(ω)} &= \frac{1}{N}\sum_{i=1}^{N}4πz^2
+\frac{1}{N}\sum_{i=1}^{N}\frac{cos^2\theta }{p(ω)} &= \frac{1}{N}\sum_{i=1}^{N}4πz^2
 \end{aligned}
 ```
  $z$ はランダムな単位ベクトルのz成分を表す。これをプログラムにしたのが以下である。
@@ -194,12 +194,12 @@ int main(void)
 ## ランバート反射
 ここで**光度**と**輝度**の違いについて理解しおこう。
 光度とはある方向へ放たれる光の強さを表す量である。一方、輝度とは単位面積あたりの光度を表す量である。  
-ある反射面の微小領域 $dA$ がその法線 $N$ から角度 $θ$ 分斜めの向きで観測されたとき、 $dA$ が $N$ の向きに放つ光度 $dI$と観測者が受け取る輝度 $L$ の関係は以下の式で表される。
+ある反射面の微小領域 $dA$ がその法線 $N$ から角度 $\theta $ 分斜めの向きで観測されたとき、 $dA$ が $N$ の向きに放つ光度 $dI$と観測者が受け取る輝度 $L$ の関係は以下の式で表される。
 ```math
-L = \frac{dI}{dA\cdot cosθ}
+L = \frac{dI}{dA\cdot cos\theta }
 ```
 どの角度から見ても均一な明るさで見える理想的な拡散反射を**ランバート反射**という。ランバート反射をする表面はランバート面と呼ばれる。  
-ランバート面では輝度が常に一定になるため、上の式より光度 $I$ は $cosθ$ に比例する。
+ランバート面では輝度が常に一定になるため、上の式より光度 $I$ は $cos\theta $ に比例する。
 
 ## アルベド
 物体に入射した光のうちすべてが反射されるわけではなく一部は物体に吸収される。プログラムでは物質ごとの光を反射する割合 $A$ で表しコレを**アルベド**と呼ぶ。反射率は色によって異なるためRGBの3値で表される。光が吸収される確率は $1 - A$ で表すことができる。
@@ -226,11 +226,11 @@ Color_o = \int_{Ω_i}Color_i\cdot A\cdot pScatter(ω_o, ω_i)dω_i
 ```math
 Color_ o = \frac{Color_i\cdot A\cdot pScatter(ω_o, ω_i)}{p(ω_i)}
 ```
-ここでランバート反射の $pScatter(ω_o, ω_i)$ を考える。前述したように物体表面での法線と散乱レイの角度を $θ$ とするとランバート面での光度(ここでは $pScatter$ )は $cosθ$ に比例する。つまり $pScatter(ω_o, ω_i) = C\cdot cosθ$ と表せる。またここでPDFの積分は1になることを思い出す。 $cosθ<0$ つまり散乱レイが表面より内側に散乱することはないので $pScatter(π/2<0\leq π) = 0$ とする。よって半球 $Ω_i$ に関して $pScatter$ の積分し
+ここでランバート反射の $pScatter(ω_o, ω_i)$ を考える。前述したように物体表面での法線と散乱レイの角度を $\theta $ とするとランバート面での光度(ここでは $pScatter$ )は $cos\theta $ に比例する。つまり $pScatter(ω_o, ω_i) = C\cdot cos\theta $ と表せる。またここでPDFの積分は1になることを思い出す。 $cos\theta <0$ つまり散乱レイが表面より内側に散乱することはないので $pScatter(π/2<0\leq π) = 0$ とする。よって半球 $Ω_i$ に関して $pScatter$ の積分し
 ```math
 \begin{aligned}
-\int_{Ω_i}pScatter(ω_o, ω_i)dσ &= \int_{Ω_i}C\cdot cosθdσ \\
-&= \int_{0}^{2π}\int_{0}^{\frac{π}{2}}cosθsinθdθdφ\cdot C \\
+\int_{Ω_i}pScatter(ω_o, ω_i)dσ &= \int_{Ω_i}C\cdot cos\theta dσ \\
+&= \int_{0}^{2π}\int_{0}^{\frac{π}{2}}cos\theta sin\theta d\theta d\phi\cdot C \\
 &= 2π\cdot \frac{1}{2}\cdot C \\
 1 &= π\cdot C \\
 C &= \frac{1}{π}
@@ -238,12 +238,12 @@ C &= \frac{1}{π}
 ```
 となることから
 ```math
-pScatter(ω_o, ω_i) = \frac{cosθ}{π}
+pScatter(ω_o, ω_i) = \frac{cos\theta }{π}
 ```
 である。
 散乱PDFと等しいPDFを使ってサンプルを行うとすれば
 ```math
-p(ω_i) = pScatter(ω_o, ω_i) = \frac{cosθ}{π}
+p(ω_i) = pScatter(ω_o, ω_i) = \frac{cos\theta }{π}
 ```
 より今節先頭の等式の分母と分子が打ち消し合い
 ```math
@@ -266,7 +266,7 @@ t_color	ray_color( /* ... */ )
 ```math
 Color_ o = \frac{Color_i\cdot A\cdot pScatter(ω_o, ω_i)}{p(ω_i)}
 ```
-先程はランバート反射における $pScatter(ω_o, ω_i)$ と等しい確率密度関数 $p(ω_i)$ を用いた。したがってサンプリングされる方向 $ω_i$ の分布は $cosθ$ に比例する。
+先程はランバート反射における $pScatter(ω_o, ω_i)$ と等しい確率密度関数 $p(ω_i)$ を用いた。したがってサンプリングされる方向 $ω_i$ の分布は $cos\theta $ に比例する。
 モンテカルロ積分においては、被積分関数の値が大きくなる乱数を多くサンプリングすることで分散が小さくなり収束を早くすることができるのであった。レイトレーシングにおいては収束が早くなることはすなわち、同数のサンプル数でよりノイズが少なくなることを意味する。
 今回の被積分関数とは以下の部分で
 ```math
@@ -293,75 +293,75 @@ Color_ o = \frac{Color_i\cdot A\cdot pScatter(ω_o, ω_i)}{p(ω_i)} ≈ \frac{pS
 
 ## ランダムな方向の生成
 何らかの分布に沿った方向 (単位球上の点) をランダムに生成する方法を見つけよう。ここでは**逆関数法**というやり方を用いてみる。  
-まずは簡単のため z 軸を法線方向として、 $θ$ を法線から測った角度とする。軸を回転させる方法は次節で説明する。考える分布はz軸周りの回転に関して対称な分布だけとする。このときPDFは $θ$ の関数で表せる。  
-方向を引数に取るPDF $p(ω) = f(θ)$ が与えられたとして、 $θ$ 及び $φ$ に関する一次元のPDFを $a(φ)$ , $b(θ)$ とすると、 $θ$ と $φ$ は独立した確率変数なので $p(ω) = f(θ) = a(φ)\cdot b(θ) $ と表せる。微小面積 $dσ$ がサンプルされる確率は
+まずは簡単のため z 軸を法線方向として、 $\theta $ を法線から測った角度とする。軸を回転させる方法は次節で説明する。考える分布はz軸周りの回転に関して対称な分布だけとする。このときPDFは $\theta $ の関数で表せる。  
+方向を引数に取るPDF $p(ω) = f(\theta )$ が与えられたとして、 $\theta $ 及び $\phi$ に関する一次元のPDFを $a(\phi)$ , $b(\theta )$ とすると、 $\theta $ と $\phi$ は独立した確率変数なので $p(ω) = f(\theta ) = a(\phi)\cdot b(\theta ) $ と表せる。微小面積 $dσ$ がサンプルされる確率は
 ```math
-p(ω)dσ = b(θ)a(φ)dθdφ 
+p(ω)dσ = b(\theta )a(\phi)d\theta d\phi 
 ```
-また $dσ = sinθdθdφ$ より
+また $dσ = sin\theta d\theta d\phi$ より
 ```math
-p(ω)dσ = f(θ)sin(θ)dθdφdθdφ 
+p(ω)dσ = f(\theta )sin(\theta )d\theta d\phi d\theta d\phi 
 ```
-$a(φ)$ は区間[ $0$ , $2π$ ]で一様なので $a(φ) = 1/2π$ 。  
+$a(\phi)$ は区間[ $0$ , $2π$ ]で一様なので $a(\phi) = 1/2π$ 。  
 よって
 ```math
 \begin{aligned}
-b(θ)a(φ)dθdφ &= f(θ)sin(θ)dθdφ \\
-b(θ)a(φ) &= f(θ)sin(θ) \\
-b(θ)\cdot \frac{1}{2π} &= f(θ)sin(θ) \\
-b(θ) &= 2πf(θ)sinθ
+b(\theta )a(\phi)d\theta d\phi &= f(\theta )sin(\theta )d\theta d\phi \\
+b(\theta )a(\phi) &= f(\theta )sin(\theta ) \\
+b(\theta )\cdot \frac{1}{2π} &= f(\theta )sin(\theta ) \\
+b(\theta ) &= 2πf(\theta )sin\theta 
 \end{aligned}
 ```
 したがって
 ```math
 \begin{aligned}
 
-a(φ) &= \frac{1}{2π} \\
-b(θ) &= 2πf(θ)sinθ
+a(\phi) &= \frac{1}{2π} \\
+b(\theta ) &= 2πf(\theta )sin\theta 
 \end{aligned}
 ```
 が成り立つ。  
-区間[0, 1]の一様乱数 $u_1$ を用いて、 $a(φ)$ にしたがうランダムな角度 $φ$ を生成するには、 $a(φ)$ の累積密度関数の逆関数を求める。これには関数の入力 $u_1$ と出力 $φ$ を反転し累積密度関数 $P(x)$ に与えた式を考えれば良い。
+区間[0, 1]の一様乱数 $u_1$ を用いて、 $a(\phi)$ にしたがうランダムな角度 $\phi$ を生成するには、 $a(\phi)$ の累積密度関数の逆関数を求める。これには関数の入力 $u_1$ と出力 $\phi$ を反転し累積密度関数 $P(x)$ に与えた式を考えれば良い。
 ```math
 \begin{aligned}
-u_1 &= P(φ) \\
-&= \int_{0}^{φ}a(t)dt = \int_{0}^{φ}\frac{1}{2π}dt \\
-&= \frac{φ}{2π}
+u_1 &= P(\phi) \\
+&= \int_{0}^{\phi}a(t)dt = \int_{0}^{\phi}\frac{1}{2π}dt \\
+&= \frac{\phi}{2π}
 \end{aligned}
 ```
-これを $φ$ について解くと
+これを $\phi$ について解くと
 ```math
-φ = 2π\cdot u_1
+\phi = 2π\cdot u_1
 ```
-を得る。これで $u_1$ を用いて $a(φ)$ に沿ったランダムな角度 $φ$ を生成できる。 
-同様に区間[0, 1]の一様乱数 $u_2$ に対して $b(θ)$ の累積密度関数の逆関数を求めると
+を得る。これで $u_1$ を用いて $a(\phi)$ に沿ったランダムな角度 $\phi$ を生成できる。 
+同様に区間[0, 1]の一様乱数 $u_2$ に対して $b(\theta )$ の累積密度関数の逆関数を求めると
 ```math
 \begin{aligned}
-u_2 &= \int_{0}^{θ}b(t)dt \\
-&= \int_{0}^{θ}2πf(t)sin\ t\ dt
+u_2 &= \int_{0}^{\theta }b(t)dt \\
+&= \int_{0}^{\theta }2πf(t)sin\ t\ dt
 \end{aligned}
 ```
-ここで $f$ はいまランダムな方向のPDFを表している。仮にすべての球面上の点に一様な分布を考えよう。単位球の表面積は4πだから一様分布では $p(ω) = f(θ) = 1/4π$ となるので
+ここで $f$ はいまランダムな方向のPDFを表している。仮にすべての球面上の点に一様な分布を考えよう。単位球の表面積は4πだから一様分布では $p(ω) = f(\theta ) = 1/4π$ となるので
 ```math
 \begin{aligned}
-u_2 &= \int_{0}^{θ}2πf(t)sin\ t\ dt \\
-&= \int_{0}^{θ}2π\cdot \frac{1}{4π} sin\ t\ dt \\
-&= \int_{0}^{θ}\frac{1}{2} sin\ t\ dt \\
-&= \frac{-cosθ}{2} - \frac{-cos(0)}{2} \\
-&= \frac{1 - cosθ}{2}
+u_2 &= \int_{0}^{\theta }2πf(t)sin\ t\ dt \\
+&= \int_{0}^{\theta }2π\cdot \frac{1}{4π} sin\ t\ dt \\
+&= \int_{0}^{\theta }\frac{1}{2} sin\ t\ dt \\
+&= \frac{-cos\theta }{2} - \frac{-cos(0)}{2} \\
+&= \frac{1 - cos\theta }{2}
 \end{aligned}
 ```
-であり $cosθ$ について解くと
+であり $cos\theta $ について解くと
 ```math
-cosθ = 1 - 2u_2
+cos\theta  = 1 - 2u_2
 ```
-を得る。θ より先に cosθ が求まる場合が多いから、この式を θ について解く必要はない。これで $b(θ)$ に沿ったランダムな $cosθ$ を生成できる。  
-方向 (θ,ϕ) に向かう単位ベクトルを生成するには、次の式を使ってデカルト座標系に変換する必要がある
+を得る。\theta  より先に cos\theta  が求まる場合が多いから、この式を \theta  について解く必要はない。これで $b(\theta )$ に沿ったランダムな $cos\theta $ を生成できる。  
+方向 (\theta ,\phi) に向かう単位ベクトルを生成するには、次の式を使ってデカルト座標系に変換する必要がある
 ```math
 \begin{aligned}
-x &= cosφ\cdot sinθ \\
-y &= sinφ\cdot sinθ \\
-z &= cosθ
+x &= cos\phi\cdot sin\theta  \\
+y &= sin\phi\cdot sin\theta  \\
+z &= cos\theta 
 \end{aligned}
 ```
 これと恒等式 $cos^2x+sin^2x=1$ を使えば、二つの一様乱数 $u_1$ ​, $u_2$​ を使った表現が求まる。
@@ -459,52 +459,70 @@ p(ω) = \frac{distance^2(p, q)}{cos\alpha\cdot A}
 これはライトに向かう立体角の中から1つの方向が選ばれるとしたときの確率密度を表しているためライトの見かけの面積が小さければ確率分布は集中するため $p(ω)$ は大きくなる。
 
 ## 球オブジェクトのサンプリング
-球の外側の始点から球の表面を立体角に関して一様にサンプルするとき、球に接する円錐をサンプルすると考えても同じことになる 。始点 $p$ から見える球の表面上の点を一様にサンプリングすることは、円錐の軸と方向のなす角 $θ$ と、円錐の軸を基準とした一様な方位角 $φ$ をサンプリングすることに等しい。  
-円錐の軸と、$p$ を通り球と接する直線のなす角を $θ_{max}$ とすると $θ$ は $0\leq θ\leq θ_{max}$ の範囲で一様に選ぶことになる。この一様なサンプリングのPDFは定数 $C$ と表される。区間[0, 1]を用いて乱数を生成する関数を先ほどと同様に逆関数法で求める。
+球の外側の始点から球の表面を立体角に関して一様にサンプルするとき、球に接する円錐をサンプルすると考えても同じことになる 。始点 $p$ から見える球の表面上の点を一様にサンプリングすることは、円錐の軸と方向のなす角 $\theta $ と、円錐の軸を基準とした一様な方位角 $\phi$ をサンプリングすることに等しい。  
+半径 $R$ の球の中心 $c$ と $p$ を結ぶ直線(円錐の軸)と、$p$ を通り球と接する直線のなす角を $\theta _{max}$ とすると $\theta $ は $0\leq \theta \leq \theta _{max}$ の範囲で一様に選ぶことになる。この一様なサンプリングのPDFは定数 $C$ と表される。区間[0, 1]を用いて乱数を生成する関数を先ほどと同様に逆関数法で求める。
 ```math
 \begin{aligned}
-u_1 &= \int_{0}^{θ}2π\cdot C\cdot sin\ t\ dt \\
-&= 2π\cdot C\cdot(1 - cosθ) \\
-cosθ &= 1 - \frac{u}{2π\cdot C}
+u_1 &= \int_{0}^{\theta }2π\cdot C\cdot sin\ t\ dt \\
+&= 2π\cdot C\cdot(1 - cos\theta ) \\
+cos\theta  &= 1 - \frac{u}{2π\cdot C}
 \end{aligned}
 ```
-を得る。 $u = 1$ で $θ = θ_{max}$ より
+を得る。 $u = 1$ で $\theta  = \theta _{max}$ より
 ```math
 \begin{aligned}
-cosθ_{max} &= 1 - \frac{1}{2π\cdot C} \\
-\frac{1}{C} &= 2π(1 - cosθ_{max})\\
+cos\theta _{max} &= 1 - \frac{1}{2π\cdot C} \\
+\frac{1}{C} &= 2π(1 - cos\theta _{max})\\
 \end{aligned}
 ```
 よって
 ```math
-cosθ = 1 + u_1(cosθ_{max} - 1)
+cos\theta  = 1 + u_1(cos\theta _{max} - 1)
 ```
-を得る。 $φ$ は $0 \leq φ < 2π$ で一様なので
+を得る。 $\phi$ は $0 \leq \phi < 2π$ で一様なので
 ```math
-φ=2π⋅u_2
+\phi=2π⋅u_2
 ```
 で求められ、PDFは $1/2π$ である。  
 よって球に向かう方向 $ω$ は
 ```math
 \begin{aligned}
-cosθ &= 1 + u_1(cosθ_{max} - 1) \\
-φ &= 2π⋅u_2
+cos\theta  &= 1 + u_1(cos\theta _{max} - 1) \\
+\phi &= 2π⋅u_2
 \end{aligned}
 ```
-を満たす $ω(θ, φ)$ で生成することができ、これを直行座標系に変換すると
+を満たす $ω(\theta , \phi)$ で生成することができ、これを直行座標系に変換すると
 ```math
 \begin{aligned}
-x &= cosφ\cdot sinθ = cos(2π⋅r1​)\cdot \sqrt{1 - z^2}\\
-y &= sinφ\cdot sinθ = sin(2π⋅r1​)\cdot \sqrt{1 - z^2} \\
-z &= cosθ \hspace{10mm} = 1 + u_1(cosθ_{max} - 1)
+x &= cos\phi\cdot sin\theta  = cos(2π⋅r1​)\cdot \sqrt{1 - z^2}\\
+y &= sin\phi\cdot sin\theta  = sin(2π⋅r1​)\cdot \sqrt{1 - z^2} \\
+z &= cos\theta  \hspace{10mm} = 1 + u_1(cos\theta _{max} - 1)
 \end{aligned}
 ```
 となる。
-続いて $\theta_{max}$ を考える。
+続いて $\theta_{max}$ を考える。 
+$\sin\theta_{max} = R / distance(c, p)$ より
+```math
+\cos\theta_{max} = \sqrt{1 - \frac{R^2}{distance^2(c, p)}}
+```
+である。そして方向のPDFは $1/(球を覗く立体角)$ と表せるので
+```math
+\begin{aligned}
+球の立体角 &= \int_{0}^{2\pi}\int_{0}^{\theta_{max}}\sin\theta d\theta d\phi \\
+&= 2\pi(1 - \cos\theta_{max})
+\end{aligned}
+```
+より、PDFは $1/2\pi(1 - \cos\theta_{max})$ と求まる。
 
 ## 混合密度
+これで表面で拡散するときの $\cos\theta$ に比例するPDFとライトを直接サンプルするPDFが手に入った。この２つを組み合わせたPDFを作りたい。  
+確率論では複数の密度関数を混ぜて混合密度を作るテクニックがよく使われる。例えば二つの密度関数の平均を取れば混合密度となる
+```math
+p_{mixture}(ω) = \frac{1}{2}p_{surface}(ω) + \frac{1}{2}p_{light}(ω)
+```
 
 ## レイトレーサーのアーキテクチャについて
-MISを利用するとシャドウレイは使えなくなる。
-また完全な鏡面反射を実装する際には例外的に処理を分ける必要がある。（粗さが0でない鏡面反射は実装できる）
-本格的な物理ベースレンダラではRGBではなく光のスペクトルをもとにしたパラメーターで色を扱う。
+・MISを利用するとシャドウレイは使えなくなる。  
+・鏡面反射と拡散反射どちらも行うような表面の場合は $p_{surface}$ を２通り用意し確率的に選択すれば良い。  
+・また完全な鏡面反射を実装する際には例外的に処理を分ける必要がある。（粗さが0でない鏡面反射は実装できる）  
+・本格的な物理ベースレンダラではRGBではなく光のスペクトルをもとにしたパラメーターで色を扱う。  
