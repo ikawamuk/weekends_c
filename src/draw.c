@@ -33,26 +33,28 @@ static void	write_loop(void ** mlx, t_img *img, t_color *color_arr, bool ppm_mod
 {
 	if (ppm_mode)
 		printf("P3\n%d %d\n255\n", WINSIZE_X, WINSIZE_Y);
+	int yy = 0;
 	for (int y = 0; y < WINSIZE_Y; y++)
 	{
-		int yy = y * WINSIZE_X;
 		for (int x = 0; x < WINSIZE_X; x++)
 		{
 			char *dst = img->addr + (y * img->line_size + x * img->bytes_per_pixcel);
 			write_color(*mlx, dst, color_arr[yy + x], ppm_mode);
 		}
+		yy += WINSIZE_X;
 	}
 	return ;
 }
 
 static void	pixcel_color_loop(t_color *color_arr, t_camera camera, t_world *world)
 {
+	int	yy = 0;
 	for (int y = 0; y < WINSIZE_Y; y++)
 	{
-		int yy = y * WINSIZE_X;
 		fprintf(stderr, "\rScanlines remaining: %d ", WINSIZE_Y - y - 1);
 		for (int x = 0; x < WINSIZE_X; x++)
 			color_arr[yy + x] = get_pixcel_color(x, y, camera, world);
+		yy += WINSIZE_X;
 	}
 	fprintf(stderr, "\nDone.\n");
 }
