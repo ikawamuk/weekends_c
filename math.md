@@ -111,7 +111,7 @@ V\Biggr[\frac{f(X)}{p(X)}\Biggr] &= E\Bigr[{\hat{I}_N}^2\Bigr] - E\Bigr[\hat{I}_
 ```math
 p(x)\geq0\ (a\leq x \leq b)\ ,\quad \int_{a}^{b}p(x)dx = 1
 ```
-これを理論的には難解であるから、ここでは厳密な解析は割愛しもう少し感覚的に考えてみよう。
+この値を小さくする方法は理論的に理解するには難解であるから、ここでは厳密な解析は割愛しもう少し感覚的に考えてみよう。
 ```math
 \int_{a}^{b}\frac{f(x)^2}{p(x)}dx
 ```
@@ -226,7 +226,7 @@ Color_o = \int_{Ω_i}Color_i\cdot A\cdot pScatter(ω_o, ω_i)dω_i
 ```math
 Color_ o = \frac{Color_i\cdot A\cdot pScatter(ω_o, ω_i)}{p(ω_i)}
 ```
-ここでランバート反射の $pScatter(ω_o, ω_i)$ を考える。前述したように物体表面での法線と散乱レイの角度を $\theta $ とするとランバート面での光度(ここでは $pScatter$ )は $cos\theta $ に比例する。つまり $pScatter(ω_o, ω_i) = C\cdot cos\theta $ と表せる。またここでPDFの積分は1になることを思い出す。 $cos\theta <0$ つまり散乱レイが表面より内側に散乱することはないので $pScatter(π/2<0\leq π) = 0$ とする。よって半球 $Ω_i$ に関して $pScatter$ の積分し
+ここでランバート反射の $pScatter(ω_o, ω_i)$ を考える。前述したように物体表面での法線と散乱レイの角度を $\theta $ とするとランバート面での光度(ここでは $pScatter$ )は $cos\theta $ に比例する。つまり $pScatter(ω_o, ω_i) = C\cdot cos\theta $ と表せる。 $cos\theta <0$ つまり散乱レイが表面より内側に散乱することはないので $pScatter(π/2<0\leq π) = 0$ とする。  またここでPDFの積分は1になることを思い出す。半球 $Ω_i$ に関して $pScatter$ の積分し
 ```math
 \begin{aligned}
 \int_{Ω_i}pScatter(ω_o, ω_i)dσ &= \int_{Ω_i}C\cdot cos\theta dσ \\
@@ -300,7 +300,7 @@ p(ω)dσ = b(\theta )a(\phi)d\theta d\phi
 ```
 また $dσ = sin\theta d\theta d\phi$ より
 ```math
-p(ω)dσ = f(\theta )sin(\theta )d\theta d\phi d\theta d\phi 
+p(ω)dσ = f(\theta )sin(\theta )d\theta d\phi 
 ```
 $a(\phi)$ は区間[ $0$ , $2π$ ]で一様なので $a(\phi) = 1/2π$ 。  
 よって
