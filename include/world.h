@@ -8,7 +8,7 @@ typedef struct s_world
 {
 	t_color				back_ground;
 	t_hit_table_list	objects;
-	// t_bvh_node			objects;
+	t_hit_table			*bvh_root;
 }	t_world;
 
 #endif

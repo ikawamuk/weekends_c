@@ -6,6 +6,22 @@
 #include "lambertian.h"
 #include "light.h"
 #include "world.h"
+#include "bvh.h"
+
+size_t	count_objects(t_hit_table_list *list)
+{
+	size_t	n;
+	t_hit_table_node	*node;
+
+	n = 0;
+	node = list->head;
+	while (node)
+	{
+		node = node->next;
+		n++;
+	}
+	return (n);
+}
 
 t_world	set_world(void)
 {
@@ -19,5 +35,7 @@ t_world	set_world(void)
 	add_htl(&world.objects, gen_sphere(construct_vec(0, 0, -3), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
 	// ライト
 	add_htl(&world.objects, gen_sphere(construct_vec(0, 3, -2), 0.5, gen_light(construct_vec(90, 90, 90)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
+	size_t	n = count_objects(&world.objects);
+	world.bvh_root = (t_hit_table *)construct_bvh_node(&world.objects, 0, n);
 	return (world);
 }

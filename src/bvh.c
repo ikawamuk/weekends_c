@@ -2,6 +2,7 @@
 #include "world.h"
 #include "rt_utils.h"
 #include "box.h"
+#include <stdio.h>
 
 bool	hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_t_range t_range)
 {
@@ -11,11 +12,19 @@ bool	hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_t_range t_rang
 
 	if (!self->box.hit(&self->box, ray, t_range))
 		return (false);
-	hit_left = self->left->hit(self->left, ray, rec, t_range);
+	hit_left = self->left->hit_table.hit(self->left, ray, rec, t_range);
 	if (hit_left)
 		t_range.max = rec->t;
-	hit_right = self->right->hit(self->right, ray, rec, t_range);
+	hit_right = self->right->hit_table.hit(self->right, ray, rec, t_range);
 	return (hit_left || hit_right);
+}
+
+bool	bounding_bvh(const void *s, t_aabb *output_box)
+{
+	const t_bvh_node	*self = (const t_bvh_node *)s;
+
+	*output_box = self->box;
+	return (true);
 }
 
 t_hit_table_node	*concat_htn(t_hit_table_node *head, t_hit_table_node *tail)
@@ -60,9 +69,10 @@ t_hit_table_node	*sort_htn(t_hit_table_node *head, t_hit_table_node *tail, bool 
 	t_hit_table_node	*stop;
 
 	if (!head || !head->next || head == tail)
-		return (tail);
+		return (head);
 	pivot = head;
-	curr = head;
+	pivot->next = NULL;
+	curr = head->next;
 	less = NULL;
 	greater = NULL;
 	if (tail)
@@ -80,7 +90,8 @@ t_hit_table_node	*sort_htn(t_hit_table_node *head, t_hit_table_node *tail, bool 
 		curr = next;
 	}
 	less = sort_htn(less, NULL, comparator);
-	greater = sort_htn(greater, tail, comparator);
+	greater = sort_htn(greater, NULL, comparator);
+	pivot->next = greater;
 	return (concat_htn(less, pivot));
 }
 
@@ -118,6 +129,7 @@ t_bvh_node	*construct_bvh_node(t_hit_table_list *htl, size_t start, size_t end)
 	if (!bvh_node)
 		return (NULL);
 	bvh_node->hit_table.hit = hit_bvh;
+	bvh_node->hit_table.bounding_box = bounding_bvh;
 	start_htn = get_nth_htn(htl, start);
 	if (axis == 0)
 		comparator = box_x_compare; 
@@ -140,14 +152,14 @@ t_bvh_node	*construct_bvh_node(t_hit_table_list *htl, size_t start, size_t end)
 	} else {
 		start_htn = sort_htn(start_htn, skip_n_htn(start_htn, end - start), comparator);
 		size_t	mid = start + (end - start) / 2;
-		bvh_node->left = (t_hit_table *)construct_bvh_node(htl, start, mid);
-		bvh_node->right = (t_hit_table *)construct_bvh_node(htl, mid, end); 
+		bvh_node->left = construct_bvh_node(htl, start, mid);
+		bvh_node->right = construct_bvh_node(htl, mid + 1, end); 
 	}
 	t_aabb	box_left;
 	t_aabb	box_right;
-	bvh_node->left->bounding_box(bvh_node->left, \
+	bvh_node->left->hit_table.bounding_box(bvh_node->left, \
 			&box_left);
-	bvh_node->right->bounding_box(bvh_node->right, \
+	bvh_node->right->hit_table.bounding_box(bvh_node->right, \
 			&box_right);
 	bvh_node->box = surrounding_box(box_left, box_right);
 	return (bvh_node);

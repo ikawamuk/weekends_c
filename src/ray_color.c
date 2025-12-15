@@ -13,7 +13,9 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 
 	if (depth >= MAX_DEPTH)
 		return (construct_color(0, 0, 0));
-	if (!world->objects.hit_table.hit(&world->objects, ray, &rec, (t_t_range){HIT_T_MIN, INFINITY}))
+	// if (!world->objects.hit_table.hit(&world->objects, ray, &rec, (t_t_range){HIT_T_MIN, INFINITY}))
+	// 	return (world->back_ground);
+	if (!world->bvh_root || !world->bvh_root->hit(world->bvh_root, ray, &rec, (t_t_range){HIT_T_MIN, INFINITY}))
 		return (world->back_ground);
 	t_ray	scattered;
 	t_color	attenuation;
