@@ -1,6 +1,6 @@
 #include "color.h"
 #include "mlx.h"
-#include "util.h"
+#include "rt_utils.h"
 
 int	get_raw_rgb(t_color pixel_color)
 {

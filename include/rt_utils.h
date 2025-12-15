@@ -1,5 +1,5 @@
-#ifndef UTIL_H
-# define UTIL_H
+#ifndef RT_UTILS_H
+# define RT_UTILS_H
 
 #include <math.h>
 #include <stdlib.h>

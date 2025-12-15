@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "lambertian.h"
-#include "util.h"
+#include "rt_utils.h"
 
 t_lambertian	construct_lambertian(t_color alb)
 {
