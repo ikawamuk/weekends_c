@@ -133,6 +133,32 @@ t_vec3	random_unit_vector(void)
 	return (construct_vec(r * cos(a), r * sin(a), z));
 }
 
+t_vec3	random_cosine_direction(void)
+{
+	t_vec3	result;
+	double	u1 = random_double(0, 1);
+	double	u2 = random_double(0, 1);
+
+	result.x = cos(2 * M_PI * u1) * sqrt(u2);
+	result.y = sin(2 * M_PI * u1) * sqrt(u2);
+	result.z = sqrt(1 - u2);
+	return (result);
+}
+
+void	build_onb(t_vec3 onb[3], t_vec3 n)
+{
+	onb[2] = normalize(n);
+	t_vec3	a = (fabs((onb[2]).x) > 0.9) ? construct_vec(0, 1, 0) : construct_vec(1, 0, 0);
+	onb[1] = normalize(cross(onb[2], a));
+	onb[0] = cross(onb[2], onb[1]);
+	return ;
+}
+
+t_vec3	local_onb(t_vec3 onb[3], t_vec3 a)
+{
+	return (add_vec(scal_mul_vec(onb[0], a.x), add_vec(scal_mul_vec(onb[1], a.y), scal_mul_vec(onb[2], a.z))));
+}
+
 t_vec3 reflect(t_vec3 v, t_vec3 n)
 {
 	return (sub_vec(v, scal_mul_vec(n, 2 * dot(v, n))));

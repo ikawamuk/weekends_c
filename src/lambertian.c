@@ -18,13 +18,15 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	t_lambertian	*self = s;
 
 	// 散乱レイを生成
-	t_vec3	scatter_direction = add_vec(rec.normal , random_unit_vector());
+	t_vec3	onb[3];
+	build_onb(onb, rec.normal);
+	t_vec3	scatter_direction = local_onb(onb, random_cosine_direction());
 	if (dot(rec.normal, rec.ray_in.direct) > 0)
 		scatter_direction = negative_vec(scatter_direction);
 	srec->scattered = construct_ray(rec.p, scatter_direction);
 
 	// サンプリングPDFを代入
-	srec->sampling_pdf = dot(normalize(rec.normal), normalize(srec->scattered.direct)); // / M_PI; + 0.5 * light_pdf()
+	srec->sampling_pdf = dot(onb[2], normalize(srec->scattered.direct))/ M_PI; // + 0.5 * light_pdf()
 
 	// 反射率Albedoを代入
 	srec->attenuation = self->albedo;
@@ -36,7 +38,7 @@ double	lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
 	t_lambertian	*self = s;
 
 	(void)self;
-	double	cosine = dot(normalize(rec.normal), normalize(scattered.direct));
+	double	cosine = dot(rec.normal, normalize(scattered.direct));
 	return (cosine < 0 ? 0 : cosine / M_PI);
 }
 
