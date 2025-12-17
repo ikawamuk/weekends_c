@@ -14,10 +14,12 @@ t_world	set_world(void)
 	world.back_ground = construct_color(0, 0, 0);
 	world.objects = construct_htl();
 	// 床
-	add_htl(&world.objects, gen_plane(construct_vec(0, -0.5, 0), construct_vec(0, 1, 0), gen_lambertian(construct_color(0.2, 0.2, 0.4))));
+	add_htl(&world.objects, gen_plane(construct_vec(0, 0, 0), construct_vec(0, 1, 0), gen_lambertian(construct_color(0.2, 0.4, 0.2))));
+	// 背景
+	add_htl(&world.objects, gen_plane(construct_vec(0, 0, -5), construct_vec(0, 0, 1), gen_lambertian(construct_color(0.2, 0.2, 0.2))));
 	// もの
-	add_htl(&world.objects, gen_sphere(construct_vec(0, 0, -3), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
+	add_htl(&world.objects, gen_sphere(construct_vec(0, 0.5, -3), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
 	// ライト
-	add_htl(&world.objects, gen_sphere(construct_vec(0, 3, -2), 0.5, gen_light(construct_vec(90, 90, 90)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
+	add_htl(&world.objects, gen_sphere(construct_vec(0, 2, -2), 0.2, gen_light(construct_vec(50, 50, 50)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
 	return (world);
 }
