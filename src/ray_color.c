@@ -15,14 +15,14 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 		return (construct_color(0, 0, 0));
 	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
 		return (world->back_ground);
-	t_ray	scattered;
-	t_color	attenuation;
+	t_scatter_record	srec;
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
-	if (!rec.mat_ptr->scatter(rec.mat_ptr, rec, &attenuation, &scattered))
+	if (!rec.mat_ptr->scatter(rec.mat_ptr, rec, &srec))
 		return (emmited);
-	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&attenuation))
+	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);
-	return (add_vec(emmited, mul_vec(attenuation, ray_color(scattered, world, depth + 1))));
+	return (add_vec(emmited, mul_vec(srec.attenuation, ray_color(srec.scattered, world, depth + 1))));
+	// Color_ o = emmited + Albdo * Color_i(scattered) --> Color_o = emmited + Albedo * Color_i(scattered) * surface_pdf / sampling_pdf に変更したい
 }
 
 static bool	killed_by_russian_roulette(t_color *attenuation)

@@ -5,9 +5,15 @@
 #include "vec3.h"
 #include "ray.h"
 
+typedef struct s_scatter_record
+{
+	t_color	attenuation;
+	t_ray	scattered;
+}	t_scatter_record;
+
 typedef struct s_material
 {
-	bool	(*scatter)(void *self, t_hit_record rec, t_color *attenuation, t_ray *scatterd);
+	bool	(*scatter)(void *self, t_hit_record rec, t_scatter_record *srec);
 	t_color	(*emitted)(void *self, t_hit_record rec);
 }	t_material;
 
