@@ -8,6 +8,7 @@ t_lambertian	construct_lambertian(t_color alb)
 
 	lam.material.scatter = scatter_lambertian;
 	lam.material.emitted = emitted_non_light;
+	lam.material.surface_pdf = lambertian_pdf;
 	lam.albedo = construct_color(alb.x, alb.y, alb.z);
 	return (lam);
 }
@@ -22,10 +23,21 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 		scatter_direction = negative_vec(scatter_direction);
 	srec->scattered = construct_ray(rec.p, scatter_direction);
 
+	// サンプリングPDFを代入
+	srec->sampling_pdf = dot(normalize(rec.normal), normalize(srec->scattered.direct)) / M_PI;
+
 	// 反射率Albedoを代入
 	srec->attenuation = self->albedo;
-
 	return (true);
+}
+
+double	lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
+{
+	t_lambertian	*self = s;
+
+	(void)self;
+	double	cosine = dot(normalize(rec.normal), normalize(scattered.direct));
+	return (cosine < 0 ? 0 : cosine / M_PI);
 }
 
 t_lambertian	*gen_lambertian(t_color alb)
