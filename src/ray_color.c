@@ -15,14 +15,17 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 		return (construct_color(0, 0, 0));
 	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
 		return (world->back_ground);
+
 	t_scatter_record	srec;
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
 	if (!rec.mat_ptr->scatter(rec.mat_ptr, rec, &srec))
 		return (emmited);
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);
-	return (add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(srec.scattered, world, depth + 1)), \
-							(rec.mat_ptr->surface_pdf(&rec.mat_ptr, rec, srec.scattered) / srec.sampling_pdf))));
+
+	double	sampling_pdf = srec.surface_pdf;
+	return (add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(srec.scattered, world, depth + 1)), (srec.surface_pdf / sampling_pdf))));
+	// Color_o = emmited + albedo * Color_i * surface_pdf / sampling_pdf
 }
 
 static bool	killed_by_russian_roulette(t_color *attenuation)
