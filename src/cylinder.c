@@ -108,7 +108,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 			rec->t = t_cap;
 			rec->ray_in = ray;
 			rec->p = at_ray(ray, t_cap);
-			rec->normal = cap_normal;
+			rec->normal = normalize(cap_normal);
 			rec->mat_ptr = self->hit_table.mat_ptr;
 			hit_anything = true;
 			closest_t = t_cap;
@@ -122,7 +122,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 			rec->t = t_cap;
 			rec->ray_in = ray;
 			rec->p = at_ray(ray, t_cap);
-			rec->normal = self->direct;
+			rec->normal = normalize(self->direct);
 			rec->mat_ptr = self->hit_table.mat_ptr;
 			hit_anything = true;
 		}
