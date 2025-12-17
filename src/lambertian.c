@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "lambertian.h"
 #include "util.h"
+#include "pdf.h"
 
 t_lambertian	construct_lambertian(t_color alb)
 {
@@ -17,16 +18,17 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	t_lambertian	*self = s;
 
 	// １＝1, 2はPDFの仕事なのでray_color()に移動。
-	// 1.散乱レイを生成
-	t_vec3	onb[3];
-	build_onb(onb, rec.normal);
-	t_vec3	scatter_direction = local_onb(onb, random_cosine_direction());
-	if (dot(rec.normal, rec.ray_in.direct) > 0)
-		scatter_direction = negative_vec(scatter_direction);
-	srec->scattered = construct_ray(rec.p, scatter_direction);
+
+
+
 
 	// 2.サンプリングPDFを代入
-	srec->surface_pdf = dot(onb[2], normalize(srec->scattered.direct))/ M_PI; // + 0.5 * light_pdf()
+	t_vec3			reflect_normal = dot(rec.normal, rec.ray_in.direct) > 0 ? negative_vec(rec.normal) : rec.normal;
+	t_cosine_pdf	cos_pdf = construct_cosine_pdf(reflect_normal);
+	srec->scattered = construct_ray(rec.p, cos_pdf.pdf.generate_pdf(&cos_pdf));
+	srec->surface_pdf = cos_pdf.pdf.value_pdf(&cos_pdf, srec->scattered.direct); // + 0.5 * light_pdf()
+	// 1.散乱レイを生成
+	
 
 	// 反射率Albedoを代入
 	srec->attenuation = self->albedo;

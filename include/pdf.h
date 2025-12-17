@@ -8,6 +8,7 @@
 typedef struct s_pdf
 {
 	double	(*value_pdf)(void *self, t_vec3 direction);
+	t_vec3	(*generate_pdf)(void *self);
 }	t_pdf;
 
 typedef struct s_cosine_pdf
@@ -15,5 +16,7 @@ typedef struct s_cosine_pdf
 	t_pdf	pdf;
 	t_vec3	onb[3];
 }	t_cosine_pdf;
+
+t_cosine_pdf	construct_cosine_pdf(t_vec3 n);
 
 #endif

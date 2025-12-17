@@ -7,7 +7,6 @@ t_light	construct_light(t_color emit)
 
 	light.material.scatter = scatter_light;
 	light.material.emitted = emitted_light;
-	light.material.surface_pdf = light_pdf;
 	light.emit_color = emit;
 	return (light);
 }
@@ -26,14 +25,6 @@ t_color	emitted_light(void *s, t_hit_record rec)
 	if (dot(rec.normal, rec.ray_in.direct) > 0)
 		return (construct_color(0, 0, 0));
 	return (self->emit_color);
-}
-
-double	light_pdf(void *self, t_hit_record rec, t_ray scattered)
-{
-	(void)self;
-	(void)rec;
-	(void)scattered;
-	return (0);
 }
 
 t_light	*gen_light(t_color emit)
