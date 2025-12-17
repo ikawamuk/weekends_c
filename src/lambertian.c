@@ -24,7 +24,7 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	srec->scattered = construct_ray(rec.p, scatter_direction);
 
 	// サンプリングPDFを代入
-	srec->sampling_pdf = dot(normalize(rec.normal), normalize(srec->scattered.direct)) / M_PI;
+	srec->sampling_pdf = dot(normalize(rec.normal), normalize(srec->scattered.direct)); // / M_PI; + 0.5 * light_pdf()
 
 	// 反射率Albedoを代入
 	srec->attenuation = self->albedo;
