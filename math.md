@@ -288,7 +288,7 @@ Color_i\cdot pScatter(ω_o, ω_i)
 ランバート面の場合、 $pScatter(ω_i)$ は入射角に依らないため、 $Color_i$ が大きくなる、つまりより明るい入射方向 $ω_i$ を多くサンプリングすれば良い。  
 鏡面の場合、 $pScatter(ω_i)$ が特定の方向の周りで非常に大きくなるため $pScatter(ω_i)$ が大きくなる方向をより多くサンプリングする必要がある。このため多くのレンダラでは鏡を例外的なケースとして、以下のように扱っていることが多い。
 ```math
-Color_ o = \frac{Color_i\cdot A\cdot pScatter(ω_o, ω_i)}{p(ω_i)} ≈ \frac{pScatter(ω_i)}{p(ω_i)}
+Color_ o = \frac{Color_i\cdot A\cdot pSurface(ω_o, ω_i)}{p(ω_i)} ≈ \frac{pScatter(ω_i)}{p(ω_i)}
 ```
 
 ## ランダムな方向の生成
