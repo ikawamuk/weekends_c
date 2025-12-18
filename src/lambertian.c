@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "lambertian.h"
 #include "util.h"
+#include "pdf.h"
 
 t_lambertian	construct_lambertian(t_color alb)
 {
@@ -8,19 +9,39 @@ t_lambertian	construct_lambertian(t_color alb)
 
 	lam.material.scatter = scatter_lambertian;
 	lam.material.emitted = emitted_non_light;
+	lam.material.value_surface_pdf = lambertian_pdf;
 	lam.albedo = construct_color(alb.x, alb.y, alb.z);
 	return (lam);
 }
 
-bool	scatter_lambertian(void *s, t_hit_record rec, t_color *attenuation, t_ray *scattered)
+/*
+@brief 1.surface_PDFを代入 2.反射率Albedoを代入
+
+*/
+bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 {
 	t_lambertian	*self = s;
-	t_vec3	scatter_direction = add_vec(rec.normal , random_unit_vector());
-	if (dot(rec.normal, rec.ray_in.direct) > 0)
-		scatter_direction = negative_vec(scatter_direction);
-	*scattered = construct_ray(rec.p, scatter_direction);
-	*attenuation = self->albedo;
+
+	t_vec3			reflect_normal = dot(rec.normal, rec.ray_in.direct) > 0 ? negative_vec(rec.normal) : rec.normal;
+	t_cosine_pdf	*cos_ = malloc(sizeof(*cos_));
+	*cos_ = construct_cosine_pdf(reflect_normal);
+
+	srec->surface_pdf_ptr = cos_;
+	srec->attenuation = self->albedo;
 	return (true);
+}
+
+/*
+@brief PDF = cosθ / π
+*/
+double	lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
+{
+	t_lambertian	*self = s;
+
+	(void)self;
+	t_cosine_pdf	cos_ = construct_cosine_pdf(rec.normal);
+	double result = cos_.pdf.value_pdf(&cos_, scattered.direct);
+	return (result < 0 ? 0 : result);
 }
 
 t_lambertian	*gen_lambertian(t_color alb)
