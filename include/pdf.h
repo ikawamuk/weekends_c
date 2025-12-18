@@ -4,7 +4,10 @@
 #include <math.h>
 #include "define.h"
 #include "vec3.h"
-
+/*
+@param value_pdf PDFの値を出す
+@param generate_pdf　PDFに沿ったvet3を返す
+*/
 typedef struct s_pdf
 {
 	double	(*value_pdf)(void *self, t_vec3 direction);

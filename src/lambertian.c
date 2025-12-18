@@ -28,23 +28,26 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	if (dot(rec.normal, rec.ray_in.direct) > 0)
 		scatter_direction = negative_vec(scatter_direction);
 
-	// srec->sampling_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
+	srec->sampling_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
+	srec->surface_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
 	srec->scattered = construct_ray(rec.p, scatter_direction);
-	srec->sampling_pdf = self->material.value_surface_pdf(self, rec, srec->scattered);
 	srec->attenuation = self->albedo;
 	return (true);
 }
 
 /*
-@brief PDF(ω_in) = cosθ / π
+@brief PDF = cosθ / π
 */
-double	value_lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
+double	lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
 {
 	t_lambertian	*self = s;
 
 	(void)self;
 	double	cosine = dot(rec.normal, normalize(scattered.direct));
 	return (cosine < 0 ? 0 : cosine / M_PI);
+	// t_cosine_pdf	cos_ = construct_cosine_pdf(rec.normal);
+	// double result = cos_.pdf.value_pdf(&cos_, scattered.direct);
+	// return (result < 0 ? 0 : result);
 }
 
 t_lambertian	*gen_lambertian(t_color alb)
