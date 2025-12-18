@@ -5,6 +5,7 @@
 #include "define.h"
 #include "vec3.h"
 #include "util.h"
+#include "world.h"
 
 /*
 @param value_pdf PDFの値を出す
@@ -23,6 +24,13 @@ typedef struct s_cosine_pdf
 }	t_cosine_pdf;
 
 t_cosine_pdf	construct_cosine_pdf(t_vec3 n);
+
+typedef struct s_light_pdf
+{
+	t_pdf	pdf;
+}	t_light_pdf;
+
+t_light_pdf	construct_light_pdf(t_hit_record rec, t_world world);
 
 typedef struct s_mixture_pdf
 {

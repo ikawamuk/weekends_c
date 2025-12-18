@@ -7,6 +7,13 @@
 
 typedef struct s_material t_material;
 
+/*
+@param ray_in 入射レイ
+@param p　衝突点
+@param normal 物体の法線ベクトル(入射レイに関わらず同じ向き)
+@param mat_ptr 衝突点の材質
+@param 入射レイの媒介変数
+*/
 typedef struct s_hit_record
 {
 	t_ray		ray_in;

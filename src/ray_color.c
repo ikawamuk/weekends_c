@@ -29,7 +29,10 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);
 
-	t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, srec.surface_pdf_ptr);
+
+	t_light_pdf		light_pdf = construct_light_pdf(rec, *world);
+	t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, &light_pdf);
+	// t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, srec.surface_pdf_ptr);
 
 	t_vec3	scatter_direction = mix_.pdf.generate_pdf(&mix_);
 	t_ray	scattered = construct_ray(rec.p, scatter_direction);
