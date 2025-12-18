@@ -9,13 +9,14 @@ typedef struct s_scatter_record
 {
 	t_color	attenuation;
 	t_ray	scattered;
-	double	surface_pdf;
+	double	sampling_pdf;
 }	t_scatter_record;
 
 typedef struct s_material
 {
 	bool	(*scatter)(void *self, t_hit_record rec, t_scatter_record *srec);
 	t_color	(*emitted)(void *self, t_hit_record rec);
+	double	(*surface_pdf)(void *self, t_hit_record rec, t_ray scattered);
 }	t_material;
 
 t_color	emitted_non_light(void *s, t_hit_record rec);

@@ -9,6 +9,7 @@ t_lambertian	construct_lambertian(t_color alb)
 
 	lam.material.scatter = scatter_lambertian;
 	lam.material.emitted = emitted_non_light;
+	lam.material.surface_pdf = lambertian_pdf;
 	lam.albedo = construct_color(alb.x, alb.y, alb.z);
 	return (lam);
 }
@@ -17,22 +18,31 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 {
 	t_lambertian	*self = s;
 
-	// １＝1, 2はPDFの仕事なのでray_color()に移動。
 
-
-
+	// 以下の1と2はPDFの仕事。
+	// 1.散乱レイを生成
+	t_vec3	onb[3];
+	build_onb(onb, rec.normal);
+	t_vec3	scatter_direction = local_onb(onb, random_cosine_direction());
+	if (dot(rec.normal, rec.ray_in.direct) > 0)
+		scatter_direction = negative_vec(scatter_direction);
+	srec->scattered = construct_ray(rec.p, scatter_direction);
 
 	// 2.サンプリングPDFを代入
-	t_vec3			reflect_normal = dot(rec.normal, rec.ray_in.direct) > 0 ? negative_vec(rec.normal) : rec.normal;
-	t_cosine_pdf	cos_pdf = construct_cosine_pdf(reflect_normal);
-	srec->scattered = construct_ray(rec.p, cos_pdf.pdf.generate_pdf(&cos_pdf));
-	srec->surface_pdf = cos_pdf.pdf.value_pdf(&cos_pdf, srec->scattered.direct); // + 0.5 * light_pdf()
-	// 1.散乱レイを生成
-	
+	srec->sampling_pdf = dot(onb[2], normalize(srec->scattered.direct))/ M_PI; // + 0.5 * light_pdf()
 
 	// 反射率Albedoを代入
 	srec->attenuation = self->albedo;
 	return (true);
+}
+
+double	lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
+{
+	t_lambertian	*self = s;
+
+	(void)self;
+	double	cosine = dot(rec.normal, normalize(scattered.direct));
+	return (cosine < 0 ? 0 : cosine / M_PI);
 }
 
 t_lambertian	*gen_lambertian(t_color alb)
