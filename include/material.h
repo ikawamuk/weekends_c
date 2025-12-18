@@ -16,8 +16,6 @@ typedef struct s_scatter_record
 	t_color	attenuation;
 	t_ray	scattered;
 	void	*surface_pdf_ptr;
-	double	surface_pdf;
-	double	sampling_pdf;
 }	t_scatter_record;
 
 typedef struct s_material

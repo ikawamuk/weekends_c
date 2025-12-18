@@ -9,7 +9,8 @@
 static bool	killed_by_russian_roulette(t_color *attenuation);
 
 /*
-@brief Color_i = emmited + Albedo * Color_o * surface_pdf / sampling_pdf
+@brief Color_i = emmited + Albedo * Color_o * surface_pdf / sampling_pdf; 
+@brief and generate scatter ray
 */
 t_color ray_color(t_ray ray, const t_world *world, int depth)
 {
@@ -30,13 +31,12 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 	t_pdf	*pdf = srec.surface_pdf_ptr;
 
 	t_vec3	scatter_direction = pdf->generate_pdf(pdf);
-	srec.scattered = construct_ray(rec.p, scatter_direction);
+	t_ray	scattered = construct_ray(rec.p, scatter_direction);
 
-	srec.surface_pdf = rec.mat_ptr->value_surface_pdf(rec.mat_ptr, rec, srec.scattered);
+	double	surface_pdf = rec.mat_ptr->value_surface_pdf(rec.mat_ptr, rec, scattered);
+	double	sampling_pdf = surface_pdf;
 
-	srec.sampling_pdf = srec.surface_pdf;
-
-	t_color color_in = add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(srec.scattered, world, depth + 1)), (srec.surface_pdf / srec.sampling_pdf)));
+	t_color color_in = add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(scattered, world, depth + 1)), (surface_pdf / sampling_pdf)));
 	free(pdf);
 	return (color_in);
 }
