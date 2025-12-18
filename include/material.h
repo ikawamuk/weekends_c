@@ -7,13 +7,11 @@
 
 /*
 @param attenuation  Albdoを表す。
-@param scattered 散乱レイ
 @param surface_pdf_ptr ray_colorで散乱レイを生成するためのptr
 */
 typedef struct s_scatter_record
 {
 	t_color	attenuation;
-	t_ray	scattered;
 	void	*surface_pdf_ptr;
 }	t_scatter_record;
 
