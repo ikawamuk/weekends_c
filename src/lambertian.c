@@ -9,7 +9,7 @@ t_lambertian	construct_lambertian(t_color alb)
 
 	lam.material.scatter = scatter_lambertian;
 	lam.material.emitted = emitted_non_light;
-	lam.material.surface_pdf = lambertian_pdf;
+	lam.material.value_surface_pdf = lambertian_pdf;
 	lam.albedo = construct_color(alb.x, alb.y, alb.z);
 	return (lam);
 }
@@ -30,12 +30,15 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 
 	// srec->sampling_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
 	srec->scattered = construct_ray(rec.p, scatter_direction);
-	srec->sampling_pdf = self->material.surface_pdf(self, rec, srec->scattered);
+	srec->sampling_pdf = self->material.value_surface_pdf(self, rec, srec->scattered);
 	srec->attenuation = self->albedo;
 	return (true);
 }
 
-double	lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
+/*
+@brief PDF(ω_in) = cosθ / π
+*/
+double	value_lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
 {
 	t_lambertian	*self = s;
 
