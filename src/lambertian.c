@@ -20,16 +20,20 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 
 
 	// 以下の1と2はPDFの仕事。
-	// 1.散乱レイを生成
+	// 1.散乱方向を生成
 	t_vec3	onb[3];
 	build_onb(onb, rec.normal);
 	t_vec3	scatter_direction = local_onb(onb, random_cosine_direction());
 	if (dot(rec.normal, rec.ray_in.direct) > 0)
 		scatter_direction = negative_vec(scatter_direction);
-	srec->scattered = construct_ray(rec.p, scatter_direction);
 
 	// 2.サンプリングPDFを代入
-	srec->sampling_pdf = dot(onb[2], normalize(srec->scattered.direct))/ M_PI; // + 0.5 * light_pdf()
+	srec->sampling_pdf = dot(onb[2], normalize(srec->scattered.direct))/ M_PI;
+
+	// 3.散乱レイを代入
+	srec->scattered = construct_ray(rec.p, scatter_direction);
+
+	
 
 	// 反射率Albedoを代入
 	srec->attenuation = self->albedo;

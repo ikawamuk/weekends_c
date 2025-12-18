@@ -9,6 +9,7 @@ typedef struct s_scatter_record
 {
 	t_color	attenuation;
 	t_ray	scattered;
+	double	surface_pdf;
 	double	sampling_pdf;
 }	t_scatter_record;
 
