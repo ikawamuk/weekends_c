@@ -5,6 +5,12 @@
 #include "vec3.h"
 #include "ray.h"
 
+/*
+@param attenuation  Albdoを表す。
+@param scattered 散乱レイ
+@param surface_pdf 物質による散乱分布の確率密度（ランバートならcosに比例）
+@param sampling_pdf サンプリングするレイの確率密度（surface_pdfとlight_pdfの線形和）
+*/
 typedef struct s_scatter_record
 {
 	t_color	attenuation;

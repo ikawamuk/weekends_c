@@ -15,7 +15,7 @@ t_lambertian	construct_lambertian(t_color alb)
 }
 
 /*
-@brief 1.散乱方向を生成 2.サンプリングPDFを代入 3.散乱レイを代入 4.反射率Albedoを代入
+@brief 1.散乱方向を生成 2.散乱レイを代入 3.サンプリングPDFを代入 4.反射率Albedoを代入
 
 */
 bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
