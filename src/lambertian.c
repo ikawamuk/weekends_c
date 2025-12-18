@@ -28,7 +28,7 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 		scatter_direction = negative_vec(scatter_direction);
 
 	// 2.サンプリングPDFを代入
-	srec->sampling_pdf = dot(onb[2], normalize(srec->scattered.direct))/ M_PI;
+	srec->sampling_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
 
 	// 3.散乱レイを代入
 	srec->scattered = construct_ray(rec.p, scatter_direction);
