@@ -14,8 +14,8 @@
 #endif
 #define HIT_T_MIN 1e-3
 #define MAX_DEPTH 50
-#define RR_START_DEPTH 10 // ロシアンルーレットの深さ。MAX_DIPTH / 5ぐらい。しらんけど
-#define SAMPLES_PER_PIXCEL 50 // ここ上げればきれいになるけど遅くなる
+#define RR_START_DEPTH 5 // ロシアンルーレットを始める深さ。
+#define SAMPLES_PER_PIXCEL 100 // ここ上げればきれいになるけど遅くなる
 #define LIVE_PROBABILITY_MIN 0.05
 
 

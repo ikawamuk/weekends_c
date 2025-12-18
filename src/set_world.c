@@ -25,8 +25,8 @@ t_world	set_world(void)
 
 	// wall
 	t_plane	*wall_front = gen_plane(construct_vec(0, 0, -15), construct_vec(0, 0, 1), gen_lambertian(white));
-	t_plane	*wall_left = gen_plane(construct_vec(6, 0, 0), construct_vec(-1, 0, 0), gen_lambertian(green));
-	t_plane	*wall_right = gen_plane(construct_vec(-6, 0, 0), construct_vec(1, 0, 0), gen_lambertian(red));
+	t_plane	*wall_left = gen_plane(construct_vec(6, 0, 0), construct_vec(-1, 0, 0), gen_lambertian(red));
+	t_plane	*wall_right = gen_plane(construct_vec(-6, 0, 0), construct_vec(1, 0, 0), gen_lambertian(green));
 	t_plane	*wall_back = gen_plane(construct_vec(0, 0, 1), construct_vec(0, 0, -1), gen_lambertian(gray));
 
 	// floor
@@ -40,7 +40,7 @@ t_world	set_world(void)
 	t_sphere	*sphereB = gen_sphere(construct_vec(-3, 2, -13), 2, gen_lambertian(construct_color(0.5, 0.1, 0.1)));
 
 	// light
-	t_sphere	*light = gen_sphere(construct_vec(5, 9, -10), 1, gen_light(bright));
+	t_sphere	*light = gen_sphere(construct_vec(0, 9, -10), 1, gen_light(bright));
 
 	add_htl(&world.objects, wall_front);
 	add_htl(&world.objects, wall_left);
