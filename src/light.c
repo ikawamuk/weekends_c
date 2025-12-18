@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "light.h"
+#include "pdf.h"
 
 t_light	construct_light(t_color emit)
 {
