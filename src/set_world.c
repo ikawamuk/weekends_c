@@ -19,7 +19,10 @@ t_world	set_world(void)
 	add_htl(&world.objects, gen_plane(construct_vec(0, 0, -5), construct_vec(0, 0, 1), gen_lambertian(construct_color(0.2, 0.2, 0.2))));
 	// もの
 	add_htl(&world.objects, gen_sphere(construct_vec(0, 0.5, -3), 0.5, gen_lambertian(construct_color(0.5, 0.1, 0.1)))); // gen_lambertian(construct_color(0.5, 0, 0)だと環境光にrの要素がないとき真っ黒担って不自然だった！
+	add_htl(&world.objects, gen_sphere(construct_vec(1, 0.5, -3), 0.5, gen_lambertian(construct_color(0.2, 0.5, 0.1))));
 	// ライト
-	add_htl(&world.objects, gen_sphere(construct_vec(0, 2, -2), 0.2, gen_light(construct_vec(50, 50, 50)))); // lightの色tの強さは大きさ、距離などの複合で決めるらしい。むずかしい(--;)。
+	t_sphere	*light = gen_sphere(construct_vec(0, 20, 5), 0.05, gen_light(construct_vec(1, 1, 1)));
+	add_htl(&world.objects, light);
+	world.light_p = (t_hit_table *)light;
 	return (world);
 }
