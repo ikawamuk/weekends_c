@@ -33,8 +33,6 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	// 3.散乱レイを代入
 	srec->scattered = construct_ray(rec.p, scatter_direction);
 
-	
-
 	// 反射率Albedoを代入
 	srec->attenuation = self->albedo;
 	return (true);
