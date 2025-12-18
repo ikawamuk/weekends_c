@@ -28,9 +28,12 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 
 
 	t_pdf	*pdf = srec.surface_pdf_ptr;
+
 	t_vec3	scatter_direction = pdf->generate_pdf(pdf);
 	srec.scattered = construct_ray(rec.p, scatter_direction);
+
 	srec.surface_pdf = rec.mat_ptr->value_surface_pdf(rec.mat_ptr, rec, srec.scattered);
+
 	srec.sampling_pdf = srec.surface_pdf;
 
 	t_color color_in = add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(srec.scattered, world, depth + 1)), (srec.surface_pdf / srec.sampling_pdf)));
