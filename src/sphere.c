@@ -71,7 +71,7 @@ static double	pdf_value_sphere(void *s, t_point3 p, t_vec3 direction)
 	t_sphere	*self = s;
 
 	t_hit_record	rec;
-	if (self->hit_table.hit(self, construct_ray(p, direction), &rec))
+	if (!self->hit_table.hit(self, construct_ray(p, direction), &rec))
 		return (0);
 	double	cos_theta_max = sqrt(1 - self->radius * self->radius / length_squared_vec(sub_vec(self->center, p)));
 	double	solid_angle = 2 * M_PI * (1 - cos_theta_max);

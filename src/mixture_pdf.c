@@ -21,8 +21,6 @@ static double	value_mixture_pdf(void *s, t_vec3 direction)
 	t_pdf			*light_pdf = self->light_pdf;
 
 	return (0.5 * surface_pdf->value_pdf(surface_pdf, direction) + 0.5 * light_pdf->value_pdf(light_pdf, direction));
-	// return (surface_pdf->value_pdf(surface_pdf, direction)); // surface のみ
-	// return (light_pdf->value_pdf(light_pdf, direction)); // lightのみ
 }
 
 static t_vec3	generate_mixture_pdf(void *s)

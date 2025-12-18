@@ -15,7 +15,7 @@ t_world	set_world(void)
 	t_color white = construct_color(0.73, 0.73, 0.73);
 	t_color red = construct_color(0.65, 0.05, 0.05);
 	t_color green = construct_color(0.12, 0.45, 0.15);
-	t_vec3	bright = construct_vec(1, 1, 1);
+	t_vec3	bright = construct_vec(50, 50, 50);
 
 	// world
 	t_world	world;
@@ -40,7 +40,7 @@ t_world	set_world(void)
 	t_sphere	*sphereB = gen_sphere(construct_vec(-3, 2, -13), 2, gen_lambertian(construct_color(0.5, 0.1, 0.1)));
 
 	// light
-	t_sphere	*light = gen_sphere(construct_vec(0, 9, -10), 1, gen_light(bright));
+	t_sphere	*light = gen_sphere(construct_vec(0, 9, -10), 0.5, gen_light(bright));
 
 	add_htl(&world.objects, wall_front);
 	add_htl(&world.objects, wall_left);
