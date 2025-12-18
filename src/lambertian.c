@@ -26,7 +26,7 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	t_cosine_pdf	*cos_ = malloc(sizeof(*cos_));
 	*cos_ = construct_cosine_pdf(reflect_normal);
 
-	srec->surface_pdf_ptr = cos_;
+	srec->surface_pdf_ptr = self->material.value_surface_pdf;
 	srec->attenuation = self->albedo;
 	return (true);
 }

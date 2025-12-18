@@ -8,8 +8,7 @@
 /*
 @param attenuation  Albdoを表す。
 @param scattered 散乱レイ
-@param surface_pdf 物質による散乱分布の確率密度（ランバートならcosに比例）
-@param sampling_pdf サンプリングするレイの確率密度（surface_pdfとlight_pdfの線形和）
+@param surface_pdf_ptr ray_colorで散乱レイを生成するためのptr
 */
 typedef struct s_scatter_record
 {
@@ -18,6 +17,11 @@ typedef struct s_scatter_record
 	void	*surface_pdf_ptr;
 }	t_scatter_record;
 
+/*
+@param scatter scatter_recordを返す
+@param emmited 発光色を返す
+@param value_surface_pdf 
+*/
 typedef struct s_material
 {
 	bool	(*scatter)(void *self, t_hit_record rec, t_scatter_record *srec);
