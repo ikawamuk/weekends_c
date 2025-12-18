@@ -4,6 +4,8 @@
 #include <math.h>
 #include "define.h"
 #include "vec3.h"
+#include "util.h"
+
 /*
 @param value_pdf PDFの値を出す
 @param generate_pdf　PDFに沿ったvet3を返す
@@ -21,5 +23,14 @@ typedef struct s_cosine_pdf
 }	t_cosine_pdf;
 
 t_cosine_pdf	construct_cosine_pdf(t_vec3 n);
+
+typedef struct s_mixture_pdf
+{
+	t_pdf	pdf;
+	void	*surface_pdf;
+	void	*light_pdf;
+}	t_mixture_pdf;
+
+t_mixture_pdf	construct_mixture_pdf(void *surface_pdf, void *light_pdf);
 
 #endif

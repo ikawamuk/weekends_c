@@ -20,24 +20,25 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 		return (construct_color(0, 0, 0));
 	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
 		return (world->back_ground);
-	t_scatter_record	srec;
+
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
+
+	t_scatter_record	srec;
 	if (!rec.mat_ptr->scatter(rec.mat_ptr, rec, &srec))
 		return (emmited);
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);
 
+	t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, srec.surface_pdf_ptr);
 
-	t_pdf	*pdf = srec.surface_pdf_ptr;
-
-	t_vec3	scatter_direction = pdf->generate_pdf(pdf);
+	t_vec3	scatter_direction = mix_.pdf.generate_pdf(&mix_);
 	t_ray	scattered = construct_ray(rec.p, scatter_direction);
 
 	double	surface_pdf = rec.mat_ptr->value_surface_pdf(rec.mat_ptr, rec, scattered);
-	double	sampling_pdf = surface_pdf;
+	double	sampling_pdf = mix_.pdf.value_pdf(&mix_, scatter_direction);  // next: mixture_pdf->value_pdf() --> 0.5 * surface_pdf + 0.5 * light_pdf;
 
 	t_color color_in = add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(scattered, world, depth + 1)), (surface_pdf / sampling_pdf)));
-	free(pdf);
+	free(srec.surface_pdf_ptr);
 	return (color_in);
 }
 
