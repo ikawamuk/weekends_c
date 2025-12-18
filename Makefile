@@ -2,7 +2,7 @@ NAME = weekend_c
 
 CC = cc 
 
-CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I $(MLXDIR) -O3 -march=native
+CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I$(MLXDIR) -O3 -march=native
 
 RMDIR = rm -rf
 
@@ -53,6 +53,7 @@ MLX = $(MLXDIR)/libmlx.a
 LDFLAGS = -L $(MLXDIR)
 LDLIBS = -lmlx -lm $(MLX_FLAGS)
 
+
 # --- DEBUGGING ---
 VALGRIND		= valgrind
 VALGRIND_FLAGS	= --leak-check=full --track-origins=yes --show-leak-kinds=all
@@ -88,7 +89,7 @@ lldb: fclean
 	@lldb $(NAME)
 
 asan: fclean
-	@$(MAKE) CFLAG="$(CFLAG) $(ASAN_FLAGS)" LDFLAGS="$(ASAN_FLAGS)" $(NAME)
+	@$(MAKE) CFLAG="$(CFLAG) $(ASAN_FLAGS)" LDFLAGS="$(LDFLAGS) $(ASAN_FLAGS)" $(NAME)
 	@echo "\n\033[1;35mCompiled with AddressSanitizer. Run './$(NAME)' to test.\033[0m"
 
 valgrind: fclean
