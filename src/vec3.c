@@ -154,9 +154,10 @@ void	build_onb(t_vec3 onb[3], t_vec3 n)
 	return ;
 }
 
-t_vec3	local_onb(t_vec3 onb[3], t_vec3 a)
+t_vec3	local_onb(t_vec3 onb[3], t_vec3 a) // a = random_cosvec()
 {
 	return (add_vec(scal_mul_vec(onb[0], a.x), add_vec(scal_mul_vec(onb[1], a.y), scal_mul_vec(onb[2], a.z))));
+	// x * u + y * v + z * w
 }
 
 t_vec3 reflect(t_vec3 v, t_vec3 n)

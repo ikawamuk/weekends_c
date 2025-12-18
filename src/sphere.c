@@ -57,3 +57,6 @@ t_sphere	*gen_sphere(const t_point3 cen, const double r, void *mat_ptr)
 	*s = construct_sphere(cen, r, mat_ptr);
 	return (s);
 }
+
+
+
