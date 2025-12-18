@@ -15,7 +15,7 @@ t_lambertian	construct_lambertian(t_color alb)
 }
 
 /*
-@brief 1.散乱方向を生成 2.散乱レイを代入 3.サンプリングPDFを代入 4.反射率Albedoを代入
+@brief 1.散乱方向を生成 2.散乱レイを代入 3.Surface_PDFを代入 4.Sampling＿PDFを代入 5.反射率Albedoを代入
 
 */
 bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
@@ -28,9 +28,10 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	if (dot(rec.normal, rec.ray_in.direct) > 0)
 		scatter_direction = negative_vec(scatter_direction);
 
-	srec->sampling_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
-	srec->surface_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
 	srec->scattered = construct_ray(rec.p, scatter_direction);
+	srec->sampling_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
+
+	srec->surface_pdf = dot(onb[2], normalize(scatter_direction))/ M_PI;
 	srec->attenuation = self->albedo;
 	return (true);
 }
