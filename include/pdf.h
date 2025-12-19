@@ -27,9 +27,9 @@ t_cosine_pdf	construct_cosine_pdf(t_vec3 n);
 
 typedef struct s_light_pdf
 {
-	t_pdf		pdf;
-	t_hit_table	*light_p;
-	t_point3	p;
+	t_pdf				pdf;
+	t_hit_table_list	list;
+	t_point3			p;
 }	t_light_pdf;
 
 t_light_pdf	construct_light_pdf(t_hit_record rec, t_world world);
