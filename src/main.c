@@ -1,7 +1,9 @@
-#include <stdbool.h>
-#include <stdlib.h>
 #include "define.h"
 #include "img.h"
+#include "world.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 typedef struct s_hook_var
 {
@@ -9,7 +11,8 @@ typedef struct s_hook_var
 	void	*win;
 }	t_hook_var;
 
-void	draw(void **mlx, t_img *img, bool ppm_mode);
+int		set_world(t_world *world, const char *rt_file);
+void	draw(const t_world *world, void **mlx, t_img *img, bool ppm_mode);
 
 void	initialize(t_hook_var *var, t_img *img)
 {
@@ -29,15 +32,21 @@ int close_window(void *param)
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
 	t_hook_var	var;
 	t_img		img;
+	t_world		world;
 	bool		ppm_mode = false;
 
+	if (argc == 1)
+		return (fprintf(stderr, "NEED .rt FILE AS AN ARGUMENT\n"), \
+		EXIT_FAILURE);
+	if (set_world(&world, argv[1]))
+		return (EXIT_FAILURE);
 	if (!ppm_mode)
 		initialize(&var, &img);
-	draw(&var.mlx, &img, ppm_mode);
+	draw(&world, &var.mlx, &img, ppm_mode);
 	if (ppm_mode)
 		return (0);
 	mlx_put_image_to_window(var.mlx, var.win, img.id, 0, 0);

@@ -1,7 +1,10 @@
+#include "aabb.h"
+#include "range.h"
 #include "sphere.h"
 #include "define.h"
-#include "util.h"
+#include "rt_utils.h"
 
+static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_range range);
 static double	pdf_value_sphere(void *self, t_point3 p, t_vec3 direction);
 static t_vec3	random_sphere(void *self, t_point3 p);
 
@@ -16,7 +19,7 @@ void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double soluti
 	return ;
 }
 
-bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec)
+static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
 {
 	const t_sphere	*self = s;
 	t_vec3	oc = sub_vec(ray.origin, self->center);
@@ -29,13 +32,13 @@ bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec)
 	{
 		double	root = sqrt(discriminant);
 		double	solution = (-half_b - root)/a;
-		if (HIT_T_MIN < solution) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
+		if (check_range(solution, range)) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
 		{
 			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);
 		}
 		solution = (-half_b + root) / a;
-		if (0.001 < solution)
+		if (check_range(solution, range))
 		{
 			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);
@@ -44,11 +47,23 @@ bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec)
 	return (false);
 }
 
+static bool	bounding_sphere(const void *s, t_range range, t_aabb *output_box)
+{
+	t_sphere	*self;
+
+	self = (t_sphere *)s;
+	(void)range;
+	*output_box = construct_aabb(sub_vec(self->center, constant_vec(self->radius)), \
+							add_vec(self->center, constant_vec(self->radius)));
+	return (true);
+}
+
 t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 {
 	t_sphere	sphere;
 
 	sphere.hit_table.hit = hit_sphere;
+	sphere.hit_table.bounding_box = bounding_sphere;
 	sphere.hit_table.mat_ptr = mat_ptr;
 	sphere.hit_table.pdf_value = pdf_value_sphere;
 	sphere.hit_table.random = random_sphere;
@@ -71,7 +86,8 @@ static double	pdf_value_sphere(void *s, t_point3 p, t_vec3 direction)
 	t_sphere	*self = s;
 
 	t_hit_record	rec;
-	if (!self->hit_table.hit(self, construct_ray(p, direction), &rec))
+	t_range			range = construct_range(HIT_T_MIN, INFINITY);
+	if (!self->hit_table.hit(self, construct_ray(p, direction), &rec, range))
 		return (0);
 	double	cos_theta_max = sqrt(1 - self->radius * self->radius / length_squared_vec(sub_vec(self->center, p)));
 	double	solid_angle = 2 * M_PI * (1 - cos_theta_max);

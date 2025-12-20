@@ -1,19 +1,30 @@
 #include "camera.h"
 #include "define.h"
 #include "vec3.h"
+#include "rt_utils.h"
+#include "libft.h"
 
-/*
-@brief 度数法を弧度法に変換
-*/
-double	degrees_to_radians(const double degrees)
+static double	degrees_to_radians(const double degrees);
+
+t_camera	set_camera(t_list *line_lst)
 {
-	double	deno;
+	static char	*def = "0,0,0 0,0,-1 80";
+	char		*line;
+	t_point3	origin;
+	t_vec3		direct;
+	double		vfov;
 
-	deno = 1.0f / 180.0f;
-	return (degrees * M_PI * deno);
+	line = get_word_line(line_lst, "C");
+	if (!line)
+		line = def;
+	origin = get_vec(&line);
+	skip_spaces(&line);
+	direct = get_vec(&line);
+	skip_spaces(&line);
+	vfov = ft_strtod(line, &line);
+	return (construct_camera(origin, direct, vfov));
 }
 
-#include <stdio.h>
 /* 
 @param _origin: カメラの座標
 @param _orient: カメラの方向ベクトル
@@ -38,6 +49,17 @@ t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double v
 	camera.higher_left_corner = add_vec(sub_vec(camera.origin, scal_div_vec(camera.horizontal, 2)), sub_vec(scal_div_vec(camera.vertical, 2), w));
 	// higher_left_corner = {origin - horizontal/2 } + {vertical/2 - w)} ;
 	return (camera);
+}
+
+/*
+@brief 度数法を弧度法に変換
+*/
+static double	degrees_to_radians(const double degrees)
+{
+	double	deno;
+
+	deno = 1.0f / 180.0f;
+	return (degrees * M_PI * deno);
 }
 
 t_ray	get_ray(t_camera camera, double u, double v)
