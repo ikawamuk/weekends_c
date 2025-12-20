@@ -33,6 +33,7 @@ struct s_hit_table
 	bool	(*bounding_box)(const void *self, t_range range, t_aabb *aabb);
 	double	(*pdf_value)(void *self, t_point3 p, t_vec3 direction);
 	t_vec3	(*random)(void *self, t_point3 p);
+	t_aabb	aabb;
 	t_material	*mat_ptr;
 };
 

@@ -11,13 +11,16 @@ static bool			box_x_compare(const t_bvh_info *a, const t_bvh_info *b);
 static bool			box_y_compare(const t_bvh_info *a, const t_bvh_info *b);
 static bool			box_z_compare(const t_bvh_info *a, const t_bvh_info *b);
 
-t_hit_node	*construct_bvh(t_bvh_info *objects, size_t start, size_t end)
+t_hit_table	*construct_bvh(t_bvh_info *objects, size_t start, size_t end)
 {
 	int			axis = 0/* random_int(0, 2) */;
 	bool		(*comparator)(const t_bvh_info *, const t_bvh_info *);
 	t_hit_node	*node;
 
-	node = ft_calloc(1, sizeof(t_hit_node));
+	size_t	object_span = end - start;
+	if (object_span == 0)
+		return (objects[start].data);
+	node = calloc(1, sizeof(t_bvh_info));
 	if (!node)
 		return (NULL);
 	if (axis == 0)
@@ -26,18 +29,13 @@ t_hit_node	*construct_bvh(t_bvh_info *objects, size_t start, size_t end)
 		comparator = box_y_compare;
 	else
 		comparator = box_z_compare;
-	size_t	object_span = end - start;
-	if (object_span == 0) {
-		node->data = objects[start].data;
-		node->box = objects[start].aabb;
-		return (node);
-	} else if (object_span == 1) {
+	if (object_span == 1) {
 		if (comparator(&objects[start], &objects[start+1])) {
-			node->lhs = add_new_node(&objects[start]);
-			node->rhs = add_new_node(&objects[start + 1]);
+			node->lhs = objects[start].data;
+			node->rhs = objects[start + 1].data;
 		} else {
-			node->lhs = add_new_node(&objects[start + 1]);
-			node->rhs = add_new_node(&objects[start]);
+			node->lhs = objects[start + 1].data;
+			node->rhs = objects[start].data;
 		}
 	} else {
 		sort_bvh_info(objects, start, end, comparator);
@@ -45,7 +43,7 @@ t_hit_node	*construct_bvh(t_bvh_info *objects, size_t start, size_t end)
 		node->lhs = construct_bvh(objects, start, mid);
 		node->rhs = construct_bvh(objects, mid, end);
 	}
-	node->box = surrounding_box(node->lhs->box, node->rhs->box);
+	node->box = surrounding_box(node->hit_table.aabb, node->hit_table.aabb);
 	return (node);
 }
 
