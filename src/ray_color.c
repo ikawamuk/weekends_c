@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 static bool	killed_by_russian_roulette(t_color *attenuation);
-static t_color caluculate_in_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth);
+static t_color caluculate_diffused_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth);
 
 /*
 @brief Color_i = Albedo * Color_o * surface_pdf / sampling_pdf; 
@@ -19,6 +19,7 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 {
 	t_hit_record	rec;
 
+	// printf("background color: R:%f G:%f B:%f\n", world->back_ground.x, world->back_ground.y, world->back_ground.z);
 	if (depth >= MAX_DEPTH)
 		return (construct_color(0, 0, 0));
 	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
@@ -32,11 +33,13 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);
 
-	t_color color_in = caluculate_in_color(world, rec, srec, emmited, depth);
+	if (srec.is_specular)
+		return (mul_vec(srec.attenuation, ray_color(srec.specular_ray, world, depth + 1))); // Color_i = albedo * Color_o 
+	t_color color_in = caluculate_diffused_color(world, rec, srec, emmited, depth);
 	return (color_in);
 }
 
-static t_color caluculate_in_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth)
+static t_color caluculate_diffused_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth)
 {
 	t_light_pdf		light_ = construct_light_pdf(rec, *world);
 	t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, &light_);

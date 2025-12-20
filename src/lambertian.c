@@ -27,6 +27,7 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 
 	srec->surface_pdf_ptr = cos_;
 	srec->attenuation = self->albedo;
+	srec->is_specular = false;
 	return (true);
 }
 

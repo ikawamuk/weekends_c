@@ -13,6 +13,8 @@ typedef struct s_scatter_record
 {
 	t_color	attenuation;
 	void	*surface_pdf_ptr;
+	bool	is_specular;
+	t_ray	specular_ray;
 }	t_scatter_record;
 
 /*

@@ -23,6 +23,7 @@ SRCFILES =		main.c \
 				ray_color.c \
 				material.c \
 				lambertian.c \
+				metal.c \
 				light.c \
 				set_world.c \
 				cosine_pdf.c \
