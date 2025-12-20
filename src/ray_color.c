@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 static bool	killed_by_russian_roulette(t_color *attenuation);
+static t_color caluculate_in_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth);
 
 /*
 @brief Color_i = Albedo * Color_o * surface_pdf / sampling_pdf; 
@@ -31,7 +32,12 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);
 
+	t_color color_in = caluculate_in_color(world, rec, srec, emmited, depth);
+	return (color_in);
+}
 
+static t_color caluculate_in_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth)
+{
 	t_light_pdf		light_ = construct_light_pdf(rec, *world);
 	t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, &light_);
 
