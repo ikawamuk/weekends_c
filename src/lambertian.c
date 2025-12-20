@@ -23,8 +23,7 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	t_lambertian	*self = s;
 
 	t_vec3			reflect_normal = dot(rec.normal, rec.ray_in.direct) > 0 ? negative_vec(rec.normal) : rec.normal;
-	t_cosine_pdf	*cos_ = malloc(sizeof(*cos_));
-	*cos_ = construct_cosine_pdf(reflect_normal);
+	t_cosine_pdf	*cos_ = generate_cosine_pdf(reflect_normal);
 
 	srec->surface_pdf_ptr = cos_;
 	srec->attenuation = self->albedo;

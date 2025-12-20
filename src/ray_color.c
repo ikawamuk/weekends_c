@@ -35,7 +35,7 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 	t_light_pdf		light_ = construct_light_pdf(rec, *world);
 	t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, &light_);
 
-	t_vec3	scatter_direction = mix_.pdf.generate_pdf(&mix_);
+	t_vec3	scatter_direction = mix_.pdf.random_pdf(&mix_);
 	t_ray	scattered = construct_ray(rec.p, scatter_direction);
 
 	double	surface_pdf = rec.mat_ptr->value_surface_pdf(rec.mat_ptr, rec, scattered);
