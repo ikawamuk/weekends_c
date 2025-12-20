@@ -2,7 +2,7 @@ NAME = weekend_c
 
 CC = cc 
 
-CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I $(MLXDIR) -O3 -march=native
+CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I$(MLXDIR) -O3 -march=native
 
 RMDIR = rm -rf
 
@@ -25,6 +25,9 @@ SRCFILES =		main.c \
 				lambertian.c \
 				light.c \
 				set_world.c \
+				cosine_pdf.c \
+				light_pdf.c \
+				mixture_pdf.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -52,6 +55,7 @@ MLX = $(MLXDIR)/libmlx.a
 LDFLAGS = -L $(MLXDIR)
 LDLIBS = -lmlx -lm $(MLX_FLAGS)
 
+
 # --- DEBUGGING ---
 VALGRIND		= valgrind
 VALGRIND_FLAGS	= --leak-check=full --track-origins=yes --show-leak-kinds=all
@@ -61,11 +65,11 @@ SCAN_BUILD		= scan-build
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX)
+$(NAME): $(OBJS) # $(MLX)
 	$(CC) $(CFLAG) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
 
-$(MLX):
-	@$(MAKE) -C $(MLXDIR)
+# $(MLX):
+# 	@$(MAKE) -C $(MLXDIR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
@@ -73,7 +77,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-	@$(MAKE) -C $(MLXDIR) clean
+# 	@$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
@@ -87,7 +91,7 @@ lldb: fclean
 	@lldb $(NAME)
 
 asan: fclean
-	@$(MAKE) CFLAG="$(CFLAG) $(ASAN_FLAGS)" LDFLAGS="$(ASAN_FLAGS)" $(NAME)
+	@$(MAKE) CFLAG="$(CFLAG) $(ASAN_FLAGS)" LDFLAGS="$(LDFLAGS) $(ASAN_FLAGS)" $(NAME)
 	@echo "\n\033[1;35mCompiled with AddressSanitizer. Run './$(NAME)' to test.\033[0m"
 
 valgrind: fclean

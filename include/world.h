@@ -8,6 +8,7 @@ typedef struct s_world
 {
 	t_color				back_ground;
 	t_hit_table_list	objects;
+	t_hit_table_list	lights;
 }	t_world;
 
 #endif

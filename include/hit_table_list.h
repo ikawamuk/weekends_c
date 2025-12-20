@@ -23,5 +23,6 @@ t_hit_table_list	construct_htl(void);
 bool				add_htl(t_hit_table_list *list_p, void *d);
 void				clear_htl(t_hit_table_list list);
 bool				hit_htl(const void *s, const t_ray ray, t_hit_record *rec);
+t_hit_table_list	construct_light_list(void);
 
 #endif

@@ -17,6 +17,14 @@ double random_double(double min, double max)
 	return (min + (max - min) * v);
 }
 
+int	random_int(int min, int max)
+{
+	if (min > max)
+		return (min);
+	int	range = max - min + 1;
+	return (min + (int)(random_double(0.0, 1.0) * range));
+}
+
 double clamp(double x, double min, double max)
 {
 	if (x < min)
