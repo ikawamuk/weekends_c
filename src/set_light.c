@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+t_sphere				*get_light_data(char *line);
 static bool				is_light(char *line);
 static t_hit_table_node	*add_light(t_hit_table_node *hit_table, char *line);
 
@@ -17,7 +18,7 @@ int	set_light(t_hit_table_list *lights, t_list *line_lst)
 	t_hit_table_node	*curr;
 	t_hit_table_node	head;
 
-	ft_bzero(&head, sizeof(t_hit_table));
+	ft_bzero(&head, sizeof(t_hit_table_node));
 	curr = &head;
 	while (line_lst && curr)
 	{
@@ -36,8 +37,6 @@ static bool	is_light(char *line)
 {
 	return (*line == 'L');
 }
-
-t_sphere	*get_light_data(char *line);
 
 static t_hit_table_node	*add_light(t_hit_table_node *hit_table, char *line)
 {
