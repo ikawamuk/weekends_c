@@ -10,7 +10,7 @@ typedef bool (*comp)(const t_bvh_info *, const t_bvh_info *);
 
 // static t_hit_node	*add_new_node(t_bvh_info *object);
 t_hit_node			construct_bvh(t_bvh_info *objects, size_t start, size_t object_span, comp comparator);
-static t_hit_table	*gen_bvh_hit_table(const t_hit_node *node);
+static t_hit_table	construct_bvh_htl(const t_hit_node *node);
 static comp			get_random_comp(void);
 static bool			box_x_compare(const t_bvh_info *a, const t_bvh_info *b);
 static bool			box_y_compare(const t_bvh_info *a, const t_bvh_info *b);
@@ -36,7 +36,7 @@ t_hit_node	*gen_bvh(t_bvh_info *objects, size_t start, size_t end)
 		node->lhs = (t_hit_table *)gen_bvh(objects, start, mid);
 		node->rhs = (t_hit_table *)gen_bvh(objects, mid, end);
 	}
-	node->hit_table = gen_bvh_hit_table(node);
+	node->hit_table = construct_bvh_htl(node);
 	return (node);
 }
 
@@ -62,15 +62,12 @@ t_hit_node	construct_bvh(t_bvh_info *objects, size_t start, size_t object_span, 
 	return (node);
 }
 
-static t_hit_table	*gen_bvh_hit_table(const t_hit_node *node)
+static t_hit_table	construct_bvh_htl(const t_hit_node *node)
 {
-	t_hit_table	*htl;
+	t_hit_table	htl;
 
-	htl = ft_calloc(1, sizeof(t_hit_table));
-	if (!htl)
-		return (NULL);
-	htl->aabb = surrounding_box(node->lhs->aabb, node->rhs->aabb);
-	htl->hit = hit_bvh;
+	htl.aabb = surrounding_box(node->lhs->aabb, node->rhs->aabb);
+	htl.hit = hit_bvh;
 	return (htl);
 }
 
@@ -134,7 +131,7 @@ static bool	hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_range r
 	if (self == NULL)
 		return (false);
 	// まずboxにヒットしないものをfalseとする
-	if (self->hit_table->aabb.hit(&self->hit_table->aabb, ray, range) == false)
+	if (self->hit_table.aabb.hit(&self->hit_table.aabb, ray, range) == false)
 		return (false);
 	hit_left = self->lhs->hit(self->lhs, ray, rec, range);
 	if (hit_left)

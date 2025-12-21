@@ -12,7 +12,7 @@ typedef struct s_hit_node t_hit_node;
 */
 struct s_hit_node
 {
-	t_hit_table		*hit_table;
+	t_hit_table		hit_table;
 	t_hit_table		*lhs;
 	t_hit_table		*rhs;
 };
