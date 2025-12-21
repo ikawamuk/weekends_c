@@ -19,7 +19,6 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 {
 	t_hit_record	rec;
 
-	// printf("background color: R:%f G:%f B:%f\n", world->back_ground.x, world->back_ground.y, world->back_ground.z);
 	if (depth >= MAX_DEPTH)
 		return (construct_color(0, 0, 0));
 	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
@@ -41,8 +40,14 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 
 static t_color caluculate_diffused_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth)
 {
-	t_light_pdf		light_ = construct_light_pdf(rec, *world);
-	t_mixture_pdf	mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, &light_);
+	t_mixture_pdf	mix_;
+	if (world->lights.head != NULL)
+	{
+		t_light_pdf		light_ = construct_light_pdf(rec, *world);
+		mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, &light_);
+	}
+	else
+		mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, NULL);
 
 	t_vec3	scatter_direction = mix_.pdf.random_pdf(&mix_);
 	t_ray	scattered = construct_ray(rec.p, scatter_direction);
