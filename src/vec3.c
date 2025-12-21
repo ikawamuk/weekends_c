@@ -145,6 +145,17 @@ t_vec3	random_cosine_direction(void)
 	return (result);
 }
 
+t_vec3	random_in_unit_disk(void)
+{
+	while (1)
+	{
+		t_vec3	p = construct_vec(random_double(-1, 1), random_double(-1, 1), 0);
+		if (length_squared_vec(p) >= 1)
+			continue ;
+		return (p);
+	}
+}
+
 void	build_onb(t_vec3 onb[3], t_vec3 n)
 {
 	onb[2] = normalize(n);

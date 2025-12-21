@@ -40,6 +40,7 @@ t_world	set_world(void)
 	t_sphere	*sphereA = gen_sphere(construct_vec(2, 1, -7), 1, gen_lambertian(construct_color(0.2, 0.2, 0.6)));
 	t_sphere	*sphereB = gen_sphere(construct_vec(-3, 2, -13), 2, gen_metal(construct_color(1, 1, 1), 0.01));
 	t_sphere	*sphereC = gen_sphere(construct_vec(-2, 1, -5), 1, gen_dielectric(1.5));
+	t_sphere	*sphereD = gen_sphere(construct_vec(1.5, 0.5, -5), -0.5, gen_dielectric(1.5));
 
 	// light
 	t_sphere	*lightA = gen_sphere(construct_vec(-4, 9, -10), 0.5, gen_light(bright));
@@ -56,6 +57,7 @@ t_world	set_world(void)
 	add_htl(&world.objects, sphereA);
 	add_htl(&world.objects, sphereB);
 	add_htl(&world.objects, sphereC);
+	add_htl(&world.objects, sphereD);
 
 	add_htl(&world.lights, lightA);
 	// add_htl(&world.lights, lightB);
