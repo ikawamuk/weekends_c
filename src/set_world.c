@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 int				validate(t_list *line_lst);
-int				set_objects(t_hit_node **node, t_list *line_lst);
+int				set_objects(t_hit_table **node, t_list *line_lst);
 static int		read_rt(t_list **line_lst, const char *rt_file);
 static int		check_file_name(const char *rt_file);
 static void		err_file_name(void);

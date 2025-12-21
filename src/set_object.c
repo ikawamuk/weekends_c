@@ -12,7 +12,7 @@
 static bool		is_object(char *line);
 static size_t	count_object_num(t_list *line_ptr);
 
-int	set_objects(t_hit_node **node, t_list *line_lst)
+int	set_objects(t_hit_table **node, t_list *line_lst)
 {
 	t_bvh_info	*object_array;
 	size_t		array_size;
@@ -30,7 +30,7 @@ int	set_objects(t_hit_node **node, t_list *line_lst)
 			object_array[array_size++] = construct_bvh_info(line_lst->content);
 		line_lst = line_lst->next;
 	}
-	*node = construct_bvh(object_array, 0, array_size - 1);
+	*node = (t_hit_table *)gen_bvh(object_array, 0, array_size - 1);
 	free(object_array);
 	return (EXIT_SUCCESS);
 }

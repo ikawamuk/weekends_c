@@ -52,7 +52,7 @@ LIBFT = $(LIBFTDIR)/libft.a
 UNAME = $(shell uname -s)
 
 ifeq ($(UNAME),Darwin)
-	MLXDIR := minilibx-mac
+	MLXDIR := $(HOME)/minilibx
 	MLX_FLAGS := -framework OpenGL -framework AppKit
 else ifeq ($(UNAME),Linux)
 	MLXDIR := minilibx-linux

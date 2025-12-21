@@ -49,9 +49,9 @@ static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_rang
 
 static bool	bounding_sphere(const void *s, t_range range, t_aabb *output_box)
 {
-	t_sphere	*self;
+	const t_sphere	*self;
 
-	self = (t_sphere *)s;
+	self = (const t_sphere *)s;
 	(void)range;
 	*output_box = construct_aabb(sub_vec(self->center, constant_vec(self->radius)), \
 							add_vec(self->center, constant_vec(self->radius)));
@@ -69,6 +69,7 @@ t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 	sphere.hit_table.random = random_sphere;
 	sphere.center = cen;
 	sphere.radius = r;
+	sphere.hit_table.bounding_box(&sphere, construct_range(HIT_T_MIN, INFINITY), &sphere.hit_table.aabb);
 	return (sphere);
 }
 
