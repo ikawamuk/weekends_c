@@ -35,15 +35,18 @@ int	set_object(t_hit_table **node, t_list *line_lst)
 
 static bool	is_object(char *line)
 {
-	static const char	*object_list[2] = {
-		"sp", NULL
+	static const char	*object_list[3] = {
+		"sp", "L", NULL
+	};
+	static const size_t	object_len[2] = {
+		2, 1
 	};
 	size_t	i;
 
 	i = 0;
 	while (object_list[i])
 	{
-		if (ft_strncmp(line, object_list[i], 2) == 0)
+		if (ft_strncmp(line, object_list[i], object_len[i]) == 0)
 			return (true);
 		i++;
 	}
