@@ -165,6 +165,14 @@ t_vec3 reflect(t_vec3 v, t_vec3 n)
 	return (sub_vec(v, scal_mul_vec(n, 2 * dot(v, n))));
 }
 
+t_vec3	refract(t_vec3 uv, t_vec3 n, double refractive_ratio)
+{
+	double	cos_theta = dot(negative_vec(uv), n);
+	t_vec3	r_out_parallel = scal_mul_vec(add_vec(uv, scal_mul_vec(n, cos_theta)), refractive_ratio);
+	t_vec3	r_out_perp = scal_mul_vec(n, -sqrt(1.0 - length_squared_vec(r_out_parallel)));
+	return (add_vec(r_out_parallel, r_out_perp));
+}
+
 t_color	construct_color(double e0, double e1, double e2)
 {
 	t_color	color;
