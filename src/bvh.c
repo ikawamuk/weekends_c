@@ -29,8 +29,6 @@ t_hit_node	*gen_bvh(t_bvh_info *objects, size_t start, size_t end)
 	comparator = get_random_comp();
 	if (object_span == 0 || object_span == 1)
 		*node = construct_bvh(objects, start, object_span, comparator);
-	if (end - start != 0)
-		node->hit_table = gen_bvh_hit_table(node);
 	if (2 <= object_span)
 	{
 		sort_bvh_info(objects, start, end, comparator);
@@ -38,6 +36,7 @@ t_hit_node	*gen_bvh(t_bvh_info *objects, size_t start, size_t end)
 		node->lhs = (t_hit_table *)gen_bvh(objects, start, mid);
 		node->rhs = (t_hit_table *)gen_bvh(objects, mid, end);
 	}
+	node->hit_table = gen_bvh_hit_table(node);
 	return (node);
 }
 
@@ -47,18 +46,18 @@ t_hit_node	construct_bvh(t_bvh_info *objects, size_t start, size_t object_span, 
 
 	if (object_span == 0)
 	{
-		node.hit_table = objects[start].data;
-		return (node);
+		node.lhs = objects[start].data;
+		node.rhs = objects[start].data;
 	}
 	if (comparator(&objects[start], &objects[start + 1]))
 	{
 		node.lhs = objects[start].data;
-		node.lhs = objects[start + 1].data;
+		node.rhs = objects[start + 1].data;
 	}
 	else
 	{
 		node.lhs = objects[start + 1].data;
-		node.lhs = objects[start].data;
+		node.rhs = objects[start].data;
 	}
 	return (node);
 }
