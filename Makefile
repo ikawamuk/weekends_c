@@ -31,10 +31,12 @@ SRCFILES =		main.c \
 				validate_ambient.c \
 				validate_camera.c \
 				validate_sphere.c \
+				validate_light.c \
 				bvh_info.c \
 				bvh.c \
 				range.c \
 				set_object.c \
+				set_light.c \
 				aabb.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))

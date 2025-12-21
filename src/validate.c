@@ -5,6 +5,7 @@
 
 int			validate_ambient(char *line);
 int			validate_camera(char *line);
+int			validate_light(char *line);
 int			validate_sphere(char *line);
 static int	distribute_validate(char *line);
 void		err_distribute(void);
@@ -28,8 +29,8 @@ static int	distribute_validate(char *line)
 		return (validate_ambient(line + 1));
 	if (*line == 'C')
 		return (validate_camera(line + 1));
-	// if (*line == 'L')
-	// 	return (validate_light);
+	if (*line == 'L')
+		return (validate_light(line + 1));
 	if (ft_strncmp(line, "sp", 2) == 0)
 		return (validate_sphere(line + 2));
 	err_distribute();

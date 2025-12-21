@@ -6,7 +6,8 @@
 #include <stdio.h>
 
 int				validate(t_list *line_lst);
-int				set_objects(t_hit_table **node, t_list *line_lst);
+int				set_light(t_hit_table_list *lights, t_list *line_lst);
+int				set_object(t_hit_table **node, t_list *line_lst);
 static int		read_rt(t_list **line_lst, const char *rt_file);
 static int		check_file_name(const char *rt_file);
 static void		err_file_name(void);
@@ -25,7 +26,9 @@ int	set_world(t_world *world, const char *rt_file)
 	ft_bzero(world, sizeof(t_world));
 	world->camera = set_camera(line_lst);
 	world->back_ground = set_back_ground(line_lst);
-	if (set_objects(&world->node, line_lst))
+	if (set_object(&world->node, line_lst))
+		return (ft_lstclear(&line_lst, free), EXIT_FAILURE);
+	if (set_light(&world->lights, line_lst))
 		return (ft_lstclear(&line_lst, free), EXIT_FAILURE);
 	ft_lstclear(&line_lst, free);
 	return (EXIT_SUCCESS);

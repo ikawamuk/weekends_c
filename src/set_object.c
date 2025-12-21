@@ -1,5 +1,3 @@
-#include "material.h"
-#include "sphere.h"
 #include "libft.h"
 #include "rt_utils.h"
 #include "lambertian.h"
@@ -12,7 +10,7 @@
 static bool		is_object(char *line);
 static size_t	count_object_num(t_list *line_ptr);
 
-int	set_objects(t_hit_table **node, t_list *line_lst)
+int	set_object(t_hit_table **node, t_list *line_lst)
 {
 	t_bvh_info	*object_array;
 	size_t		array_size;

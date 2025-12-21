@@ -6,12 +6,14 @@
 #include "color.h"
 #include "vec3.h"
 #include "range.h"
+#include "light.h"
 #include "rt_utils.h"
 #include "libft.h"
 #include <stddef.h>
 
 static t_hit_table	*get_object(char *line);
 static t_sphere		*get_sphere_data(char *line);
+static t_sphere		*get_light_data(char *line);
 
 /*
 @brief .rtファイルの一行からhit_table情報を作成する関数
@@ -82,6 +84,8 @@ static t_hit_table	*get_object(char *line)
 {
 	if (ft_strncmp("sp", line, 2) == 0)
 		return ((t_hit_table *)get_sphere_data(line + 2));
+	if (*line == 'L')
+		return ((t_hit_table *)get_light_data(line + 1));
 	return (NULL);
 }
 
@@ -101,4 +105,23 @@ static t_sphere	*get_sphere_data(char *line)
 	color = construct_color(color.x, color.y, color.z);
 	mat_ptr = (t_material *)gen_lambertian(color);
 	return (gen_sphere(point, radius, mat_ptr));
+}
+
+static t_sphere	*get_light_data(char *line)
+{
+	t_point3	point;
+	t_color		color;
+	double		brightness_ratio;
+	t_material	*mat_ptr;
+
+	skip_spaces(&line);
+	point = get_vec(&line);
+	skip_spaces(&line);
+	brightness_ratio = ft_strtod(line, &line);
+	skip_spaces(&line);
+	color = get_vec(&line);
+	color = construct_color(color.x, color.y, color.z);
+	color = scal_mul_vec(color, brightness_ratio);
+	mat_ptr = (t_material *)gen_light(color);
+	return (gen_sphere(point, 1.0, mat_ptr));
 }
