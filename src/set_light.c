@@ -37,28 +37,16 @@ static bool	is_light(char *line)
 	return (*line == 'L');
 }
 
+t_sphere	*get_light_data(char *line);
+
 static t_hit_table_node	*add_light(t_hit_table_node *hit_table, char *line)
 {
-	t_point3			point;
-	double				brightness_ratio;
-	t_color				color;
-	t_material			*mat_ptr;
 	t_hit_table_node	*new_node;
 
 	new_node = calloc(1, sizeof(t_hit_table_node));
 	if (!new_node)
 		return (NULL);
 	hit_table->next = new_node;
-	line++;
-	skip_spaces(&line);
-	point = get_vec(&line);
-	skip_spaces(&line);
-	brightness_ratio = ft_strtod(line, &line);
-	skip_spaces(&line);
-	color = get_vec(&line);
-	color = construct_color(color.x, color.y, color.z);
-	color = scal_mul_vec(color, brightness_ratio);
-	mat_ptr = (t_material *)gen_light(color);
-	new_node->data = (t_hit_table *)gen_sphere(point, LIGHT_RADIUS, mat_ptr);
+	new_node->data = (t_hit_table *)get_light_data(line + 1);
 	return (new_node);
 }

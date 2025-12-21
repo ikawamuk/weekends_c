@@ -13,7 +13,7 @@
 
 static t_hit_table	*get_object(char *line);
 static t_sphere		*get_sphere_data(char *line);
-static t_sphere		*get_light_data(char *line);
+t_sphere			*get_light_data(char *line);
 
 /*
 @brief .rtファイルの一行からhit_table情報を作成する関数
@@ -107,7 +107,7 @@ static t_sphere	*get_sphere_data(char *line)
 	return (gen_sphere(point, radius, mat_ptr));
 }
 
-static t_sphere	*get_light_data(char *line)
+t_sphere	*get_light_data(char *line)
 {
 	t_point3	point;
 	t_color		color;
@@ -123,5 +123,5 @@ static t_sphere	*get_light_data(char *line)
 	color = construct_color(color.x, color.y, color.z);
 	color = scal_mul_vec(color, brightness_ratio);
 	mat_ptr = (t_material *)gen_light(color);
-	return (gen_sphere(point, 1.0, mat_ptr));
+	return (gen_sphere(point, LIGHT_RADIUS, mat_ptr));
 }
