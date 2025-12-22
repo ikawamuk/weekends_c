@@ -67,6 +67,7 @@ t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 	sphere.hit_table.mat_ptr = mat_ptr;
 	sphere.hit_table.pdf_value = pdf_value_sphere;
 	sphere.hit_table.random = random_sphere;
+	sphere.hit_table.clear = clear_primitive;
 	sphere.center = cen;
 	sphere.radius = r;
 	sphere.hit_table.bounding_box(&sphere, construct_range(HIT_T_MIN, INFINITY), &sphere.hit_table.aabb);

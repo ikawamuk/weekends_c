@@ -1,5 +1,6 @@
 #include "define.h"
 #include "cylinder.h"
+#include "range.h"
 #include <stdlib.h> // malloc
 
 bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self, const t_ray ray, double t)
@@ -129,6 +130,34 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range ran
 	return (hit_anything);
 }
 
+bool	bounding_cylinder(const void *s, t_range range, t_aabb *output_box)
+{
+	const t_cylinder	*self = (const t_cylinder *)s;
+	// それぞれの軸方向の広がり
+	t_vec3		delta;
+	// 円柱の天板中心座標
+	t_point3	top_c;
+	t_point3	_min;
+	t_point3	_max;
+
+	// r * √(1 - sinθ)
+	// cosθ = direct.x
+	// θはx軸と軸ベクトルのなす角
+	delta.x = self->radius * sqrt(1 - self->direct.x * self->direct.x);
+	delta.y = self->radius * sqrt(1 - self->direct.y * self->direct.y);
+	delta.z = self->radius * sqrt(1 - self->direct.z * self->direct.z);
+	top_c = add_vec(self->center, scal_mul_vec(self->direct, self->height));
+	(void)range;
+	_min.x = fmin(self->center.x, top_c.x) - delta.x;
+	_min.y = fmin(self->center.y, top_c.y) - delta.y;
+	_min.z = fmin(self->center.z, top_c.z) - delta.z;
+	_max.x = fmax(self->center.x, top_c.x) - delta.x;
+	_max.y = fmax(self->center.y, top_c.y) - delta.y;
+	_max.z = fmax(self->center.z, top_c.z) - delta.z;
+	*output_box = construct_aabb(_min, _max);
+	return (true);
+}
+
 t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr)
 {
 	t_cylinder	cylinder;
@@ -139,6 +168,10 @@ t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, cons
 	cylinder.radius = r;
 	cylinder.hit_table.mat_ptr = mat_ptr;
 	cylinder.hit_table.hit = hit_cylinder;
+	cylinder.hit_table.bounding_box = bounding_cylinder;
+	bounding_cylinder(&cylinder, construct_range(HIT_T_MIN, INFINITY), \
+	& cylinder.hit_table.aabb);
+	cylinder.hit_table.clear = clear_primitive;
 	return (cylinder);
 }
 

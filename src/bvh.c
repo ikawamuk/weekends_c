@@ -3,13 +3,12 @@
 #include "rt_utils.h"
 #include "libft.h"
 #include <stddef.h>
-
 #include <stdio.h>
 
 typedef bool (*comp)(const t_bvh_info *, const t_bvh_info *);
 
 // static t_hit_node	*add_new_node(t_bvh_info *object);
-t_hit_node			construct_bvh(t_bvh_info *objects, size_t start, size_t object_span, comp comparator);
+t_hit_node			construct_bvh(t_bvh_info *bvh_info_array, size_t start, comp comparator);
 static t_hit_table	construct_bvh_htl(const t_hit_node *node);
 static comp			get_random_comp(void);
 static bool			box_x_compare(const t_bvh_info *a, const t_bvh_info *b);
@@ -17,48 +16,44 @@ static bool			box_y_compare(const t_bvh_info *a, const t_bvh_info *b);
 static bool			box_z_compare(const t_bvh_info *a, const t_bvh_info *b);
 static bool			hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_range range);
 
-t_hit_node	*gen_bvh(t_bvh_info *objects, size_t start, size_t end)
+t_hit_table	*gen_bvh(t_bvh_info *bvh_info_array, size_t start, size_t end)
 {
 	t_hit_node	*node;
 	size_t		object_span = end - start;
 	comp		comparator;
 
+	if (object_span == 0)
+		return (bvh_info_array->data);
 	node = ft_calloc(1, sizeof(t_hit_node));
 	if (!node)
 		return (NULL);
 	comparator = get_random_comp();
-	if (object_span == 0 || object_span == 1)
-		*node = construct_bvh(objects, start, object_span, comparator);
+	if (object_span == 1)
+		*node = construct_bvh(bvh_info_array, start, comparator);
 	else
 	{
-		sort_bvh_info(objects, start, end, comparator);
+		sort_bvh_info(bvh_info_array, start, end, comparator);
 		size_t	mid = start + (object_span) / 2;
-		node->lhs = (t_hit_table *)gen_bvh(objects, start, mid);
-		node->rhs = (t_hit_table *)gen_bvh(objects, mid, end);
+		node->lhs = gen_bvh(bvh_info_array, start, mid);
+		node->rhs = gen_bvh(bvh_info_array, mid, end);
 	}
 	node->hit_table = construct_bvh_htl(node);
-	return (node);
+	return ((t_hit_table *)node);
 }
 
-t_hit_node	construct_bvh(t_bvh_info *objects, size_t start, size_t object_span, comp comparator)
+t_hit_node	construct_bvh(t_bvh_info *bvh_info_array, size_t start, comp comparator)
 {
 	t_hit_node	node;
 
-	if (object_span == 0)
+	if (comparator(&bvh_info_array[start], &bvh_info_array[start + 1]))
 	{
-		node.lhs = objects[start].data;
-		node.rhs = objects[start].data;
-		return (node);
-	}
-	if (comparator(&objects[start], &objects[start + 1]))
-	{
-		node.lhs = objects[start].data;
-		node.rhs = objects[start + 1].data;
+		node.lhs = bvh_info_array[start].data;
+		node.rhs = bvh_info_array[start + 1].data;
 	}
 	else
 	{
-		node.lhs = objects[start + 1].data;
-		node.rhs = objects[start].data;
+		node.lhs = bvh_info_array[start + 1].data;
+		node.rhs = bvh_info_array[start].data;
 	}
 	return (node);
 }
@@ -141,28 +136,20 @@ static bool	hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_range r
 	return (hit_left || hit_right);
 }
 
-bool	clear_bvh(t_hit_node *node)
+void	clear_bvh(t_hit_table *self)
 {
-	t_hit_table	*table;
-	bool		is_same;
-	bool		is_object;
+	t_hit_node	*node;
 
-	if (!node)
-		return (false);
-	is_same = false;
-	is_object = false;
-	if (node->lhs == node->rhs)
-		is_same = true;
-	is_object = (clear_bvh((t_hit_node *)node->lhs) == false);
-	node->lhs = NULL;
-	if (is_same == false)
-		clear_bvh((t_hit_node *)node->rhs);
-	node->rhs = NULL;
-	table = (t_hit_table *)node;
-	if (is_object)
-		free(table->mat_ptr);
-	table->mat_ptr = NULL;
-	free(table);
-	table = NULL;
-	return (true);
+	node = (t_hit_node *)self;
+	if (node->lhs)
+	{
+		node->lhs->clear(node->lhs);
+		node->lhs = NULL;
+	}
+	if (node->rhs)
+	{
+		node->rhs->clear(node->rhs);
+		node->rhs = NULL;
+	}
+	free(self);
 }

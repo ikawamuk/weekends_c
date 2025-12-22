@@ -105,7 +105,7 @@ static t_color	set_back_ground(t_list *line_lst)
 void	clear_world(t_world *world)
 {
 	clear_htl(world->lights);
-	clear_bvh((t_hit_node *)world->node);
+	clear_bvh(world->node);
 	world->node = NULL;
 }
 

@@ -16,6 +16,7 @@ SRCFILES =		main.c \
 				cylinder.c \
 				sphere.c \
 				plane.c \
+				hit_table.c \
 				hit_table_list.c \
 				camera.c \
 				rt_utils.c \
@@ -30,6 +31,7 @@ SRCFILES =		main.c \
 				validate.c \
 				validate_ambient.c \
 				validate_camera.c \
+				validate_cylinder.c \
 				validate_sphere.c \
 				validate_light.c \
 				bvh_info.c \

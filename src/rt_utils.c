@@ -1,6 +1,7 @@
 #include "rt_utils.h"
 #include "libft.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 static uint64_t	random_uint64(void)
 {
@@ -64,6 +65,41 @@ int	skip_digit(char **ptr)
 }
 
 /*
+@brief validateする際にvecの情報が正しく入力されているか確認する関数
+@param is	IS_COLORのとき、0 - 255の範囲内に収まっているか確認
+@param is	IS_UNITのとき、ベクトルの長さが1かどうか確認
+@param is	IS_POINTのとき、正しい座標かどうか確認
+*/
+int	skip_vec(char **ptr, t_is is)
+{
+	size_t	i;
+	double	d_tmp;
+
+	i = 0;
+	d_tmp = 0;
+	while (i++ < 3)
+	{
+		if (is == IS_UNIT)
+			d_tmp += pow2(ft_strtod(*ptr, ptr));
+		else
+			d_tmp = ft_strtod(*ptr, ptr);
+		if (is == IS_COLOR)
+		{
+			if (d_tmp < 0 || 255 < d_tmp)
+				return (EXIT_FAILURE);
+		}
+		if (i != 3 && *((*ptr)++) != ',')
+			return (EXIT_FAILURE);
+	}
+	if (is == IS_UNIT)
+	{
+		if (d_tmp < 0.999 || 1.001 < d_tmp)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+/*
 @brief 単方向リストline_lstを探索して先頭文字がwordの文字列を返す
 最後のスペースはスキップする
 */
@@ -85,3 +121,14 @@ char	*get_word_line(t_list *line_lst, const char *word)
 	return (line);
 }
 
+/*
+@brief validate用の関数
+@brief lineの数字が[min,max]の範囲内のときtrue
+*/
+bool	skip_range(char **line, double min, double max)
+{
+	double	d_tmp;
+
+	d_tmp = ft_strtod(*line, line);
+	return (min <= d_tmp && d_tmp <= max);
+}

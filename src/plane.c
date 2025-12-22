@@ -27,6 +27,7 @@ t_plane	construct_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr)
 	t_plane	plane;
 
 	plane.hit_table.hit = hit_plane;
+	plane.hit_table.clear = clear_primitive;
 	plane.hit_table.mat_ptr = mat_ptr;
 	plane.point = p;
 	plane.normal = _normal;

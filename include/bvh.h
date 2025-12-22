@@ -7,7 +7,7 @@
 # include "range.h"
 # include <stddef.h>
 
-t_hit_node	*gen_bvh(t_bvh_info *objects, size_t start, size_t end);
-void		clear_bvh(t_hit_node *node);
+t_hit_table	*gen_bvh(t_bvh_info *objects, size_t start, size_t end);
+void		clear_bvh(t_hit_table *self);
 
 #endif

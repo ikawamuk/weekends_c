@@ -6,6 +6,7 @@
 int			validate_ambient(char *line);
 int			validate_camera(char *line);
 int			validate_light(char *line);
+int			validate_cylinder(char *line);
 int			validate_sphere(char *line);
 static int	distribute_validate(char *line);
 void		err_distribute(void);
@@ -33,13 +34,15 @@ static int	distribute_validate(char *line)
 		return (validate_light(line + 1));
 	if (ft_strncmp(line, "sp", 2) == 0)
 		return (validate_sphere(line + 2));
+	if (ft_strncmp(line, "cy", 2) == 0)
+		return (validate_cylinder(line + 2));
 	err_distribute();
 	return (EXIT_FAILURE);
 }
 
 void	err_distribute(void)
 {
-	static char	*msg = "KEEP .rt's FORMAT CORRECTLY.";
+	static char	*msg = "SET .rt's FORMAT CORRECTLY.";
 
 	ft_putendl_fd(msg, STDERR_FILENO);
 }

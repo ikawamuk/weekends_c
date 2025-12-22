@@ -1,6 +1,7 @@
 #include "bvh_info.h"
 #include "aabb.h"
 #include "sphere.h"
+#include "cylinder.h"
 #include "lambertian.h"
 #include "material.h"
 #include "color.h"
@@ -14,6 +15,7 @@
 static t_hit_table	*get_object(char *line);
 static t_sphere		*get_sphere_data(char *line);
 t_sphere			*get_light_data(char *line);
+static t_cylinder	*get_cylinder_data(char *line);
 
 /*
 @brief .rtファイルの一行からhit_table情報を作成する関数
@@ -84,6 +86,8 @@ static t_hit_table	*get_object(char *line)
 {
 	if (ft_strncmp("sp", line, 2) == 0)
 		return ((t_hit_table *)get_sphere_data(line + 2));
+	if (ft_strncmp("cy", line, 2) == 0)
+		return ((t_hit_table *)get_cylinder_data(line + 2));
 	if (*line == 'L')
 		return ((t_hit_table *)get_light_data(line + 1));
 	return (NULL);
@@ -124,4 +128,28 @@ t_sphere	*get_light_data(char *line)
 	color = scal_mul_vec(color, brightness_ratio);
 	mat_ptr = (t_material *)gen_light(color);
 	return (gen_sphere(point, LIGHT_RADIUS, mat_ptr));
+}
+
+static t_cylinder	*get_cylinder_data(char *line)
+{
+	t_point3	center;
+	t_vec3		direct;
+	t_color		color;
+	double		height;
+	double		radius;
+	t_material	*mat_ptr;
+
+	skip_spaces(&line);
+	center = get_vec(&line);
+	skip_spaces(&line);
+	direct = get_vec(&line);
+	skip_spaces(&line);
+	height = ft_strtod(line, &line);
+	skip_spaces(&line);
+	radius = ft_strtod(line, &line) * 0.5; // 入力はdiameter
+	skip_spaces(&line);
+	color = get_vec(&line);
+	color = construct_color(color.x, color.y, color.z);
+	mat_ptr = (t_material *)gen_lambertian(color);
+	return (gen_cylinder(center, direct, radius, height, mat_ptr));
 }
