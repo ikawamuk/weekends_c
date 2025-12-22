@@ -42,3 +42,16 @@ void	get_sphere_uv(t_vec3 p, double *u, double *v)
 	*v = (theta + M_PI / 2) / M_PI;
 	return ;
 }
+
+void	get_plane_uv(t_vec3 normal, t_point3 base, t_point3 p, double *u, double *v)
+{
+	t_vec3				onb[3];
+	static const double scale = 1.5;
+
+	build_onb(onb, normal);
+	t_point3	d = sub_vec(p, base);
+	*u = dot(d, onb[0]) * scale;
+	*v = dot(d, onb[1]) * scale;
+	*u = *u - floor(*u);
+	*v = *v - floor(*v);
+}

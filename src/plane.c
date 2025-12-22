@@ -1,6 +1,7 @@
 #include "plane.h"
 #include "define.h"
 #include <stdlib.h>
+#include "util.h"
 
 bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
 {
@@ -19,6 +20,7 @@ bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
 	rec->p = at_ray(ray, rec->t);
 	rec->normal = normalize(self->normal); // オブジェクトの法線の向きは固定
 	rec->mat_ptr = self->hit_table.mat_ptr;
+	get_plane_uv(rec->normal, self->point, rec->p, &rec->u, &rec->v);
 	return (true);
 }
 
