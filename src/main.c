@@ -12,6 +12,7 @@ typedef struct s_hook_var
 }	t_hook_var;
 
 int		set_world(t_world *world, const char *rt_file);
+void	clear_world(t_world *world);
 void	draw(const t_world *world, void **mlx, t_img *img, bool ppm_mode);
 
 void	initialize(t_hook_var *var, t_img *img)
@@ -28,6 +29,7 @@ int close_window(void *param)
 
 	if (vars->win)
 		mlx_destroy_window(vars->mlx, vars->win);
+	free(vars->mlx);
 	exit(0);
 	return (0);
 }
@@ -47,6 +49,7 @@ int	main(int argc, char *argv[])
 	if (!ppm_mode)
 		initialize(&var, &img);
 	draw(&world, &var.mlx, &img, ppm_mode);
+	clear_world(&world);
 	if (ppm_mode)
 		return (0);
 	mlx_put_image_to_window(var.mlx, var.win, img.id, 0, 0);

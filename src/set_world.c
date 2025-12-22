@@ -1,3 +1,4 @@
+#include "bvh.h"
 #include "camera.h"
 #include "fcntl.h"
 #include "world.h"
@@ -99,6 +100,13 @@ static t_color	set_back_ground(t_list *line_lst)
 	back_ground = scal_mul_vec(back_ground, lighting_ratio);
 	back_ground = construct_color(back_ground.x, back_ground.y, back_ground.z);
 	return (back_ground);
+}
+
+void	clear_world(t_world *world)
+{
+	clear_htl(world->lights);
+	clear_bvh((t_hit_node *)world->node);
+	world->node = NULL;
 }
 
 // #include "define.h"

@@ -59,8 +59,11 @@ void	clear_htl(t_hit_table_list list)
 		cur = list.head;
 		list.head = list.head->next;
 		free(cur->data->mat_ptr);
+		cur->data->mat_ptr = NULL;
 		free(cur->data);
+		cur->data = NULL;
 		free(cur);
+		cur = NULL;
 	}
 	return ;
 }

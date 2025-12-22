@@ -29,7 +29,7 @@ t_hit_node	*gen_bvh(t_bvh_info *objects, size_t start, size_t end)
 	comparator = get_random_comp();
 	if (object_span == 0 || object_span == 1)
 		*node = construct_bvh(objects, start, object_span, comparator);
-	if (2 <= object_span)
+	else
 	{
 		sort_bvh_info(objects, start, end, comparator);
 		size_t	mid = start + (object_span) / 2;
@@ -139,4 +139,30 @@ static bool	hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_range r
 		range.max = rec->t;
 	hit_right = self->rhs->hit(self->rhs, ray, rec, range);
 	return (hit_left || hit_right);
+}
+
+bool	clear_bvh(t_hit_node *node)
+{
+	t_hit_table	*table;
+	bool		is_same;
+	bool		is_object;
+
+	if (!node)
+		return (false);
+	is_same = false;
+	is_object = false;
+	if (node->lhs == node->rhs)
+		is_same = true;
+	is_object = (clear_bvh((t_hit_node *)node->lhs) == false);
+	node->lhs = NULL;
+	if (is_same == false)
+		clear_bvh((t_hit_node *)node->rhs);
+	node->rhs = NULL;
+	table = (t_hit_table *)node;
+	if (is_object)
+		free(table->mat_ptr);
+	table->mat_ptr = NULL;
+	free(table);
+	table = NULL;
+	return (true);
 }
