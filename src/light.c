@@ -24,7 +24,7 @@ t_color	emitted_light(void *s, t_hit_record rec)
 {
 	t_light	*self = s;
 	if (dot(rec.normal, rec.ray_in.direct) > 0)
-		return (construct_color(0, 0, 0));
+		return (construct_vec(0, 0, 0));
 	return (self->emit_color);
 }
 

@@ -39,7 +39,7 @@ static void	pixcel_color_loop(t_color *color_arr, const t_world *world)
 static t_color	get_pixcel_color(int x, int y, const t_world *world)
 {
 	static const double	scale = 1.0 / SAMPLES_PER_PIXCEL;
-	t_color	pixcel_color = construct_color(0, 0, 0);
+	t_color	pixcel_color = construct_vec(0, 0, 0);
 	for (int s = 0; s < SAMPLES_PER_PIXCEL; ++s)
 	{
 		double	u = (x + random_double(0, 1)) / (WINSIZE_X - 1);

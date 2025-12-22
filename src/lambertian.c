@@ -10,7 +10,7 @@ t_lambertian	construct_lambertian(t_color alb)
 	lam.material.scatter = scatter_lambertian;
 	lam.material.emitted = emitted_non_light;
 	lam.material.value_surface_pdf = lambertian_pdf;
-	lam.albedo = construct_color(alb.x, alb.y, alb.z);
+	lam.albedo = construct_vec(alb.x, alb.y, alb.z);
 	return (lam);
 }
 

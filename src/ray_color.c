@@ -20,7 +20,7 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 
 	range = construct_range(HIT_T_MIN, INFINITY);
 	if (depth >= MAX_DEPTH)
-		return (construct_color(0, 0, 0));
+		return (construct_vec(0, 0, 0));
 	if (world->node->hit(world->node, ray, &rec, range) == false)
 		return (world->back_ground);
 

@@ -61,13 +61,3 @@ static double	degrees_to_radians(const double degrees)
 	deno = 1.0f / 180.0f;
 	return (degrees * M_PI * deno);
 }
-
-t_ray	get_ray(t_camera camera, double u, double v)
-{
-	t_ray	ray;
-
-	ray = construct_ray(camera.origin, 
-		sub_vec(add_vec(camera.higher_left_corner, scal_mul_vec(camera.horizontal, u)), add_vec(scal_mul_vec(camera.vertical, v), camera.origin)));
-	// {higher_left_corner + u*horizontal}  -  {v*vertical + origin};
-	return (ray);
-}
