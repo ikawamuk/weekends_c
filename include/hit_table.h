@@ -21,6 +21,8 @@ typedef struct s_hit_record
 	t_vec3		normal;
 	t_material	*mat_ptr;
 	double		t;
+	double		u;
+	double		v;
 }	t_hit_record;
 
 typedef struct s_hit_table t_hit_table;

@@ -30,6 +30,7 @@ SRCFILES =		main.c \
 				cosine_pdf.c \
 				light_pdf.c \
 				mixture_pdf.c \
+				solid_texture.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 

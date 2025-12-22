@@ -3,20 +3,20 @@
 #include "util.h"
 #include "pdf.h"
 
-t_lambertian	construct_lambertian(t_color alb)
+t_lambertian	construct_lambertian(void *albedo_p)
 {
 	t_lambertian	lam;
 
 	lam.material.scatter = scatter_lambertian;
 	lam.material.emitted = emitted_non_light;
 	lam.material.value_surface_pdf = lambertian_pdf;
-	lam.albedo = construct_color(alb.x, alb.y, alb.z);
+	lam.albedo_p = albedo_p; // clear lambertianを実装しなきゃ！というかデストラクタですね
 	return (lam);
 }
 
+#include <stdio.h>
 /*
 @brief 1.surface_PDFを代入 2.反射率Albedoを代入
-
 */
 bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 {
@@ -26,7 +26,7 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	t_cosine_pdf	*cos_ = generate_cosine_pdf(reflect_normal);
 
 	srec->surface_pdf_ptr = cos_;
-	srec->attenuation = self->albedo;
+	srec->attenuation = self->albedo_p->texture_value(self->albedo_p, rec.u, rec.v, rec.p);
 	srec->is_specular = false;
 	return (true);
 }
@@ -44,11 +44,11 @@ double	lambertian_pdf(void *s, t_hit_record rec, t_ray scattered)
 	return (result < 0 ? 0 : result);
 }
 
-t_lambertian	*gen_lambertian(t_color alb)
+t_lambertian	*gen_lambertian(void *albedo_p)
 {
 	t_lambertian	*p = malloc(sizeof(*p));
 	if (!p)
 		return (NULL);
-	*p = construct_lambertian(alb);
+	*p = construct_lambertian(albedo_p);
 	return (p);
 }

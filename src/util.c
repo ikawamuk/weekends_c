@@ -33,3 +33,12 @@ double clamp(double x, double min, double max)
 		return max;
 	return (x);
 }
+
+void	get_sphere_uv(t_vec3 p, double *u, double *v)
+{
+	double	phi = atan2(p.z, p.x);
+	double	theta = asin(p.y)
+;	*u = 1 - (phi + M_PI) / (2 * M_PI);
+	*v = (theta + M_PI / 2) / M_PI;
+	return ;
+}
