@@ -29,9 +29,11 @@ t_vec3	random_vec(double min, double max);
 t_vec3	random_in_unit_sphere(void);
 t_vec3	random_unit_vector(void);
 t_vec3	random_cosine_direction(void);
+t_vec3	random_in_unit_disk(void);
 void	build_onb(t_vec3 onb[3], t_vec3 n);
 t_vec3	local_onb(t_vec3 onb[3], t_vec3 a);
 t_vec3	reflect(t_vec3 v, t_vec3 n);
+t_vec3	refract(t_vec3 uv, t_vec3 n, double refractive_ratio);
 
 typedef t_vec3 t_point3;
 typedef t_vec3 t_color;
