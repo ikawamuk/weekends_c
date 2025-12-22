@@ -48,6 +48,7 @@ t_hit_node	construct_bvh(t_bvh_info *objects, size_t start, size_t object_span, 
 	{
 		node.lhs = objects[start].data;
 		node.rhs = objects[start].data;
+		return (node);
 	}
 	if (comparator(&objects[start], &objects[start + 1]))
 	{
