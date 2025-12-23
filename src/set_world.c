@@ -18,7 +18,7 @@ t_world	set_world(void)
 	t_color black = construct_color(0, 0, 0);
 	t_color white = construct_color(0.73, 0.73, 0.73);
 	t_color red = construct_color(0.65, 0.05, 0.05);
-	t_color green = construct_color(0.12, 0.45, 0.15);
+	t_color green = construct_color(0.15, 0.9, 0.15);
 	t_vec3	bright = construct_vec(50, 50, 50);
 
 	// world
@@ -35,7 +35,7 @@ t_world	set_world(void)
 
 	// floor
 	t_plane	*floor = gen_plane(construct_vec(0, 0, 0), construct_vec(0, 1, 0), gen_lambertian( \
-		gen_checker_texture(gen_solid_texture(construct_color(0.3, 0.3, 0.1)), gen_solid_texture(green))));
+		gen_checker_texture(gen_solid_texture(construct_color(0.9, 0.9, 0.9)), gen_solid_texture(green))));
 
 	// ceiling
 	// t_plane	*ceiling = gen_plane(construct_vec(0, 10, 0), construct_vec(0, -1, 0), gen_lambertian(white));

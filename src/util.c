@@ -52,10 +52,11 @@ void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
 void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v)
 {
 	t_vec3	onb[3];
+	static const int unit_edge = 50; // 単位平面の辺の長さ。大きいとタイルもでかい。unit_edge / N がタイルの一辺。
 
 	build_onb(onb, normal);
-	*u = dot(offset, onb[0]) / TILE_SIZE; // u成分
-	*v = dot(offset, onb[1]) / TILE_SIZE; // v成分
+	*u = dot(offset, onb[0]) / unit_edge; // u成分
+	*v = dot(offset, onb[1]) / unit_edge; // v成分
 	*u = *u - floor(*u);
 	*v = *v - floor(*v);
 	return ;

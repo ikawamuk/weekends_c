@@ -27,8 +27,9 @@ t_checker_texture	*gen_checker_texture(void *even_texture, void *odd_texture)
 static t_color	texture_value_check(void *s, double u, double v, t_hit_record rec)
 {
 	t_checker_texture	*self = s;
-	int iu = (int)floor(u * TILE_SIZE);
-	int iv = (int)floor(v * TILE_SIZE);
+	static const int	N = 20; // 一つのマップを縦横それぞれなん分割するか。多いほど細かい。せいぜい8~30が適正なので固定値で良い
+	int iu = (int)floor(u * N); 
+	int iv = (int)floor(v * N);
 
 	if ((iu + iv) & 1)
 		return (self->odd->texture_value(self->odd, u, v, rec));
