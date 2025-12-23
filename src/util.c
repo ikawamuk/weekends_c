@@ -58,7 +58,7 @@ void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v)
 	build_onb(onb, normal);
 	*u = dot(offset, onb[0]) / unit_edge; // unit_edgeのグリッドでみたu成分
 	*v = dot(offset, onb[1]) / unit_edge; // unit_edgeのグリッドでみたv成分
-	*u = *u - floor(*u); // グリッド内の位置
+	*u = *u - floor(*u); // 整数部分を切り捨て1グリッド内の位置を取り出す[0, 1]
 	*v = *v - floor(*v);
 	return ;
 }
