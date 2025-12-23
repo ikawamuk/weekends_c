@@ -29,8 +29,10 @@ t_checker_texture	*gen_checker_texture(void *even_texture, void *odd_texture);
 typedef struct s_bump_texture
 {
 	t_texture	texture;
+	t_color		color;
+	double		(*height)(double u, double v);
 }	t_bump_texture;
 
-t_bump_texture	*gen_bump_texture();
+t_bump_texture	*gen_bump_texture(t_color color);
 
 #endif

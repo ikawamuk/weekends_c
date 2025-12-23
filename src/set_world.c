@@ -14,7 +14,7 @@ t_world	set_world(void)
 {
 	// color
 	t_color black = construct_color(0, 0, 0);
-	t_color white = construct_color(0.73, 0.73, 0.73);
+	t_color white = construct_color(0.62, 0.84, 0.91);
 	t_color red = construct_color(0.65, 0.05, 0.05);
 	t_color green = construct_color(0.15, 0.9, 0.15);
 	// t_vec3	bright = construct_vec(50, 50, 50);
@@ -27,13 +27,14 @@ t_world	set_world(void)
 	world.lights = construct_light_list();
 
 	// wall
-	t_plane	*wall_front = gen_plane(construct_vec(0, 0, -15), construct_vec(0, 0, 1), gen_lambertian(gen_solid_texture(white)));
-	t_plane	*wall_left = gen_plane(construct_vec(6, 0, 0), construct_vec(-1, 0, 0), gen_lambertian(gen_solid_texture(red)));
+	t_plane	*wall_frontA = gen_plane(construct_vec(0, 0, -16), construct_vec(0, 0, 1), gen_lambertian(gen_bump_texture(white)));
+	// t_plane	*wall_frontB = gen_plane(construct_vec(0, 0, -15), construct_vec(0, 0, 1), gen_dielectric(1.5));
+	t_plane	*wall_left = gen_plane(construct_vec(6, 0, 0), construct_vec(-1, 0, 0), gen_lambertian(gen_checker_texture(gen_solid_texture(red), gen_solid_texture(green))));
 	// t_plane	*wall_right = gen_plane(construct_vec(-6, 0, 0), construct_vec(1, 0, 0), gen_lambertian(gen_solid_texture(green)));
 
 	// floor
-	t_plane	*floor = gen_plane(construct_vec(0, 0, 0), construct_vec(0, 1, 0), gen_lambertian( \
-		gen_checker_texture(gen_solid_texture(construct_color(0.9, 0.9, 0.9)), gen_solid_texture(green))));
+	t_plane	*floorA = gen_plane(construct_vec(0, 0, 0), construct_vec(0, 1, 0), gen_dielectric(1.3));
+	t_plane	*floorB = gen_plane(construct_vec(0, -01, 0), construct_vec(0, 1, 0), gen_lambertian(gen_bump_texture(white)));
 
 	// ceiling
 	// t_plane	*ceiling = gen_plane(construct_vec(0, 10, 0), construct_vec(0, -1, 0), gen_lambertian(white));
@@ -43,17 +44,19 @@ t_world	set_world(void)
 	// t_sphere	*sphereB = gen_sphere(construct_vec(-3, 2, -13), 2, gen_metal(construct_color(1, 1, 1), 0.01));
 	// t_sphere	*sphereC = gen_sphere(construct_vec(-2, 1, -5), 1, gen_dielectric(1.5));
 	// t_sphere	*sphereD = gen_sphere(construct_vec(1.5, 0.5, -5), -0.5, gen_dielectric(1.5));
-	t_sphere	*sphereE = gen_sphere(construct_vec(0, 4, -12), 4, gen_lambertian(gen_bump_texture()));
+	t_sphere	*sphereE = gen_sphere(construct_vec(0, 4, -12), 4, gen_lambertian(gen_bump_texture(red)));
 
 	// light
 	// t_sphere	*lightA = gen_sphere(construct_vec(-4, 9, -10), 0.5, gen_light(bright));
-	t_sphere	*lightB = gen_sphere(construct_vec(-2, 9, 10), 5, gen_light(construct_vec(10, 10, 10)));
+	t_sphere	*lightB = gen_sphere(construct_vec(-2, 2, 10), 3, gen_light(construct_vec(10, 10, 10)));
 
-	add_htl(&world.objects, wall_front);
+	add_htl(&world.objects, wall_frontA);
+	// add_htl(&world.objects, wall_frontB);
 	add_htl(&world.objects, wall_left);
 	// add_htl(&world.objects, wall_right);
 	// add_htl(&world.objects, wall_back);
-	add_htl(&world.objects, floor);
+	add_htl(&world.objects, floorA);
+	add_htl(&world.objects, floorB);
 	// add_htl(&world.objects, ceiling);
 	// add_htl(&world.objects, lightA);
 	add_htl(&world.objects, lightB);
