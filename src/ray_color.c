@@ -2,10 +2,10 @@
 #include "ray.h"
 #include "hit_table_list.h"
 #include "material.h"
-#include "util.h"
+#include "rt_utils.h"
 #include "world.h"
 #include "pdf.h"
-
+#include "bvh.h"
 
 #include <stdio.h>
 static bool	killed_by_russian_roulette(t_color *attenuation);
@@ -13,16 +13,16 @@ static t_color caluculate_diffused_color(const t_world *world, t_hit_record rec,
 
 /*
 @brief Color_i = Albedo * Color_o * surface_pdf / sampling_pdf; 
-@brief and generate scatter ray
 */
 t_color ray_color(t_ray ray, const t_world *world, int depth)
 {
 	t_hit_record	rec;
+	t_range			range;
 
-	
+	range = construct_range(HIT_T_MIN, INFINITY);
 	if (depth >= MAX_DEPTH)
-		return (construct_color(0, 0, 0));
-	if (!world->objects.hit_table.hit(&world->objects, ray, &rec))
+		return (construct_vec(0, 0, 0));
+	if (!world->node || world->node->hit(world->node, ray, &rec, range) == false)
 		return (world->back_ground);
 	
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);

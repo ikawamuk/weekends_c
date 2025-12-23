@@ -2,6 +2,9 @@
 !*/
 !minilibx-linux/**
 !minilibx-mac/**
+!libft/Makefile
+!libft/srcs
+!libft/includes
 !include/*.h
 !src/*.c
 !Makefile

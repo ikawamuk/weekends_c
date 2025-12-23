@@ -1,5 +1,6 @@
 #include "define.h"
 #include "cylinder.h"
+#include "range.h"
 #include <stdlib.h> // malloc
 
 bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self, const t_ray ray, double t)
@@ -14,6 +15,7 @@ bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self,
 	h = dot(w, self->direct);
 	if (h < 0 || self->height < h)
 		return (false);
+	rec->t = t;
 	rec->ray_in = ray;
 	rec->p = _p;
 	rec->mat_ptr = self->hit_table.mat_ptr;
@@ -62,7 +64,7 @@ bool	check_cap(const t_cylinder *self, const t_ray ray, t_point3 cap_center, t_v
 	return (false);
 }
 
-bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
+bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
 {
 	const t_cylinder	*self = (t_cylinder *)s;
 	t_vec3				abc;
@@ -70,7 +72,6 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 	double				root;
 	double				solution;
 	bool				hit_anything = false;
- 	double				closest_t = INFINITY;
 
 	set_variables(self, &ray, &abc);	
 	discriminant = abc.y * abc.y - abc.x * abc.z;
@@ -78,23 +79,23 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 	{
 		root = sqrt(discriminant);
 		solution = (-abc.y - root) / abc.x;
-		if (HIT_T_MIN < solution)
+		if (check_range(solution, range))
 		{
 			if (check_and_set_cylinder_hitrecord(rec, self, ray, solution))
 			{
 				hit_anything = true;
-				closest_t = solution;
+				range.max = solution;
 			}
 		}
 		if (!hit_anything)
 		{
 			solution = (-abc.y + root) / abc.x;
-			if (HIT_T_MIN < solution)
+			if (check_range(solution, range))
 			{
 				if (check_and_set_cylinder_hitrecord(rec, self, ray, solution))
 				{
 					hit_anything = true;
-					closest_t = solution;
+					range.max = solution;
 				}
 			}
 		}
@@ -103,7 +104,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 	t_vec3	cap_normal = negative_vec(self->direct);
 	if (check_cap(self, ray, self->center, cap_normal, &t_cap))
 	{
-		if (t_cap < closest_t)
+		if (check_range(t_cap, range))
 		{
 			rec->t = t_cap;
 			rec->ray_in = ray;
@@ -111,13 +112,13 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 			rec->normal = normalize(cap_normal);
 			rec->mat_ptr = self->hit_table.mat_ptr;
 			hit_anything = true;
-			closest_t = t_cap;
+			range.max = t_cap;
 		}
 	}
 	t_point3	top_center = add_vec(self->center, scal_mul_vec(self->direct, self->height));
 	if (check_cap(self, ray, top_center, self->direct, &t_cap))
 	{
-		if (t_cap < closest_t)
+		if (check_range(t_cap, range))
 		{
 			rec->t = t_cap;
 			rec->ray_in = ray;
@@ -130,6 +131,31 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec)
 	return (hit_anything);
 }
 
+static t_aabb	construct_cylinder_aabb(const t_cylinder *self)
+{
+	// それぞれの軸方向の広がり
+	t_vec3		delta;
+	// 円柱の天板中心座標
+	t_point3	top_c;
+	t_point3	_min;
+	t_point3	_max;
+
+	// r * √(1 - sinθ)
+	// cosθ = direct.x
+	// θはx軸と軸ベクトルのなす角
+	delta.x = self->radius * sqrt(1 - self->direct.x * self->direct.x);
+	delta.y = self->radius * sqrt(1 - self->direct.y * self->direct.y);
+	delta.z = self->radius * sqrt(1 - self->direct.z * self->direct.z);
+	top_c = add_vec(self->center, scal_mul_vec(self->direct, self->height));
+	_min.x = fmin(self->center.x, top_c.x) - delta.x;
+	_min.y = fmin(self->center.y, top_c.y) - delta.y;
+	_min.z = fmin(self->center.z, top_c.z) - delta.z;
+	_max.x = fmax(self->center.x, top_c.x) - delta.x;
+	_max.y = fmax(self->center.y, top_c.y) - delta.y;
+	_max.z = fmax(self->center.z, top_c.z) - delta.z;
+	return (construct_aabb(_min, _max));
+}
+
 t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr)
 {
 	t_cylinder	cylinder;
@@ -140,6 +166,9 @@ t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, cons
 	cylinder.radius = r;
 	cylinder.hit_table.mat_ptr = mat_ptr;
 	cylinder.hit_table.hit = hit_cylinder;
+	cylinder.hit_table.clear = clear_primitive;
+	cylinder.hit_table.have_aabb = true;
+	cylinder.hit_table.aabb = construct_cylinder_aabb(&cylinder);
 	return (cylinder);
 }
 

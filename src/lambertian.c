@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "lambertian.h"
-#include "util.h"
+#include "rt_utils.h"
 #include "pdf.h"
 
 t_lambertian	construct_lambertian(t_color alb)
@@ -10,7 +10,7 @@ t_lambertian	construct_lambertian(t_color alb)
 	lam.material.scatter = scatter_lambertian;
 	lam.material.emitted = emitted_non_light;
 	lam.material.value_surface_pdf = lambertian_pdf;
-	lam.albedo = construct_color(alb.x, alb.y, alb.z);
+	lam.albedo = construct_vec(alb.x, alb.y, alb.z);
 	return (lam);
 }
 

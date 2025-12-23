@@ -1,5 +1,6 @@
 #include "vec3.h"
-#include "util.h"
+#include "rt_utils.h"
+#include "libft.h"
 
 t_vec3	construct_vec(double e0, double e1, double e2)
 {
@@ -176,6 +177,38 @@ t_vec3 reflect(t_vec3 v, t_vec3 n)
 	return (sub_vec(v, scal_mul_vec(n, 2 * dot(v, n))));
 }
 
+t_vec3	constant_vec(double d)
+{
+	return (construct_vec(d, d, d));
+}
+
+/*
+@brief イテレータ用
+*/
+double	axis_vec(t_vec3 vec, int axis)
+{
+	if (axis == 0)
+		return (vec.x);
+	else if (axis == 1)
+		return (vec.y);
+	else if (axis == 2)
+		return (vec.z);
+	return (NAN);
+}
+
+/*
+@brief 文字列からベクトルへ変換しつつポインタを進める関数
+*/
+t_vec3	get_vec(char **line)
+{
+	t_vec3		vec;
+
+	vec.x = ft_strtod(*line, line);
+	(*line)++;
+	vec.y = ft_strtod(*line, line);
+	(*line)++;
+	vec.z = ft_strtod(*line, line);
+	return (vec);
 t_vec3	refract(t_vec3 uv, t_vec3 n, double refractive_ratio)
 {
 	double	cos_theta = dot(negative_vec(uv), n);
@@ -188,9 +221,9 @@ t_color	construct_color(double e0, double e1, double e2)
 {
 	t_color	color;
 
-	color.x = clamp(e0, 0, 1);
-	color.y = clamp(e1, 0, 1);
-	color.z = clamp(e2, 0, 1);
+	color.x = clamp(e0 / 255, 0, 1);
+	color.y = clamp(e1 / 255, 0, 1);
+	color.z = clamp(e2 / 255, 0, 1);
 	return (color);
 }
 
