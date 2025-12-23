@@ -45,6 +45,7 @@ void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
 	*v = (theta + M_PI / 2.0) / M_PI;
 	return ;
 }
+
 /*
 @param offset 交点 - 平面の基準点
 2param normal 平面の法線ベクトル
@@ -55,9 +56,9 @@ void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v)
 	static const int unit_edge = 50; // 単位平面の辺の長さ。大きいとタイルもでかい。unit_edge / N がタイルの一辺。
 
 	build_onb(onb, normal);
-	*u = dot(offset, onb[0]) / unit_edge; // u成分
-	*v = dot(offset, onb[1]) / unit_edge; // v成分
-	*u = *u - floor(*u);
+	*u = dot(offset, onb[0]) / unit_edge; // unit_edgeのグリッドでみたu成分
+	*v = dot(offset, onb[1]) / unit_edge; // unit_edgeのグリッドでみたv成分
+	*u = *u - floor(*u); // グリッド内の位置
 	*v = *v - floor(*v);
 	return ;
 }
