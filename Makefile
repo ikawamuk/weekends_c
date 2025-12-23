@@ -18,6 +18,7 @@ SRCFILES =		main.c \
 				plane.c \
 				hit_table.c \
 				hit_table_list.c \
+				get_object.c \
 				camera.c \
 				rt_utils.c \
 				ray_color.c \
@@ -35,7 +36,6 @@ SRCFILES =		main.c \
 				validate_plane.c \
 				validate_sphere.c \
 				validate_light.c \
-				hit_table_array.c \
 				bvh.c \
 				range.c \
 				set_object.c \

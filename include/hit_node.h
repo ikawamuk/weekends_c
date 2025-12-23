@@ -2,7 +2,6 @@
 # define HIT_NODE_H
 
 # include "hit_table.h"
-# include "hit_table_array.h"
 # include <stddef.h>
 
 typedef struct s_hit_node t_hit_node;

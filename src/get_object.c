@@ -1,4 +1,3 @@
-#include "hit_table_array.h"
 #include "aabb.h"
 #include "sphere.h"
 #include "cylinder.h"
@@ -8,76 +7,27 @@
 #include "vec3.h"
 #include "range.h"
 #include "light.h"
+#include "plane.h"
 #include "rt_utils.h"
 #include "libft.h"
 #include <stddef.h>
 
-static t_hit_table	*get_object(char *line);
 static t_sphere		*get_sphere_data(char *line);
 t_sphere			*get_light_data(char *line);
 static t_cylinder	*get_cylinder_data(char *line);
+static t_plane		*get_plane_data(char *line);
 
 /*
-@brief .rtファイルの一行からhit_table情報を作成する関数
+@brief 文字列からプリミティブの情報を取得する関数
 */
-t_hit_table_array	construct_hit_table_array(char *line)
-{
-	t_hit_table_array	info;
-
-	info.data =	get_object(line);
-	return (info);
-}
-
-static void	swap_info(t_hit_table_array *a, t_hit_table_array *b)
-{
-	t_hit_table_array	tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-/*
-@brief t_hit_table_arrayをクイックソート
-*/
-void	sort_hit_table_array(t_hit_table_array *info, int start, int end, bool (*comparator)(const t_hit_table_array *, const t_hit_table_array *))
-{
-	int			left;
-	int			right;
-	t_hit_table_array	*pivot;
-
-	if (end <= start)
-		return ;
-	if (start + 1 == end)
-	{
-		if (comparator(&info[end], &info[start]))
-			swap_info(&info[start], &info[end]);
-		return ;
-	}
-	left = start;
-	right = (end - 1);
-	pivot = &info[end];
-	while (left < right)
-	{
-		while (left < end && comparator(&info[left], pivot))
-			left++;
-		while (start < right && comparator(pivot, &info[right]))
-			right--;
-		if (right <= left)
-			break ;	
-		swap_info(&info[left++], &info[right--]);
-	}
-	swap_info(&info[left], pivot);
-	sort_hit_table_array(info, start, left - 1, comparator);
-	sort_hit_table_array(info, left + 1, end, comparator);
-}
-
-static t_hit_table	*get_object(char *line)
+t_hit_table	*get_object(char *line)
 {
 	if (ft_strncmp("sp", line, 2) == 0)
 		return ((t_hit_table *)get_sphere_data(line + 2));
 	if (ft_strncmp("cy", line, 2) == 0)
 		return ((t_hit_table *)get_cylinder_data(line + 2));
+	if (ft_strncmp("pl", line, 2) == 0)
+		return ((t_hit_table *)get_plane_data(line + 2));
 	if (*line == 'L')
 		return ((t_hit_table *)get_light_data(line + 1));
 	return (NULL);
@@ -142,4 +92,22 @@ static t_cylinder	*get_cylinder_data(char *line)
 	color = construct_color(color.x, color.y, color.z);
 	mat_ptr = (t_material *)gen_lambertian(color);
 	return (gen_cylinder(center, direct, radius, height, mat_ptr));
+}
+
+static t_plane	*get_plane_data(char *line)
+{
+	t_point3	point;
+	t_vec3		direct;
+	t_color		color;
+	t_material	*mat_ptr;
+
+	skip_spaces(&line);
+	point = get_vec(&line);
+	skip_spaces(&line);
+	direct = get_vec(&line);
+	skip_spaces(&line);
+	color = get_vec(&line);
+	color = construct_color(color.x, color.y, color.z);
+	mat_ptr = (t_material *)gen_lambertian(color);
+	return (gen_plane(point, direct, mat_ptr));
 }

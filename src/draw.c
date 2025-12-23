@@ -34,6 +34,7 @@ static void	pixcel_color_loop(t_color *color_arr, const t_world *world)
 			color_arr[yy + x] = get_pixcel_color(x, y, world);
 	}
 	fprintf(stderr, "\nDone.\n");
+	return ;
 }
 
 static t_color	get_pixcel_color(int x, int y, const t_world *world)
