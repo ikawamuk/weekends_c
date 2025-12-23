@@ -34,11 +34,14 @@ double clamp(double x, double min, double max)
 	return (x);
 }
 
-void	get_sphere_uv(t_vec3 p, double *u, double *v)
+/*
+@brief 正規化された球面法線から球面座標（経度φ・緯度θ）を求め、それらを [0,1]×[0,1] に写像した UV を計算する
+*/
+void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
 {
-	double	phi = atan2(p.z, p.x);
-	double	theta = asin(p.y)
-;	*u = 1.0 - (phi + M_PI) / (2.0 * M_PI);
+	double	phi = atan2(unit_normal.z, unit_normal.x);
+	double	theta = asin(unit_normal.y);
+	*u = 1.0 - (phi + M_PI) / (2.0 * M_PI);
 	*v = (theta + M_PI / 2.0) / M_PI;
 	return ;
 }
