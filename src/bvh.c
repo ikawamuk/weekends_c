@@ -1,3 +1,4 @@
+#include "bvh.h"
 #include "hit_node.h"
 #include "bvh_info.h"
 #include "rt_utils.h"
@@ -64,9 +65,13 @@ static t_hit_table	construct_bvh_htl(const t_hit_node *node)
 
 	htl.aabb = surrounding_box(node->lhs->aabb, node->rhs->aabb);
 	htl.hit = hit_bvh;
+	htl.clear = clear_bvh;
 	return (htl);
 }
 
+/*
+@brief ランダムに選ばれた軸を下にした比較関数を生成する
+*/
 static comp	get_random_comp(void)
 {
 	int	axis;
@@ -79,24 +84,11 @@ static comp	get_random_comp(void)
 	return (box_z_compare);
 }
 
-// static t_hit_node	*add_new_node(t_bvh_info *object)
-// {
-// 	t_hit_node	*node;
-
-// 	node = ft_calloc(1, sizeof(t_hit_node));
-// 	if (!node)
-// 		return (NULL);
-// 	node->data = object->data;
-// 	if (object->have_aabb)
-// 		node->box = object->aabb;
-// 	return (node);
-// }
-
 static bool	box_compare(const t_bvh_info *a, const t_bvh_info *b, int axis)
 {
-	if (!a->have_aabb || !b->have_aabb)
+	if (!a->data->have_aabb || !b->data->have_aabb)
 		return (false);
-	return (axis_vec(a->centroid, axis) <  axis_vec(b->centroid, axis));
+	return (axis_vec(a->data->aabb.centroid, axis) <  axis_vec(b->data->aabb.centroid, axis));
 }
 
 static bool	box_x_compare(const t_bvh_info *a, const t_bvh_info *b)
@@ -130,6 +122,7 @@ static bool	hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_range r
 	if (self->hit_table.aabb.hit(&self->hit_table.aabb, ray, range) == false)
 		return (false);
 	hit_left = self->lhs->hit(self->lhs, ray, rec, range);
+	// 左側に当たった時はrangeを更新
 	if (hit_left)
 		range.max = rec->t;
 	hit_right = self->rhs->hit(self->rhs, ray, rec, range);
@@ -151,5 +144,5 @@ void	clear_bvh(t_hit_table *self)
 		node->rhs->clear(node->rhs);
 		node->rhs = NULL;
 	}
-	free(self);
+	free(node);
 }

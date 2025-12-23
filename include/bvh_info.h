@@ -14,9 +14,6 @@
 typedef struct s_bvh_info
 {
 	t_hit_table	*data;
-	bool		have_aabb;
-	t_point3	centroid;
-	t_aabb		aabb;
 }	t_bvh_info;
 
 t_bvh_info	construct_bvh_info(char *line);

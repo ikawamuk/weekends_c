@@ -30,10 +30,10 @@ typedef struct s_hit_table t_hit_table;
 struct s_hit_table
 {
 	bool	(*hit)(const void *self, const t_ray ray, t_hit_record *rec, t_range range);
-	bool	(*bounding_box)(const void *self, t_range range, t_aabb *aabb);
 	double	(*pdf_value)(void *self, t_point3 p, t_vec3 direction);
 	t_vec3	(*random)(void *self, t_point3 p);
 	void	(*clear)(t_hit_table *self);
+	bool	have_aabb;
 	t_aabb	aabb;
 	t_material	*mat_ptr;
 };

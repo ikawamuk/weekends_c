@@ -17,6 +17,7 @@ struct s_aabb
 {
 	t_point3	min;
 	t_point3	max;
+	t_point3	centroid;
 	bool		(*hit)(const t_aabb *, t_ray, t_range);
 };
 

@@ -12,6 +12,8 @@ t_aabb	construct_aabb(t_point3 _min, t_point3 _max)
 
 	aabb.min = _min;
 	aabb.max = _max;
+	// 重心は比較にしか使われないので0.5はかけない
+	aabb.centroid = add_vec(_min, _max);
 	aabb.hit = hit_aabb;
 	return (aabb);
 }

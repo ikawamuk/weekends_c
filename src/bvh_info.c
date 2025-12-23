@@ -23,18 +23,9 @@ static t_cylinder	*get_cylinder_data(char *line);
 t_bvh_info	construct_bvh_info(char *line)
 {
 	t_bvh_info	info;
-	t_range		zero_range;
-	t_aabb		tmp_box;
 
 	ft_bzero(&info, sizeof(t_aabb));
-	ft_bzero(&zero_range, sizeof(t_range));
 	info.data =	get_object(line);
-	info.have_aabb = info.data->bounding_box(info.data, zero_range, &tmp_box);
-	if (info.have_aabb == false)
-		return (info);
-	info.aabb = tmp_box;
-	// 重心は比較にしか使われないので0.5はかけない
-	info.centroid = add_vec(tmp_box.min, tmp_box.max);
 	return (info);
 }
 
