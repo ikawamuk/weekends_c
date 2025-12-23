@@ -83,7 +83,7 @@ SCAN_BUILD		= scan-build
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX) $(LIBFT)
+$(NAME): $(OBJS) # $(LIBFT) # $(MLX)
 	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(LIBFT):
@@ -98,8 +98,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-	@$(MAKE) -C $(LIBFTDIR) fclean
-	@$(MAKE) -C $(MLXDIR) clean
+#	@$(MAKE) -C $(LIBFTDIR) fclean
+# 	@$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
