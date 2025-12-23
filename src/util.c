@@ -41,19 +41,22 @@ void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
 {
 	double	phi = atan2(unit_normal.z, unit_normal.x);
 	double	theta = asin(unit_normal.y);
-	*u = 1.0 - (phi + M_PI) / (2.0 * M_PI);
+	*u = (1.0 - (phi + M_PI) / (2.0 * M_PI)) * 1.5; // 球では横に長くなりがちなので1.5倍多く分割して補正する。
 	*v = (theta + M_PI / 2.0) / M_PI;
 	return ;
 }
-
-void	get_plane_uv(t_point3 p, t_vec3 normal, double *u, double *v)
+/*
+@param offset 交点 - 平面の基準点
+2param normal 平面の法線ベクトル
+*/
+void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v)
 {
 	t_vec3	onb[3];
-	static const double scale = 1.5;
 
 	build_onb(onb, normal);
-	*u = dot(p, onb[0]) * scale;
-	*v = dot(p, onb[1]) * scale;
+	*u = dot(offset, onb[0]) / TILE_SIZE; // u成分
+	*v = dot(offset, onb[1]) / TILE_SIZE; // v成分
 	*u = *u - floor(*u);
 	*v = *v - floor(*v);
+	return ;
 }

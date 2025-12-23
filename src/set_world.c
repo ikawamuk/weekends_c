@@ -35,7 +35,7 @@ t_world	set_world(void)
 
 	// floor
 	t_plane	*floor = gen_plane(construct_vec(0, 0, 0), construct_vec(0, 1, 0), gen_lambertian( \
-		gen_checker_texture(gen_solid_texture(construct_color(0.3, 0.3, 0.9)), gen_solid_texture(green))));
+		gen_checker_texture(gen_solid_texture(construct_color(0.3, 0.3, 0.1)), gen_solid_texture(green))));
 
 	// ceiling
 	// t_plane	*ceiling = gen_plane(construct_vec(0, 10, 0), construct_vec(0, -1, 0), gen_lambertian(white));

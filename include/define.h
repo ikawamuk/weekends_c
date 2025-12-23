@@ -17,6 +17,7 @@
 #define RR_START_DEPTH 3 // ロシアンルーレットを始める深さ。
 #define SAMPLES_PER_PIXCEL 100 // ここ上げればきれいになるけど遅くなる
 #define LIVE_PROBABILITY_MIN 0.05
+#define TILE_SIZE 20 // 一つのマップを縦横それぞれなん分割するか。多いほど細かい。せいぜい8~30が適正なので固定値で良い
 
 
 #endif
