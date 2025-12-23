@@ -24,7 +24,7 @@ t_hit_table	*gen_bvh(t_bvh_info *bvh_info_array, size_t start, size_t end)
 	comp		comparator;
 
 	if (object_span == 0)
-		return (bvh_info_array->data);
+		return (bvh_info_array[start].data);
 	node = ft_calloc(1, sizeof(t_hit_node));
 	if (!node)
 		return (NULL);
@@ -36,7 +36,7 @@ t_hit_table	*gen_bvh(t_bvh_info *bvh_info_array, size_t start, size_t end)
 		sort_bvh_info(bvh_info_array, start, end, comparator);
 		size_t	mid = start + (object_span) / 2;
 		node->lhs = gen_bvh(bvh_info_array, start, mid);
-		node->rhs = gen_bvh(bvh_info_array, mid, end);
+		node->rhs = gen_bvh(bvh_info_array, mid + 1, end);
 	}
 	node->hit_table = construct_bvh_htl(node);
 	return ((t_hit_table *)node);
@@ -63,9 +63,11 @@ static t_hit_table	construct_bvh_htl(const t_hit_node *node)
 {
 	t_hit_table	htl;
 
+	ft_bzero(&htl, sizeof(t_hit_table));
 	htl.aabb = surrounding_box(node->lhs->aabb, node->rhs->aabb);
 	htl.hit = hit_bvh;
 	htl.clear = clear_bvh;
+	htl.have_aabb = true;
 	return (htl);
 }
 

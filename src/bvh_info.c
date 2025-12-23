@@ -24,7 +24,6 @@ t_bvh_info	construct_bvh_info(char *line)
 {
 	t_bvh_info	info;
 
-	ft_bzero(&info, sizeof(t_aabb));
 	info.data =	get_object(line);
 	return (info);
 }
