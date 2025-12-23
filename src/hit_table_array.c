@@ -1,4 +1,4 @@
-#include "bvh_info.h"
+#include "hit_table_array.h"
 #include "aabb.h"
 #include "sphere.h"
 #include "cylinder.h"
@@ -20,17 +20,17 @@ static t_cylinder	*get_cylinder_data(char *line);
 /*
 @brief .rtファイルの一行からhit_table情報を作成する関数
 */
-t_bvh_info	construct_bvh_info(char *line)
+t_hit_table_array	construct_hit_table_array(char *line)
 {
-	t_bvh_info	info;
+	t_hit_table_array	info;
 
 	info.data =	get_object(line);
 	return (info);
 }
 
-static void	swap_info(t_bvh_info *a, t_bvh_info *b)
+static void	swap_info(t_hit_table_array *a, t_hit_table_array *b)
 {
-	t_bvh_info	tmp;
+	t_hit_table_array	tmp;
 
 	tmp = *a;
 	*a = *b;
@@ -38,13 +38,13 @@ static void	swap_info(t_bvh_info *a, t_bvh_info *b)
 }
 
 /*
-@brief t_bvh_infoをクイックソート
+@brief t_hit_table_arrayをクイックソート
 */
-void	sort_bvh_info(t_bvh_info *info, int start, int end, bool (*comparator)(const t_bvh_info *, const t_bvh_info *))
+void	sort_hit_table_array(t_hit_table_array *info, int start, int end, bool (*comparator)(const t_hit_table_array *, const t_hit_table_array *))
 {
 	int			left;
 	int			right;
-	t_bvh_info	*pivot;
+	t_hit_table_array	*pivot;
 
 	if (end <= start)
 		return ;
@@ -68,8 +68,8 @@ void	sort_bvh_info(t_bvh_info *info, int start, int end, bool (*comparator)(cons
 		swap_info(&info[left++], &info[right--]);
 	}
 	swap_info(&info[left], pivot);
-	sort_bvh_info(info, start, left - 1, comparator);
-	sort_bvh_info(info, left + 1, end, comparator);
+	sort_hit_table_array(info, start, left - 1, comparator);
+	sort_hit_table_array(info, left + 1, end, comparator);
 }
 
 static t_hit_table	*get_object(char *line)

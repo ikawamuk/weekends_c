@@ -34,7 +34,7 @@ SRCFILES =		main.c \
 				validate_cylinder.c \
 				validate_sphere.c \
 				validate_light.c \
-				bvh_info.c \
+				hit_table_array.c \
 				bvh.c \
 				range.c \
 				set_object.c \

@@ -1,7 +1,7 @@
 #include "libft.h"
 #include "rt_utils.h"
 #include "lambertian.h"
-#include "bvh_info.h"
+#include "hit_table_array.h"
 #include "hit_node.h"
 #include "bvh.h"
 #include <stdlib.h>
@@ -12,24 +12,24 @@ static size_t	count_object_num(t_list *line_ptr);
 
 int	set_object(t_hit_table **node, t_list *line_lst)
 {
-	t_bvh_info	*bvh_info_array;
+	t_hit_table_array	*hit_table_array_array;
 	size_t		array_size;
 
 	array_size = count_object_num(line_lst);
 	if (array_size == 0)
 		return (EXIT_SUCCESS);
-	bvh_info_array = (t_bvh_info *)calloc(array_size, sizeof(t_bvh_info));
-	if (!bvh_info_array)
+	hit_table_array_array = (t_hit_table_array *)calloc(array_size, sizeof(t_hit_table_array));
+	if (!hit_table_array_array)
 		return (perror("malloc"), EXIT_FAILURE);
 	array_size = 0;
 	while (line_lst)
 	{
 		if (is_object(line_lst->content))
-			bvh_info_array[array_size++] = construct_bvh_info(line_lst->content);
+			hit_table_array_array[array_size++] = construct_hit_table_array(line_lst->content);
 		line_lst = line_lst->next;
 	}
-	*node = gen_bvh(bvh_info_array, 0, array_size - 1);
-	free(bvh_info_array);
+	*node = gen_bvh(hit_table_array_array, 0, array_size - 1);
+	free(hit_table_array_array);
 	return (EXIT_SUCCESS);
 }
 
