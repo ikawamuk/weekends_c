@@ -5,7 +5,8 @@
 static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec);
 
 
-static t_vec3	local_normal_checker(double u, double v);
+// static t_vec3	local_normal_checker(double u, double v);
+static t_vec3	local_normal_sin(double u, double v);
 
 t_bump_texture	construct_bump_texture(t_color color)
 {
@@ -13,7 +14,7 @@ t_bump_texture	construct_bump_texture(t_color color)
 
 	bump.texture.texture_value = texture_value_bump;
 	bump.color = color;
-	bump.local_normal = local_normal_checker;
+	bump.local_normal = local_normal_sin;
 	return (bump);
 }
 
@@ -37,15 +38,25 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 	return (self->color);
 }
 
-static t_vec3	local_normal_checker(double u, double v)
-{
-	static double scale = 100.0;
-	u *= scale;
-	v *= scale;
-	int	iu = floor(u);
-	int	iv = floor(v);
+// static t_vec3	local_normal_checker(double u, double v)
+// {
+// 	static double scale = 100.0;
+// 	u *= scale;
+// 	v *= scale;
+// 	int	iu = floor(u);
+// 	int	iv = floor(v);
 
-	if ((iu + iv) & 1)
-		return (construct_vec(u - floor(u), 0, 0.1));
-	return (construct_vec(floor(u) - u, 0, 0.1));
+// 	if ((iu + iv) & 1)
+// 		return (construct_vec(u - floor(u), 0, 0.2));
+// 	return (construct_vec(floor(u) - u, 0, 0.2));
+// }
+
+static t_vec3	local_normal_sin(double u, double v)
+{
+	static double scale = 400.0;
+	double strength = 2.0;
+
+	double	du = cos(u * scale) * strength;
+	double	dv = cos(v * scale) * strength;
+	return (construct_vec(du, dv, 1.0));
 }
