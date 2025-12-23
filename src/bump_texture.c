@@ -6,8 +6,8 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 // static double	height_sin(double u, double v);
 // static double	height_random(double u, double v);
 // static double	height_2d_sin(double u, double v);
-// static double height_ripples(double u, double v);
-static double	height_g(double u, double v);
+static double height_ripples(double u, double v);
+// static double	height_g(double u, double v);
 // static double height_steps(double u, double v);
 // static double height_fbm(double u, double v);
 // static double	height_check(double u, double v);
@@ -18,7 +18,7 @@ t_bump_texture	construct_bump_texture(t_color color)
 
 	bump.texture.texture_value = texture_value_bump;
 	bump.color = color;
-	bump.height = height_g;
+	bump.height = height_ripples;
 	return (bump);
 }
 
