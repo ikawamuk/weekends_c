@@ -7,8 +7,7 @@
 
 typedef bool (*comp)(const t_hit_table *, const t_hit_table *);
 
-t_hit_node			construct_bvh(t_hit_table **hit_table_array, size_t start, comp comparator);
-static t_hit_table	construct_bvh_htl(const t_hit_node *node);
+static t_hit_node	construct_bvh(t_hit_table **hit_table_array, size_t start, comp comparator);
 static comp			get_random_comp(void);
 static bool			box_x_compare(const t_hit_table *a, const t_hit_table *b);
 static bool			box_y_compare(const t_hit_table *a, const t_hit_table *b);
@@ -16,6 +15,9 @@ static bool			box_z_compare(const t_hit_table *a, const t_hit_table *b);
 static bool			hit_bvh(const void *s, const t_ray ray, t_hit_record *rec, t_range range);
 static void			sort_hit_table_array(t_hit_table **hit_table_array, int start, int end, comp comparator);
 
+/*
+@brief BVH構造を作成する関数
+*/
 t_hit_table	*gen_bvh(t_hit_table **hit_table_array, size_t start, size_t end)
 {
 	t_hit_node	*node;
@@ -41,7 +43,7 @@ t_hit_table	*gen_bvh(t_hit_table **hit_table_array, size_t start, size_t end)
 	return ((t_hit_table *)node);
 }
 
-t_hit_node	construct_bvh(t_hit_table **hit_table_array, size_t start, comp comparator)
+static t_hit_node	construct_bvh(t_hit_table **hit_table_array, size_t start, comp comparator)
 {
 	t_hit_node	node;
 
@@ -58,14 +60,14 @@ t_hit_node	construct_bvh(t_hit_table **hit_table_array, size_t start, comp compa
 	return (node);
 }
 
-static t_hit_table	construct_bvh_htl(const t_hit_node *node)
+t_hit_table	construct_bvh_htl(const t_hit_node *node)
 {
 	t_hit_table	htl;
 
 	ft_bzero(&htl, sizeof(t_hit_table));
 	htl.aabb = surrounding_box(node->lhs->aabb, node->rhs->aabb);
 	// 下部のノードがどちらも平面の場合のみaabbを持たない。
-	if (node->lhs->have_aabb || node->rhs->have_aabb)
+	if (node->lhs->have_aabb && node->rhs->have_aabb)
 		htl.have_aabb = true;
 	htl.hit = hit_bvh;
 	htl.clear = clear_bvh;

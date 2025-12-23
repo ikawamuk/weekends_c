@@ -84,9 +84,9 @@ static t_cylinder	*get_cylinder_data(char *line)
 	skip_spaces(&line);
 	direct = get_vec(&line);
 	skip_spaces(&line);
-	height = ft_strtod(line, &line);
-	skip_spaces(&line);
 	radius = ft_strtod(line, &line) * 0.5; // 入力はdiameter
+	skip_spaces(&line);
+	height = ft_strtod(line, &line);
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);

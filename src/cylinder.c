@@ -15,6 +15,7 @@ bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self,
 	h = dot(w, self->direct);
 	if (h < 0 || self->height < h)
 		return (false);
+	rec->t = t;
 	rec->ray_in = ray;
 	rec->p = _p;
 	rec->mat_ptr = self->hit_table.mat_ptr;
