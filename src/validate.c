@@ -7,6 +7,7 @@ int			validate_ambient(char *line);
 int			validate_camera(char *line);
 int			validate_light(char *line);
 int			validate_cylinder(char *line);
+int			validate_plane(char *line);
 int			validate_sphere(char *line);
 static int	distribute_validate(char *line);
 void		err_distribute(void);
@@ -36,6 +37,8 @@ static int	distribute_validate(char *line)
 		return (validate_sphere(line + 2));
 	if (ft_strncmp(line, "cy", 2) == 0)
 		return (validate_cylinder(line + 2));
+	if (ft_strncmp(line, "pl", 2) == 0)
+		return (validate_plane(line + 2));
 	err_distribute();
 	return (EXIT_FAILURE);
 }

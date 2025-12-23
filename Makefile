@@ -32,6 +32,7 @@ SRCFILES =		main.c \
 				validate_ambient.c \
 				validate_camera.c \
 				validate_cylinder.c \
+				validate_plane.c \
 				validate_sphere.c \
 				validate_light.c \
 				hit_table_array.c \
