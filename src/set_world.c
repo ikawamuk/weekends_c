@@ -21,10 +21,10 @@ t_world	set_world(void)
 	// t_color	blue = construct_vec(0.2, 0.2, 0.9);
 
 	// wall
-	t_plane		*wall = gen_plane(construct_vec(0, 0, -40), construct_vec(-1, 0, 2), gen_lambertian(gen_bump_texture(white)));
+	t_plane		*wall = gen_plane(construct_vec(-15, 0, -40), construct_vec(-1, 0, 2), gen_lambertian(gen_bump_texture(white)));
 
 	// floor
-	t_plane		*floor = gen_plane(construct_vec(0, 0, 0), construct_vec(0, 1, 0), gen_lambertian(gen_bump_texture(gray)));
+	t_plane		*floor = gen_plane(construct_vec(-15, 0, 0), construct_vec(0, 1, 0), gen_lambertian(gen_bump_texture(gray)));
 
 	// objects
 	t_sphere	*shpereA = gen_sphere(construct_vec(-2.5, 2, -10), 2, gen_lambertian(gen_solid_texture(red)));

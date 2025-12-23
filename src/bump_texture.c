@@ -6,7 +6,8 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 
 
 // static t_vec3	local_normal_checker(double u, double v);
-static t_vec3	local_normal_sin(double u, double v);
+// static t_vec3	local_normal_sin(double u, double v);
+static t_vec3	local_normal_ripple(double u, double v);
 
 t_bump_texture	construct_bump_texture(t_color color)
 {
@@ -14,7 +15,7 @@ t_bump_texture	construct_bump_texture(t_color color)
 
 	bump.texture.texture_value = texture_value_bump;
 	bump.color = color;
-	bump.local_normal = local_normal_sin;
+	bump.local_normal = local_normal_ripple;
 	return (bump);
 }
 
@@ -40,9 +41,9 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 
 // static t_vec3	local_normal_checker(double u, double v)
 // {
-// 	static double scale = 100.0;
-// 	u *= scale;
-// 	v *= scale;
+// 	static double frequency = 100.0;
+// 	u *= frequency;
+// 	v *= frequency;
 // 	int	iu = floor(u);
 // 	int	iv = floor(v);
 
@@ -51,12 +52,25 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 // 	return (construct_vec(floor(u) - u, 0, 0.2));
 // }
 
-static t_vec3	local_normal_sin(double u, double v)
+// static t_vec3	local_normal_sin(double u, double v)
+// {
+// 	static double frequency = 100.0;
+// 	double strength = 2.0;
+
+// 	double	du = cos(u * frequency) * strength;
+// 	double	dv = cos(v * frequency) * strength;
+// 	return (construct_vec(du, dv, 1.0));
+// }
+
+static t_vec3	local_normal_ripple(double u, double v)
 {
-	static double scale = 400.0;
+	static double frequency = 400.0;
 	double strength = 2.0;
 
-	double	du = cos(u * scale) * strength;
-	double	dv = cos(v * scale) * strength;
+	double	r = sqrt(u * u + v * v);
+	double	ripple = cos(r * frequency) * strength;
+
+	double	du = (r == 0) ? 0 : (u / r) * ripple;
+	double	dv = (r == 0) ? 0 : (v / r) * ripple;
 	return (construct_vec(du, dv, 1.0));
 }
