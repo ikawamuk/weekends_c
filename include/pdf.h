@@ -9,12 +9,12 @@
 
 /*
 @param value_pdf PDFの値を出す
-@param generate_pdf　PDFに沿ったvet3を返す
+@param random_pdf　PDFに沿ったvet3を返す
 */
 typedef struct s_pdf
 {
 	double	(*value_pdf)(void *self, t_vec3 direction);
-	t_vec3	(*generate_pdf)(void *self);
+	t_vec3	(*random_pdf)(void *self);
 }	t_pdf;
 
 typedef struct s_cosine_pdf
@@ -24,6 +24,7 @@ typedef struct s_cosine_pdf
 }	t_cosine_pdf;
 
 t_cosine_pdf	construct_cosine_pdf(t_vec3 n);
+t_cosine_pdf	*generate_cosine_pdf(t_vec3 n);
 
 typedef struct s_light_pdf
 {

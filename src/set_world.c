@@ -1,6 +1,15 @@
 #include "bvh.h"
 #include "camera.h"
 #include "fcntl.h"
+#include "define.h"
+#include "hit_table_list.h"
+#include "cylinder.h"
+#include "plane.h"
+#include "sphere.h"
+#include "lambertian.h"
+#include "metal.h"
+#include "dielectric.h"
+#include "light.h"
 #include "world.h"
 #include "rt_utils.h"
 #include "libft.h"
@@ -107,6 +116,7 @@ void	clear_world(t_world *world)
 	clear_htl(world->lights);
 	clear_bvh(world->node);
 	world->node = NULL;
+
 }
 
 // #include "define.h"

@@ -146,6 +146,17 @@ t_vec3	random_cosine_direction(void)
 	return (result);
 }
 
+t_vec3	random_in_unit_disk(void)
+{
+	while (1)
+	{
+		t_vec3	p = construct_vec(random_double(-1, 1), random_double(-1, 1), 0);
+		if (length_squared_vec(p) >= 1)
+			continue ;
+		return (p);
+	}
+}
+
 void	build_onb(t_vec3 onb[3], t_vec3 n)
 {
 	onb[2] = normalize(n);
@@ -198,6 +209,12 @@ t_vec3	get_vec(char **line)
 	(*line)++;
 	vec.z = ft_strtod(*line, line);
 	return (vec);
+t_vec3	refract(t_vec3 uv, t_vec3 n, double refractive_ratio)
+{
+	double	cos_theta = dot(negative_vec(uv), n);
+	t_vec3	r_out_parallel = scal_mul_vec(add_vec(uv, scal_mul_vec(n, cos_theta)), refractive_ratio);
+	t_vec3	r_out_perp = scal_mul_vec(n, -sqrt(1.0 - length_squared_vec(r_out_parallel)));
+	return (add_vec(r_out_parallel, r_out_perp));
 }
 
 t_color	construct_color(double e0, double e1, double e2)
