@@ -22,7 +22,6 @@ t_dielectric	*gen_dielectric(double refract_idx)
 	return (p);
 }
 
-#include <stdio.h>
 static bool	scatter_dielectric(void *s, t_hit_record rec, t_scatter_record *srec)
 {
 	t_dielectric	*self = s;

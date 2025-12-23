@@ -7,7 +7,6 @@
 #include "pdf.h"
 
 
-#include <stdio.h>
 static bool	killed_by_russian_roulette(t_color *attenuation);
 static t_color caluculate_diffused_color(const t_world *world, t_hit_record rec, t_scatter_record srec, t_color emmited, int depth);
 

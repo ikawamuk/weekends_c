@@ -4,7 +4,6 @@ static double	value_mixture_pdf(void *s, t_vec3 direction);
 static t_vec3	random_mixture_pdf(void *s);
 
 
-#include <stdio.h>
 t_mixture_pdf	construct_mixture_pdf(void *surface_pdf, void *light_pdf)
 {
 	t_mixture_pdf	mixture;

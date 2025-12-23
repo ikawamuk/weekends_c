@@ -13,7 +13,6 @@ double	degrees_to_radians(const double degrees)
 	return (degrees * M_PI * deno);
 }
 
-#include <stdio.h>
 /* 
 @param _origin: カメラの座標
 @param _orient: カメラの方向ベクトル
