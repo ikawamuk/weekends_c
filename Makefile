@@ -18,6 +18,7 @@ SRCFILES =		main.c \
 				sphere.c \
 				plane.c \
 				hit_table_list.c \
+				world.c \
 				camera.c \
 				util.c \
 				ray_color.c \
