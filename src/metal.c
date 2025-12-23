@@ -2,7 +2,7 @@
 #include "metal.h"
 #include "util.h"
 
-bool	scatter_metal(void *s, t_hit_record rec, t_scatter_record *srec);
+bool	scatter_metal(void *s, t_hit_record *rec, t_scatter_record *srec);
 
 t_metal	construct_metal(t_color alb, double fuzz)
 {
@@ -15,16 +15,16 @@ t_metal	construct_metal(t_color alb, double fuzz)
 	return (metal);
 }
 
-bool	scatter_metal(void *s, t_hit_record rec, t_scatter_record *srec)
+bool	scatter_metal(void *s, t_hit_record *rec, t_scatter_record *srec)
 {
 	t_metal	*self = s;
 
-	t_vec3	reflect_normal = dot(rec.normal, rec.ray_in.direct) > 0 ? negative_vec(rec.normal) : rec.normal;
-	t_vec3	reflected = reflect(normalize(rec.ray_in.direct), reflect_normal);
+	t_vec3	reflect_normal = dot(rec->normal, rec->ray_in.direct) > 0 ? negative_vec(rec->normal) : rec->normal;
+	t_vec3	reflected = reflect(normalize(rec->ray_in.direct), reflect_normal);
 	srec->surface_pdf_ptr = 0;
 	srec->attenuation = self->albedo;
 	srec->is_specular = true;
-	srec->specular_ray = construct_ray(rec.p, add_vec(reflected, scal_mul_vec(random_in_unit_sphere(), self->fuzz)));
+	srec->specular_ray = construct_ray(rec->p, add_vec(reflected, scal_mul_vec(random_in_unit_sphere(), self->fuzz)));
 	return (true);
 }
 

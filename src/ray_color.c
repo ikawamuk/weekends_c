@@ -27,7 +27,7 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
 
 	t_scatter_record	srec;
-	if (!rec.mat_ptr->scatter(rec.mat_ptr, rec, &srec))
+	if (!rec.mat_ptr->scatter(rec.mat_ptr, &rec, &srec))
 		return (emmited);
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);

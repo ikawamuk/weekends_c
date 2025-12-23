@@ -32,6 +32,7 @@ SRCFILES =		main.c \
 				mixture_pdf.c \
 				solid_texture.c \
 				checker_texture.c \
+				bump_texture.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
