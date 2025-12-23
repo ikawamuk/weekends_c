@@ -30,7 +30,7 @@ typedef struct s_bump_texture
 {
 	t_texture	texture;
 	t_color		color;
-	double		(*height)(double u, double v);
+	t_vec3		(*local_normal)(double u, double v);
 }	t_bump_texture;
 
 t_bump_texture	*gen_bump_texture(t_color color);
