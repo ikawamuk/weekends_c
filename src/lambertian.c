@@ -26,7 +26,7 @@ bool	scatter_lambertian(void *s, t_hit_record rec, t_scatter_record *srec)
 	t_cosine_pdf	*cos_ = generate_cosine_pdf(reflect_normal);
 
 	srec->surface_pdf_ptr = cos_;
-	srec->attenuation = self->albedo_p->texture_value(self->albedo_p, rec.u, rec.v, rec.p);
+	srec->attenuation = self->albedo_p->texture_value(self->albedo_p, rec.u, rec.v, rec);
 	srec->is_specular = false;
 	return (true);
 }

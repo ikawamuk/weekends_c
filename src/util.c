@@ -38,20 +38,19 @@ void	get_sphere_uv(t_vec3 p, double *u, double *v)
 {
 	double	phi = atan2(p.z, p.x);
 	double	theta = asin(p.y)
-;	*u = 1 - (phi + M_PI) / (2 * M_PI);
-	*v = (theta + M_PI / 2) / M_PI;
+;	*u = 1.0 - (phi + M_PI) / (2.0 * M_PI);
+	*v = (theta + M_PI / 2.0) / M_PI;
 	return ;
 }
 
-void	get_plane_uv(t_vec3 normal, t_point3 base, t_point3 p, double *u, double *v)
+void	get_plane_uv(t_point3 p, t_vec3 normal, double *u, double *v)
 {
-	t_vec3				onb[3];
+	t_vec3	onb[3];
 	static const double scale = 1.5;
 
 	build_onb(onb, normal);
-	t_point3	d = sub_vec(p, base);
-	*u = dot(d, onb[0]) * scale;
-	*v = dot(d, onb[1]) * scale;
+	*u = dot(p, onb[0]) * scale;
+	*v = dot(p, onb[1]) * scale;
 	*u = *u - floor(*u);
 	*v = *v - floor(*v);
 }
