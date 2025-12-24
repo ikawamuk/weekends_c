@@ -4,6 +4,7 @@
 
 static double	pdf_value_sphere(void *self, t_point3 p, t_vec3 direction);
 static t_vec3	random_sphere(void *self, t_point3 p);
+static void		get_sphere_uv(t_vec3 unit_normal, double *u, double *v);
 
 #include <stdio.h>
 void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double solution, const t_ray ray)
@@ -102,4 +103,16 @@ static t_vec3	random_sphere(void *s, t_point3 p)
 	t_vec3	onb[3];
 	build_onb(onb, direction);
 	return (local_onb(onb, random_to_sphere(self->radius, distance_squared)));
+}
+
+/*
+@brief 正規化された球面法線から球面座標（経kφ・緯度θ）を求め、それらを [0,1]×[0,1] に写像した UV を計算する
+*/
+static void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
+{
+	double	phi = atan2(unit_normal.z, unit_normal.x);
+	double	theta = asin(unit_normal.y);
+	*u = (1.0 - (phi + M_PI) / (2.0 * M_PI)) * 1.5; // 球では横に長くなりがちなので1.5倍多く分割して補正する。
+	*v = (theta + M_PI / 2.0) / M_PI;
+	return ;
 }

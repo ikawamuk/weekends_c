@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "rt_utils.h"
 
+static void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v);
+
 bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
 {
 	const t_plane	*self = s;
@@ -43,4 +45,21 @@ t_plane	*gen_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr)
 		return (NULL);
 	*s = construct_plane(p, _normal, mat_ptr);
 	return (s);
+}
+
+/*
+@param offset 交点 - 平面の基準点
+2param normal 平面の法線ベクトル
+*/
+static void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v)
+{
+	t_vec3	onb[3];
+	static const int unit_edge = 10; // 単位平面の辺の長さ。大きいとタイルもでかい。unit_edge / N がタイルの一辺。
+
+	build_onb(onb, normal);
+	*u = dot(offset, onb[0]) / unit_edge; // unit_edgeのグリッドでみたu成分
+	*v = dot(offset, onb[1]) / unit_edge; // unit_edgeのグリッドでみたv成分
+	*u = *u - floor(*u); // グリッド内の位置
+	*v = *v - floor(*v);
+	return ;
 }
