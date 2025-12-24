@@ -106,7 +106,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range ran
 			rec->t = t_cap;
 			rec->ray_in = ray;
 			rec->p = at_ray(ray, t_cap);
-			rec->normal = normalize(cap_normal);
+			rec->normal = cap_normal;
 			rec->mat_ptr = self->hit_table.mat_ptr;
 			hit_anything = true;
 			range.max = t_cap;
@@ -120,7 +120,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range ran
 			rec->t = t_cap;
 			rec->ray_in = ray;
 			rec->p = at_ray(ray, t_cap);
-			rec->normal = normalize(self->direct);
+			rec->normal = self->direct;
 			rec->mat_ptr = self->hit_table.mat_ptr;
 			hit_anything = true;
 		}
@@ -159,7 +159,7 @@ t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, cons
 
 	cylinder.center = _center;
 	cylinder.height = h;
-	cylinder.direct = _direct;
+	cylinder.direct = normalize(_direct);
 	cylinder.radius = r;
 	cylinder.hit_table.mat_ptr = mat_ptr;
 	cylinder.hit_table.hit = hit_cylinder;
