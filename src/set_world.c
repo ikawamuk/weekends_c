@@ -42,14 +42,14 @@ t_world	set_world(void)
 
 	// objects
 	t_sphere	*sphereA = gen_sphere(construct_vec(2, 1, -7), 1, gen_lambertian(gen_solid_texture(construct_color(51, 51, 150))));
-	t_sphere	*sphereB = gen_sphere(construct_vec(-3, 2, -13), 2, gen_metal(construct_color(255, 255, 255), 0.01));
+	t_sphere	*sphereB = gen_sphere(construct_vec(0, 2, -13), 2, gen_metal(construct_color(254, 254, 254), 0.01));
 	// t_sphere	*sphereC = gen_sphere(construct_vec(-2, 1, -5), 1, gen_dielectric(1.5));
 	// t_sphere	*sphereD = gen_sphere(construct_vec(1.5, 0.5, -5), -0.5, gen_dielectric(1.5));
-	// t_sphere	*sphereE = gen_sphere(construct_vec(-3, 4, -12), 2, \
-	// gen_lambertian(\
-	// 	gen_checker_texture(\
-	// 		gen_solid_texture(construct_color(76, 76, 240)), \
-	// 		gen_solid_texture(construct_color(180, 51, 51)))));
+	t_sphere	*sphereE = gen_sphere(construct_vec(-3, 4, -7), 2, \
+	gen_lambertian(\
+		gen_checker_texture(\
+			gen_solid_texture(construct_color(76, 76, 240)), \
+			gen_solid_texture(construct_color(180, 51, 51)))));
 
 	// light
 	t_sphere	*lightA = gen_sphere(construct_vec(-4, 9, -10), 0.5, gen_light(bright));
@@ -67,7 +67,7 @@ t_world	set_world(void)
 	add_htl(&world.objects, sphereB);
 	// add_htl(&world.objects, sphereC);
 	// add_htl(&world.objects, sphereD);
-	// add_htl(&world.objects, sphereE);
+	add_htl(&world.objects, sphereE);
 
 	add_htl(&world.lights, lightA);
 	add_htl(&world.lights, lightB);
