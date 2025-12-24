@@ -20,9 +20,7 @@ bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self,
 	rec->p = _p;
 	rec->mat_ptr = self->hit_table.mat_ptr;
 
-	w = sub_vec(rec->p, self->center);
-	h = dot(w, self->direct); // 底面から衝突点までの高さを計算
-	m = add_vec(self->center, scal_mul_vec(self->direct, h)); // 衝突店から軸上へ下ろされた垂線と軸の交点
+	m = add_vec(self->center, scal_mul_vec(self->direct, h)); // 衝突点から軸上へ下ろされた垂線と軸の交点
 	rec->normal = normalize(sub_vec(rec->p, m));
 	return (true);
 }
@@ -40,8 +38,8 @@ void	set_variables(const t_cylinder *self, const t_ray *ray, t_vec3 *abc)
 
 bool	check_cap(const t_cylinder *self, const t_ray ray, t_point3 cap_center, t_vec3 cap_normal, double *t_cap)
 {
-	double	denom;
-	double	t;
+	double		denom;
+	double		t;
 	t_point3	p;
 	t_vec3		v;
 	double		dist_squared;
@@ -50,7 +48,6 @@ bool	check_cap(const t_cylinder *self, const t_ray ray, t_point3 cap_center, t_v
 	if (fabs(denom) < FLT_EPSILON)
 		return (false);
 	t = dot(sub_vec(cap_center, ray.origin), cap_normal) / denom;
-	// (C - o) N / d N
 	if (t < HIT_T_MIN)
 		return (false);
 	p = at_ray(ray, t);
@@ -150,9 +147,9 @@ static t_aabb	construct_cylinder_aabb(const t_cylinder *self)
 	_min.x = fmin(self->center.x, top_c.x) - delta.x;
 	_min.y = fmin(self->center.y, top_c.y) - delta.y;
 	_min.z = fmin(self->center.z, top_c.z) - delta.z;
-	_max.x = fmax(self->center.x, top_c.x) - delta.x;
-	_max.y = fmax(self->center.y, top_c.y) - delta.y;
-	_max.z = fmax(self->center.z, top_c.z) - delta.z;
+	_max.x = fmax(self->center.x, top_c.x) + delta.x;
+	_max.y = fmax(self->center.y, top_c.y) + delta.y;
+	_max.z = fmax(self->center.z, top_c.z) + delta.z;
 	return (construct_aabb(_min, _max));
 }
 
@@ -174,7 +171,7 @@ t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, cons
 
 t_cylinder	*gen_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr)
 {
-	t_cylinder	*s = malloc(sizeof(t_cylinder));
+	t_cylinder	*s = ft_calloc(1, sizeof(t_cylinder));
 
 	if (!s)
 		return (NULL);
