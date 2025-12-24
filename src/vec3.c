@@ -1,5 +1,5 @@
 #include "vec3.h"
-#include "util.h"
+#include "rt_utils.h"
 
 t_vec3	construct_vec(double e0, double e1, double e2)
 {
@@ -188,9 +188,9 @@ t_color	construct_color(double e0, double e1, double e2)
 {
 	t_color	color;
 
-	color.x = clamp(e0, 0, 1);
-	color.y = clamp(e1, 0, 1);
-	color.z = clamp(e2, 0, 1);
+	color.x = clamp(e0 / 255, 0, 1);
+	color.y = clamp(e1 / 255, 0, 1);
+	color.z = clamp(e2 / 255, 0, 1);
 	return (color);
 }
 

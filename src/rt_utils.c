@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "util.h"
+#include "rt_utils.h"
 
 static uint64_t	random_uint64(void)
 {
@@ -53,7 +53,7 @@ void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
 void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v)
 {
 	t_vec3	onb[3];
-	static const int unit_edge = 50; // 単位平面の辺の長さ。大きいとタイルもでかい。unit_edge / N がタイルの一辺。
+	static const int unit_edge = 10; // 単位平面の辺の長さ。大きいとタイルもでかい。unit_edge / N がタイルの一辺。
 
 	build_onb(onb, normal);
 	*u = dot(offset, onb[0]) / unit_edge; // unit_edgeのグリッドでみたu成分

@@ -4,7 +4,7 @@
 #include <math.h>
 #include "define.h"
 #include "vec3.h"
-#include "util.h"
+#include "rt_utils.h"
 #include "world.h"
 
 /*

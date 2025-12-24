@@ -19,7 +19,7 @@ SRCFILES =		main.c \
 				plane.c \
 				hit_table_list.c \
 				camera.c \
-				util.c \
+				rt_utils.c \
 				ray_color.c \
 				material.c \
 				lambertian.c \
@@ -45,7 +45,7 @@ INCDIRS = include
 UNAME = $(shell uname -s)
 
 ifeq ($(UNAME),Darwin)
-	MLXDIR := minilibx-mac
+	MLXDIR := $(HOME)/minilibx
 	MLX_FLAGS := -framework OpenGL -framework AppKit
 else ifeq ($(UNAME),Linux)
 	MLXDIR := minilibx-linux

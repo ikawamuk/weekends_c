@@ -1,5 +1,5 @@
 #include "hit_table_list.h"
-#include "util.h"
+#include "rt_utils.h"
 
 static double	pdf_value_lights(void *s, t_point3 p, t_vec3 direction);
 static t_vec3	random_lights(void *s, t_point3 p);
