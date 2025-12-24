@@ -8,6 +8,7 @@
 #include "range.h"
 #include "light.h"
 #include "plane.h"
+#include "metal.h"
 #include "rt_utils.h"
 #include "libft.h"
 #include <stddef.h>
@@ -90,7 +91,7 @@ static t_cylinder	*get_cylinder_data(char *line)
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
-	mat_ptr = (t_material *)gen_lambertian(gen_solid_texture(color));
+	mat_ptr = (t_material *)gen_metal(color, 0.0);
 	return (gen_cylinder(center, direct, radius, height, mat_ptr));
 }
 
