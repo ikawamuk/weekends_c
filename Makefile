@@ -2,8 +2,7 @@ NAME = weekend_c
 
 CC = cc 
 
-CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I$(MLXDIR) -O3 -march=native
-
+CFLAG = -Wall -Wextra -Werror $(patsubst %,-I%,$(INCDIRS)) -I$(MLXDIR) -I$(LIBFTDIR)/includes -O3 -march=native
 RMDIR = rm -rf
 
 SRCDIR = src
@@ -17,7 +16,9 @@ SRCFILES =		main.c \
 				cylinder.c \
 				sphere.c \
 				plane.c \
+				hit_table.c \
 				hit_table_list.c \
+				get_object.c \
 				camera.c \
 				rt_utils.c \
 				ray_color.c \
@@ -32,6 +33,18 @@ SRCFILES =		main.c \
 				mixture_pdf.c \
 				solid_texture.c \
 				checker_texture.c \
+				validate.c \
+				validate_ambient.c \
+				validate_camera.c \
+				validate_cylinder.c \
+				validate_plane.c \
+				validate_sphere.c \
+				validate_light.c \
+				bvh.c \
+				range.c \
+				set_object.c \
+				set_light.c \
+				aabb.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -39,7 +52,10 @@ OBJDIR = obj
 
 OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
-INCDIRS = include
+INCDIRS = include 
+
+LIBFTDIR = libft
+LIBFT = $(LIBFTDIR)/libft.a
 
 # --- OS DETECTION ---
 UNAME = $(shell uname -s)
@@ -69,11 +85,14 @@ SCAN_BUILD		= scan-build
 
 all: $(NAME)
 
-$(NAME): $(OBJS) # $(MLX)
-	$(CC) $(CFLAG) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
+$(NAME): $(OBJS) $(MLX) $(LIBFT)
+	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
-# $(MLX):
-# 	@$(MAKE) -C $(MLXDIR)
+$(LIBFT):
+	@$(MAKE) -C $(LIBFTDIR) bonus
+
+$(MLX):
+	@$(MAKE) -C $(MLXDIR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
@@ -81,7 +100,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-# 	@$(MAKE) -C $(MLXDIR) clean
+	@$(MAKE) -C $(LIBFTDIR) fclean
+	@$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
