@@ -209,6 +209,8 @@ t_vec3	get_vec(char **line)
 	(*line)++;
 	vec.z = ft_strtod(*line, line);
 	return (vec);
+}
+
 t_vec3	refract(t_vec3 uv, t_vec3 n, double refractive_ratio)
 {
 	double	cos_theta = dot(negative_vec(uv), n);
