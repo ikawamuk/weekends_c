@@ -31,6 +31,8 @@ SRCFILES =		main.c \
 				cosine_pdf.c \
 				light_pdf.c \
 				mixture_pdf.c \
+				solid_texture.c \
+				checker_texture.c \
 				validate.c \
 				validate_ambient.c \
 				validate_camera.c \
