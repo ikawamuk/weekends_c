@@ -28,12 +28,16 @@ bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self,
 void	set_variables(const t_cylinder *self, const t_ray *ray, t_vec3 *abc)
 {
 	t_vec3	oc = sub_vec(ray->origin, self->center);
-	t_vec3	d_d = cross(ray->direct, self->direct);
-	t_vec3	oc_d = cross(oc, self->direct);
 
-	abc->x = dot(d_d, d_d);
-	abc->y = dot(d_d, oc_d);
-	abc->z = dot(oc_d, oc_d) - self->radius * self->radius; 
+	double dot_dd = dot(ray->direct, ray->direct);
+	double dot_da = dot(ray->direct, self->direct);
+	double dot_ococ = dot(oc, oc);
+	double dot_oca = dot(oc, self->direct);
+	double dot_doc = dot(ray->direct, oc);
+
+	abc->x = dot_dd - dot_da * dot_da;
+	abc->y = dot_doc - dot_da * dot_oca;
+	abc->z = dot_ococ - dot_oca * dot_oca - self->radius * self->radius;
 }
 
 bool	check_cap(const t_cylinder *self, const t_ray ray, t_point3 cap_center, t_vec3 cap_normal, double *t_cap)
