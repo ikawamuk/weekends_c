@@ -1,7 +1,7 @@
 #ifndef VEC3_H
 # define VEC3_H
 
-#include "math.h"
+#include <math.h>
 
 typedef struct s_vec3 t_vec3;
 
