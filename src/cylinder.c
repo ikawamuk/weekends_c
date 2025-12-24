@@ -21,7 +21,7 @@ bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self,
 	rec->mat_ptr = self->hit_table.mat_ptr;
 
 	m = add_vec(self->center, scal_mul_vec(self->direct, h)); // 衝突点から軸上へ下ろされた垂線と軸の交点
-	rec->normal = normalize(sub_vec(rec->p, m));
+	rec->normal = scal_div_vec(sub_vec(rec->p, m), self->radius);
 	return (true);
 }
 
