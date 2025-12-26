@@ -6,7 +6,7 @@
 #include "ray.h"
 #include "hit_table_list.h"
 #include "camera.h"
-#include "util.h"
+#include "rt_utils.h"
 #include "world.h"
 
 t_color				ray_color(t_ray ray, const t_world *world, int depth);
@@ -20,7 +20,7 @@ void	draw(void **mlx, t_img *img, bool ppm_mode)
 	// set objects in the world
 	t_world		world = set_world();
 	t_point3	sphere_point = construct_vec(0, 6, 0);
-	double		theta = 1.0 * M_PI;
+	double		theta = 1.0 * M_PI; // この値を変化させれば球を周りから観察できる。
 	double		r = 15;
 	t_point3	camera_point = add_vec(sphere_point, \
 	construct_vec(r * cos(theta), 2, r * sin(theta)));

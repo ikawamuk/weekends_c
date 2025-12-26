@@ -20,7 +20,7 @@ SRCFILES =		main.c \
 				hit_table_list.c \
 				world.c \
 				camera.c \
-				util.c \
+				rt_utils.c \
 				ray_color.c \
 				material.c \
 				lambertian.c \

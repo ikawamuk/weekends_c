@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "lambertian.h"
-#include "util.h"
+#include "rt_utils.h"
 #include "pdf.h"
 
 t_lambertian	construct_lambertian(void *albedo_p)

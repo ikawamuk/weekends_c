@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "metal.h"
-#include "util.h"
+#include "rt_utils.h"
 
 bool	scatter_metal(void *s, t_hit_record *rec, t_scatter_record *srec);
 

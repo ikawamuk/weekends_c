@@ -1,6 +1,6 @@
 #include "sphere.h"
 #include "define.h"
-#include "util.h"
+#include "rt_utils.h"
 
 static double	pdf_value_sphere(void *self, t_point3 p, t_vec3 direction);
 static t_vec3	random_sphere(void *self, t_point3 p);

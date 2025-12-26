@@ -1,5 +1,5 @@
 #include "vec3.h"
-#include "util.h"
+#include "rt_utils.h"
 
 t_vec3	construct_vec(double e0, double e1, double e2)
 {

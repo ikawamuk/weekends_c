@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "util.h"
+#include "rt_utils.h"
 
 static uint64_t	random_uint64(void)
 {

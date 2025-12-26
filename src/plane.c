@@ -1,7 +1,7 @@
 #include "plane.h"
 #include "define.h"
 #include <stdlib.h>
-#include "util.h"
+#include "rt_utils.h"
 
 bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec)
 {
