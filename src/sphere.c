@@ -7,6 +7,7 @@
 static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_range range);
 static double	pdf_value_sphere(void *self, t_point3 p, t_vec3 direction);
 static t_vec3	random_sphere(void *self, t_point3 p);
+static void		get_sphere_uv(t_vec3 unit_normal, double *u, double *v);
 
 #include <stdio.h>
 void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double solution, const t_ray ray)
@@ -14,8 +15,9 @@ void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double soluti
 	rec->ray_in = ray;
 	rec->t = solution;
 	rec->p = at_ray(ray, rec->t); // 交点
-	rec->normal = normalize(scal_div_vec(sub_vec(rec->p, self->center), self->radius)); // 面の向き
+	rec->normal = scal_div_vec(sub_vec(rec->p, self->center), self->radius); // 面の向き
 	rec->mat_ptr = self->hit_table.mat_ptr; // 材質
+	get_sphere_uv(scal_div_vec(sub_vec(rec->p, self->center), self->radius), &rec->u, &rec->v);
 	return ;
 }
 
@@ -114,4 +116,16 @@ static t_vec3	random_sphere(void *s, t_point3 p)
 	t_vec3	onb[3];
 	build_onb(onb, direction);
 	return (local_onb(onb, random_to_sphere(self->radius, distance_squared)));
+}
+
+/*
+@brief 正規化された球面法線から球面座標（経kφ・緯度θ）を求め、それらを [0,1]×[0,1] に写像した UV を計算する
+*/
+static void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
+{
+	double	phi = atan2(unit_normal.z, unit_normal.x);
+	double	theta = asin(unit_normal.y);
+	*u = (1.0 - (phi + M_PI) / (2.0 * M_PI)) * 1.5; // 球では横に長くなりがちなので1.5倍多く分割して補正する。
+	*v = (theta + M_PI / 2.0) / M_PI;
+	return ;
 }

@@ -1,12 +1,13 @@
-#ifndef UTIL_H
-# define UTIL_H
+#ifndef RT_UTILS_H
+# define RT_UTILS_H
 
+#include "define.h"
+#include "vec3.h"
+#include "libft.h"
+#include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdbool.h>
-#include "define.h"
-#include "libft.h"
 
 /*
 @brief skip_vec()でベクトルがどういった性質か判別するために使用

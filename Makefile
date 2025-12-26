@@ -31,6 +31,8 @@ SRCFILES =		main.c \
 				cosine_pdf.c \
 				light_pdf.c \
 				mixture_pdf.c \
+				solid_texture.c \
+				checker_texture.c \
 				validate.c \
 				validate_ambient.c \
 				validate_camera.c \
@@ -83,7 +85,7 @@ SCAN_BUILD		= scan-build
 
 all: $(NAME)
 
-$(NAME): $(OBJS) # $(LIBFT) # $(MLX)
+$(NAME): $(OBJS) # $(MLX) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(LIBFT):
@@ -98,8 +100,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-#	@$(MAKE) -C $(LIBFTDIR) fclean
-# 	@$(MAKE) -C $(MLXDIR) clean
+# @$(MAKE) -C $(LIBFTDIR) fclean
+# @$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
