@@ -8,6 +8,7 @@
 #include "range.h"
 #include "light.h"
 #include "plane.h"
+#include "metal.h"
 #include "rt_utils.h"
 #include "libft.h"
 #include <stddef.h>
@@ -108,6 +109,9 @@ static t_plane	*get_plane_data(char *line)
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
-	mat_ptr = (t_material *)gen_lambertian(gen_solid_texture(color));
+	mat_ptr = (t_material *)gen_lambertian(\
+		gen_checker_texture(\
+			gen_solid_texture(color), \
+			gen_solid_texture(construct_color(255,255,255))));
 	return (gen_plane(point, direct, mat_ptr));
 }
