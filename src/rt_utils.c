@@ -91,11 +91,6 @@ int	skip_vec(char **ptr, t_is is)
 		if (i != 3 && *((*ptr)++) != ',')
 			return (EXIT_FAILURE);
 	}
-	if (is == IS_UNIT)
-	{
-		if (d_tmp < 0.999 || 1.001 < d_tmp)
-			return (EXIT_FAILURE);
-	}
 	return (EXIT_SUCCESS);
 }
 

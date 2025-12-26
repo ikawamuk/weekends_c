@@ -62,7 +62,7 @@ t_sphere	*get_light_data(char *line)
 	skip_spaces(&line);
 	point = get_vec(&line);
 	skip_spaces(&line);
-	brightness_ratio = ft_strtod(line, &line);
+	brightness_ratio = ft_strtod(line, &line) * 100;
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
@@ -91,7 +91,7 @@ static t_cylinder	*get_cylinder_data(char *line)
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
-	mat_ptr = (t_material *)gen_metal(color, 0.0);
+	mat_ptr = (t_material *)gen_lambertian(gen_checker_texture(gen_solid_texture(constant_vec(0.2)), gen_solid_texture(color)));
 	return (gen_cylinder(center, direct, radius, height, mat_ptr));
 }
 
