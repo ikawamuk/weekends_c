@@ -10,6 +10,8 @@ typedef struct s_camera
 	t_point3	higher_left_corner;
 	t_vec3		horizontal;
 	t_vec3		vertical;
+	t_vec3		onb[3];
+	double		lens_radius;
 }	t_camera;
 
 t_camera	set_camera(t_list *line_lst);
