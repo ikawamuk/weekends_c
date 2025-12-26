@@ -19,7 +19,13 @@ void	draw(void **mlx, t_img *img, bool ppm_mode)
 {
 	// set objects in the world
 	t_world		world = set_world();
-	t_camera	camera = construct_camera(construct_vec(0, 7, 0), normalize(construct_vec(0, -1, -6)), 70);
+	t_point3	sphere_point = construct_vec(0, 6, 0);
+	double		theta = 1.0 * M_PI;
+	double		r = 15;
+	t_point3	camera_point = add_vec(sphere_point, \
+	construct_vec(r * cos(theta), 2, r * sin(theta)));
+	t_vec3		camera_dir = normalize(sub_vec(sphere_point, camera_point));
+	t_camera	camera = construct_camera(camera_point, camera_dir, 80);
 	t_color		*color_arr = malloc(WINSIZE_X * WINSIZE_Y * sizeof(t_color));
 
 	pixcel_color_loop(color_arr, camera, &world);
