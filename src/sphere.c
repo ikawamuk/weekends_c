@@ -34,7 +34,7 @@ static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_rang
 	{
 		double	root = sqrt(discriminant);
 		double	solution = (-half_b - root)/a;
-		if (check_range(solution, range)) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
+		if (check_range(solution, range))
 		{
 			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);
@@ -55,6 +55,15 @@ static t_aabb	construct_sphere_aabb(const t_sphere *self)
 							add_vec(self->center, constant_vec(self->radius))));
 }
 
+// 座標を取得するための関数
+static t_point3	point_sphere(void *s)
+{
+	t_sphere	*self;
+
+	self = s;
+	return (self->center);
+}
+
 t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 {
 	t_sphere	sphere;
@@ -68,6 +77,7 @@ t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 	sphere.hit_table.clear = clear_primitive;
 	sphere.hit_table.have_aabb = true;
 	sphere.hit_table.aabb = construct_sphere_aabb(&sphere);
+	sphere.hit_table.point = point_sphere;
 	return (sphere);
 }
 

@@ -116,7 +116,6 @@ void	clear_world(t_world *world)
 	clear_htl(world->lights);
 	clear_bvh(world->node);
 	world->node = NULL;
-
 }
 
 // #include "define.h"
