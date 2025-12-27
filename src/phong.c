@@ -21,7 +21,7 @@ t_color	phong_color(t_ray ray, const t_world *world)
 		return (world->back_ground);
 	ft_bzero(&color, sizeof(t_color));
 	hrec.mat_ptr->scatter(hrec.mat_ptr, hrec, &srec);
-	color = add_vec(color, scal_mul_vec(mul_vec(srec.attenuation, world->back_ground), 0.3)); // 環境光の影響を追加
+	color = add_vec(color, scal_mul_vec(scal_mul_vec(srec.attenuation, world->ambient_ratio), 0.3)); // 環境光の影響を追加
 	color = add_vec(color, scal_mul_vec(mul_vec(diffuse_specular_color(hrec, world), srec.attenuation), 0.7));
 	return (color);
 }
