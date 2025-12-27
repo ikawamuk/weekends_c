@@ -12,7 +12,7 @@ t_light	construct_light(t_color emit)
 	return (light);
 }
 
-bool	scatter_light(void* s, t_hit_record rec, t_scatter_record *srec)
+bool	scatter_light(void* s, t_hit_record *rec, t_scatter_record *srec)
 {
 	(void)s;
 	(void)rec;

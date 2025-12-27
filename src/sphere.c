@@ -9,7 +9,6 @@ static double	pdf_value_sphere(void *self, t_point3 p, t_vec3 direction);
 static t_vec3	random_sphere(void *self, t_point3 p);
 static void		get_sphere_uv(t_vec3 unit_normal, double *u, double *v);
 
-#include <stdio.h>
 void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double solution, const t_ray ray)
 {
 	rec->ray_in = ray;

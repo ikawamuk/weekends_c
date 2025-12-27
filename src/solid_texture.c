@@ -1,8 +1,7 @@
 #include "texture.h"
 #include <stdlib.h>
 
-#include <stdio.h>
-static t_color	texture_value_solid(void *s, double u, double v, t_hit_record rec);
+static t_color	texture_value_solid(void *s, double u, double v, t_hit_record *rec);
 
 t_solid_texture	construct_solid_texture(t_color color)
 {
@@ -22,7 +21,7 @@ t_solid_texture	*gen_solid_texture(t_color color)
 	return (p);
 }
 
-static t_color	texture_value_solid(void *s, double u, double v, t_hit_record rec)
+static t_color	texture_value_solid(void *s, double u, double v, t_hit_record *rec)
 {
 	t_solid_texture	*self = s;
 	(void)u;
