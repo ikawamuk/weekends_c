@@ -23,6 +23,10 @@ static int		check_file_name(const char *rt_file);
 static void		err_file_name(void);
 static t_color	set_back_ground(t_list *line_lst);
 
+/*
+@param world uninitialized variable pointer
+@param rt_file file name of .rt file: argv[1]
+*/
 int	set_world(t_world *world, const char *rt_file)
 {
 	t_list	*line_lst;
