@@ -62,7 +62,7 @@ t_sphere	*get_light_data(char *line)
 	skip_spaces(&line);
 	point = get_vec(&line);
 	skip_spaces(&line);
-	brightness_ratio = ft_strtod(line, &line);
+	brightness_ratio = ft_strtod(line, &line) * 100;
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
