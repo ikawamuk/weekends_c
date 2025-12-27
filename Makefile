@@ -44,7 +44,8 @@ SRCFILES =		main.c \
 				range.c \
 				set_object.c \
 				set_light.c \
-				aabb.c
+				aabb.c \
+				test//unit_tests/test_set_world.c \
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 

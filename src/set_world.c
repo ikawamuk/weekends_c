@@ -18,8 +18,8 @@
 int				validate(t_list *line_lst);
 int				set_light(t_hit_table_list *lights, t_list *line_lst);
 int				set_object(t_hit_table **node, t_list *line_lst);
-static int		read_rt(t_list **line_lst, const char *rt_file);
-static int		check_file_name(const char *rt_file);
+int		read_rt(t_list **line_lst, const char *rt_file);
+int		check_file_name(const char *rt_file);
 static void		err_file_name(void);
 static t_color	set_back_ground(t_list *line_lst);
 
@@ -48,7 +48,11 @@ int	set_world(t_world *world, const char *rt_file)
 	return (EXIT_SUCCESS);
 }
 
-static int	read_rt(t_list **line_lst, const char *rt_file)
+/*
+@param line_list uninitialized variable pointer
+@param .rt file that has valid name
+*/
+int	read_rt(t_list **line_lst, const char *rt_file)
 {
 	int		fd;
 	int		gnl_ret;
@@ -77,7 +81,7 @@ static int	read_rt(t_list **line_lst, const char *rt_file)
 	return (EXIT_SUCCESS);
 }
 
-static int	check_file_name(const char *rt_file)
+int	check_file_name(const char *rt_file)
 {
 	size_t	rt_file_len;
 
