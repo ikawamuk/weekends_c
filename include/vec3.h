@@ -33,6 +33,9 @@ t_vec3	random_in_unit_disk(void);
 void	build_onb(t_vec3 onb[3], t_vec3 n);
 t_vec3	local_onb(t_vec3 onb[3], t_vec3 a);
 t_vec3	reflect(t_vec3 v, t_vec3 n);
+t_vec3	constant_vec(double d);
+double	axis_vec(t_vec3 vec, int axis);
+t_vec3	get_vec(char **line);
 t_vec3	refract(t_vec3 uv, t_vec3 n, double refractive_ratio);
 
 typedef t_vec3 t_point3;

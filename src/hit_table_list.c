@@ -1,6 +1,7 @@
 #include "hit_table_list.h"
 #include "rt_utils.h"
 
+static bool		hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_range range);
 static double	pdf_value_lights(void *s, t_point3 p, t_vec3 direction);
 static t_vec3	random_lights(void *s, t_point3 p);
 
@@ -58,29 +59,30 @@ void	clear_htl(t_hit_table_list list)
 		cur = list.head;
 		list.head = list.head->next;
 		free(cur->data->mat_ptr);
+		cur->data->mat_ptr = NULL;
 		free(cur->data);
+		cur->data = NULL;
 		free(cur);
+		cur = NULL;
 	}
 	return ;
 }
 
-bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec)
+static bool	hit_htl(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
 {
 	const t_hit_table_list	*self = s;
 	t_hit_table_node	*tail_p = self->head;
 	t_hit_record		temp_rec;
 	bool				hit_anything = false;
-	double				closest_so_far = INFINITY;
 
 	while (tail_p)
 	{
 		if (!tail_p->data)
 			continue ;
-		if (tail_p->data->hit(tail_p->data, ray, &temp_rec)
-		&& temp_rec.t < closest_so_far)
+		if (tail_p->data->hit(tail_p->data, ray, &temp_rec, range))
 		{
 			hit_anything = true;
-			closest_so_far = temp_rec.t;
+			range.max = temp_rec.t;
 			*rec = temp_rec;
 		}
 		tail_p = tail_p->next;

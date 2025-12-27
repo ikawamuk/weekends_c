@@ -3,6 +3,8 @@
 
 #include "material.h"
 
+/*
+@fuzz ザラザラ具合*/
 typedef struct s_metal
 {
 	t_material	material;

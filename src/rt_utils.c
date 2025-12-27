@@ -1,5 +1,7 @@
-#include <stdint.h>
 #include "rt_utils.h"
+#include "libft.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 static uint64_t	random_uint64(void)
 {
@@ -34,31 +36,99 @@ double clamp(double x, double min, double max)
 	return (x);
 }
 
-/*
-@brief 正規化された球面法線から球面座標（経度φ・緯度θ）を求め、それらを [0,1]×[0,1] に写像した UV を計算する
-*/
-void	get_sphere_uv(t_vec3 unit_normal, double *u, double *v)
+double	pow2(double a)
 {
-	double	phi = atan2(unit_normal.z, unit_normal.x);
-	double	theta = asin(unit_normal.y);
-	*u = (1.0 - (phi + M_PI) / (2.0 * M_PI)) * 1.5; // 球では横に長くなりがちなので1.5倍多く分割して補正する。
-	*v = (theta + M_PI / 2.0) / M_PI;
-	return ;
+	return (a * a);
 }
 
 /*
-@param offset 交点 - 平面の基準点
-2param normal 平面の法線ベクトル
+@brief spaceがなかった時false
 */
-void	get_plane_uv(t_point3 offset, t_vec3 normal, double *u, double *v)
+int	skip_spaces(char **ptr)
 {
-	t_vec3	onb[3];
-	static const int unit_edge = 50; // 単位平面の辺の長さ。大きいとタイルもでかい。unit_edge / N がタイルの一辺。
+	if (**ptr != ' ' && **ptr != '\t')
+		return (EXIT_FAILURE);
+	while (**ptr == ' ' || **ptr == '\t')
+		(*ptr)++;
+	return (EXIT_SUCCESS);
+}
 
-	build_onb(onb, normal);
-	*u = dot(offset, onb[0]) / unit_edge; // unit_edgeのグリッドでみたu成分
-	*v = dot(offset, onb[1]) / unit_edge; // unit_edgeのグリッドでみたv成分
-	*u = *u - floor(*u); // 整数部分を切り捨て1グリッド内の位置を取り出す[0, 1]
-	*v = *v - floor(*v);
-	return ;
+int	skip_digit(char **ptr)
+{
+	if (**ptr == '-' || **ptr == '+')
+		(*ptr)++;
+	if (!ft_isdigit(**ptr))
+		return (EXIT_FAILURE);
+	while (ft_isdigit(**ptr))
+		(*ptr)++;
+	return (EXIT_SUCCESS);
+}
+
+/*
+@brief validateする際にvecの情報が正しく入力されているか確認する関数
+@param is	IS_COLORのとき、0 - 255の範囲内に収まっているか確認
+@param is	IS_UNITのとき、ベクトルの長さが1かどうか確認
+@param is	IS_POINTのとき、正しい座標かどうか確認
+*/
+int	skip_vec(char **ptr, t_is is)
+{
+	size_t	i;
+	double	d_tmp;
+
+	i = 0;
+	d_tmp = 0;
+	while (i++ < 3)
+	{
+		if (is == IS_UNIT)
+			d_tmp += pow2(ft_strtod(*ptr, ptr));
+		else
+			d_tmp = ft_strtod(*ptr, ptr);
+		if (is == IS_COLOR)
+		{
+			if (d_tmp < 0 || 255 < d_tmp)
+				return (EXIT_FAILURE);
+		}
+		if (i != 3 && *((*ptr)++) != ',')
+			return (EXIT_FAILURE);
+	}
+	if (is == IS_UNIT)
+	{
+		if (d_tmp < 0.999 || 1.001 < d_tmp)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+/*
+@brief 単方向リストline_lstを探索して先頭文字がwordの文字列を返す
+最後のスペースはスキップする
+*/
+char	*get_word_line(t_list *line_lst, const char *word)
+{
+	char	*line;
+	size_t	word_len;
+
+	word_len = ft_strlen(word);
+	while (line_lst)
+	{
+		line = (char *)line_lst->content;
+		if (ft_strncmp(line, word, word_len) == 0)
+			break ;
+		line_lst = line_lst->next;
+	}
+	line += word_len;
+	skip_spaces(&line);
+	return (line);
+}
+
+/*
+@brief validate用の関数
+@brief lineの数字が[min,max]の範囲内のときtrue
+*/
+bool	skip_range(char **line, double min, double max)
+{
+	double	d_tmp;
+
+	d_tmp = ft_strtod(*line, line);
+	return (min <= d_tmp && d_tmp <= max);
 }

@@ -10,8 +10,8 @@ t_metal	construct_metal(t_color alb, double fuzz)
 
 	metal.material.scatter = scatter_metal;
 	metal.material.emitted = emitted_non_light;
-	metal.albedo = construct_color(alb.x, alb.y, alb.z);
-	metal.fuzz = clamp(fuzz, 0.1, 0.9);
+	metal.albedo = alb;
+	metal.fuzz = clamp(fuzz, 0, 1.0);
 	return (metal);
 }
 
