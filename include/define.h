@@ -7,8 +7,8 @@
 #define ASPECT_RATIO_NUME	4 // 横
 #define ASPECT_RATIO_DENO	3 // たて
 #define ASPECT_RATIO		(double)ASPECT_RATIO_NUME / (double)ASPECT_RATIO_DENO
-#define WINSIZE_X 2000 // 640
-#define WINSIZE_Y 1500 // 480
+#define WINSIZE_X 1200 // 640
+#define WINSIZE_Y 900 // 480
 #ifndef M_PI
 # define M_PI 3.14159265358979323846
 #endif

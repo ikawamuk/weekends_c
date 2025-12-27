@@ -35,7 +35,6 @@ struct s_hit_table
 	double		(*pdf_value)(void *self, t_point3 p, t_vec3 direction);
 	t_vec3		(*random)(void *self, t_point3 p);
 	void		(*clear)(t_hit_table *self);
-	t_point3	(*point)(void *self); // sphereだけ持つ。光源への方向ベクトル計算時に利用。
 	bool		have_aabb;
 	t_aabb		aabb;
 	t_material	*mat_ptr;
