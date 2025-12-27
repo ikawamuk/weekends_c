@@ -222,10 +222,11 @@ t_vec3	refract(t_vec3 uv, t_vec3 n, double refractive_ratio)
 t_color	construct_color(double e0, double e1, double e2)
 {
 	t_color	color;
+	static const double	div = 0.00392156862745098; // 1 / 255
 
-	color.x = clamp(e0 / 255, 0, 1);
-	color.y = clamp(e1 / 255, 0, 1);
-	color.z = clamp(e2 / 255, 0, 1);
+	color.x = clamp(e0 * div, 0, 1);
+	color.y = clamp(e1 * div, 0, 1);
+	color.z = clamp(e2 * div, 0, 1);
 	return (color);
 }
 

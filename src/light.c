@@ -8,7 +8,7 @@ t_light	construct_light(t_color emit)
 
 	light.material.scatter = scatter_light;
 	light.material.emitted = emitted_light;
-	light.emit_color = emit;
+	light.emit_color = scal_mul_vec(emit, 100);
 	return (light);
 }
 
@@ -24,7 +24,7 @@ t_color	emitted_light(void *s, t_hit_record rec)
 {
 	t_light	*self = s;
 	if (dot(rec.normal, rec.ray_in.direct) > 0)
-		return (construct_color(255, 0, 0));
+		return (construct_vec(1.0, 0, 0));
 	return (self->emit_color);
 }
 

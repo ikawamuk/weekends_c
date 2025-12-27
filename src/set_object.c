@@ -86,13 +86,23 @@ static bool	is_aabb_object(char *line)
 	static const char	*object_list[4] = {
 		"sp", "cy", "L", NULL
 	};
+	// フォンは光をhit_table_nodeに追加しない。
+	// 突貫工事感あるからこの辺もう少しまともにしたい。
+	static const char	*object_list_phong[3] = {
+		"sp", "cy", NULL
+	};
 	static const size_t	object_len[3] = {
 		2, 2, 1
 	};
+	const char	**list;
 	size_t	i;
 
+	if (is_phong)
+		list = (const char **)object_list_phong;
+	else
+		list = (const char **)object_list;
 	i = 0;
-	while (object_list[i])
+	while (list[i])
 	{
 		if (ft_strncmp(line, object_list[i], object_len[i]) == 0)
 			return (true);

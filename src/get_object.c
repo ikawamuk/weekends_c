@@ -62,7 +62,7 @@ t_sphere	*get_light_data(char *line)
 	skip_spaces(&line);
 	point = get_vec(&line);
 	skip_spaces(&line);
-	brightness_ratio = ft_strtod(line, &line) * 100;
+	brightness_ratio = ft_strtod(line, &line);
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
@@ -112,6 +112,6 @@ static t_plane	*get_plane_data(char *line)
 	mat_ptr = (t_material *)gen_lambertian(\
 		gen_checker_texture(\
 			gen_solid_texture(color), \
-			gen_solid_texture(construct_color(255,255,255))));
+			gen_solid_texture(constant_vec(1.0))));
 	return (gen_plane(point, direct, mat_ptr));
 }
