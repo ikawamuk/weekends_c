@@ -64,7 +64,7 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 
 static t_vec3	local_normal_ripple(double u, double v)
 {
-	static double frequency = 400.0;
+	static double frequency = 150 * M_PI;
 	double strength = 2.0;
 
 	double	r = sqrt(u * u + v * v);
