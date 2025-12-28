@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include "libft.h"
+#include "syscall_mock.h"
 
 int	validate(t_list *line_lst);
 
@@ -29,6 +30,7 @@ static int	normal_case()
 	t_list *list = create_line_list(line_arr);
 	assert(validate(list) == EXIT_SUCCESS);
 	ft_lstclear(&list, free);
+	assert(!is_memory_leaked());
 	return (0);
 }
 
@@ -43,6 +45,7 @@ static int	no_ambient()
 	t_list *list = create_line_list(line_arr);
 	assert(validate(list) == EXIT_FAILURE);
 	ft_lstclear(&list, free);
+	assert(!is_memory_leaked());
 	return (0);
 }
 
@@ -57,6 +60,7 @@ static int	no_camera()
 	t_list *list = create_line_list(line_arr);
 	assert(validate(list) == EXIT_FAILURE);
 	ft_lstclear(&list, free);
+	assert(!is_memory_leaked());
 	return (0);
 }
 
@@ -73,6 +77,7 @@ static int	invalid_identifer()
 	t_list *list = create_line_list(line_arr);
 	assert(validate(list) == EXIT_FAILURE);
 	ft_lstclear(&list, free);
+	assert(!is_memory_leaked());
 	return (0);
 }
 
