@@ -10,7 +10,7 @@ int			validate_cylinder(char *line);
 int			validate_plane(char *line);
 int			validate_sphere(char *line);
 static int	distribute_validate(char *line);
-void		err_distribute(void);
+void		err_distribute(char *line);
 
 // もしカメラとambientがセットされていなかったらエラー
 // にするように要修正。
@@ -25,6 +25,8 @@ int	validate(t_list *line_lst)
 	return (EXIT_SUCCESS);
 }
 
+/*
+*/
 static int	distribute_validate(char *line)
 {
 	if (*line == 'A')
@@ -39,13 +41,14 @@ static int	distribute_validate(char *line)
 		return (validate_cylinder(line + 2));
 	if (ft_strncmp(line, "pl", 2) == 0)
 		return (validate_plane(line + 2));
-	err_distribute();
+	err_distribute(line);
 	return (EXIT_FAILURE);
 }
 
-void	err_distribute(void)
+void	err_distribute(char *line)
 {
 	static char	*msg = "SET .rt's FORMAT CORRECTLY.";
 
+	ft_putendl_fd(line, STDERR_FILENO);
 	ft_putendl_fd(msg, STDERR_FILENO);
 }
