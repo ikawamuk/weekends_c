@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include "syscall_mock.h"
 
 int	check_file_name(const char *rt_file);
 int	test_check_file_name()
