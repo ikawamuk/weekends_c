@@ -3,8 +3,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include "libft.h"
-
-int	_wrap_open_errno_ = 0;
+#include "syscall_mock.h"
 
 int	read_rt(t_list **line_lst, const char *rt_file);
 int	test_read_rt()
@@ -20,30 +19,42 @@ int	test_read_rt()
 	fprintf(fp, "sp 0.0,0.0,20.6 12.6 10,0,255\n");
 	// fclose(fp);
 	{
+		_wrap_errno_ = 0;
+		err_syscall = NOTHING;
 		t_list	*line_list;
-		fprintf(stderr, "--- normal case ---\n");
-		_wrap_open_errno_ = 0;
+		fprintf(stdout, "--- normal case ---\n");
 		assert(read_rt(&line_list, file_name) == EXIT_SUCCESS);
 	}
 	{
 		t_list	*line_list;
-		fprintf(stderr, "--- error case ---\n");
-		_wrap_open_errno_ = ENOENT;
-		assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+		fprintf(stdout, "--- error case ---\n");
+		{
+			err_syscall = OPEN;
+			_wrap_errno_ = ENOENT;
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			_wrap_errno_ = EACCES;
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+		}
+		{
+			err_syscall = READ;
+			_wrap_errno_ = EBADF;
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			_wrap_errno_ = EISDIR;
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			_wrap_errno_ = EFAULT;
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			_wrap_errno_ = ENOMEM;
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+		}
+		{
+			err_syscall = MALLOC;
+			_wrap_errno_ = ENOMEM;
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+		}
+		_wrap_errno_ = 0;
+		err_syscall = NOTHING;
 	}
 	fclose(fp);
 	alarm(0);
 	return (0);
-}
-
-int __real_open(const char *pathname, int flags);
-
-int	__wrap_open(const char *pathname, int flags)
-{
-	if (_wrap_open_errno_)
-	{
-		errno = _wrap_open_errno_;
-		return (-1);
-	}
-	return (__real_open(pathname, flags));
 }

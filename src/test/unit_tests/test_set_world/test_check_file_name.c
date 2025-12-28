@@ -11,7 +11,7 @@ int	test_check_file_name()
 {
 	alarm(2);
 	{
-		fprintf(stderr, "--- normal case ---\n");
+		fprintf(stdout, "--- normal case ---\n");
 		assert(check_file_name("test.rt") == EXIT_SUCCESS);
 		// assert(check_file_name("a.rt") == EXIT_SUCCESS);
 		// assert(check_file_name(" .rt") == EXIT_SUCCESS);
@@ -24,7 +24,7 @@ int	test_check_file_name()
 		assert(check_file_name(long_name) == EXIT_SUCCESS);
 	}
 	{
-		fprintf(stderr, "--- error case ---\n");
+		fprintf(stdout, "--- error case ---\n");
 		assert(check_file_name("test.txt") == EXIT_FAILURE);
 		assert(check_file_name("a.r") == EXIT_FAILURE);
 		assert(check_file_name("a.") == EXIT_FAILURE);

@@ -87,7 +87,7 @@ SCAN_BUILD		= scan-build
 # --- test ---
 TESTNAME= test_weekend_c
 
-TESTCFlAGS = $(CFLAG) -Wl,--wrap=open
+TESTCFlAGS = $(CFLAG) -Wl,--wrap=open,--wrap=read,--wrap=malloc
 
 TESTSRCFILES =	$(addprefix test/, \
 				test.c \
@@ -124,7 +124,7 @@ clean:
 # @$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(TESTNAME)
 
 re: fclean all
 
