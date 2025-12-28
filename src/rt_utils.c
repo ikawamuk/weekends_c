@@ -127,3 +127,11 @@ bool	skip_range(char **line, double min, double max)
 	d_tmp = ft_strtod(*line, line);
 	return (min <= d_tmp && d_tmp <= max);
 }
+
+/*
+@brief 度数法を弧度法に変換
+*/
+double	to_radians(const double degrees)
+{
+	return (degrees * M_PI / 180.0);
+}

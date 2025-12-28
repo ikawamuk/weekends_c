@@ -15,12 +15,12 @@
 #define HIT_T_MIN 1e-3
 #define MAX_DEPTH 10
 #define RR_START_DEPTH 3 // ロシアンルーレットを始める深さ。
-#define SAMPLES_PER_PIXCEL 100 // ここ上げればきれいになるけど遅くなる
+#define SAMPLES_PER_PIXCEL 10 // ここ上げればきれいになるけど遅くなる
 #define LIVE_PROBABILITY_MIN 0.05
 #define TILE_SIZE 20 // 一つのマップを縦横それぞれなん分割するか。多いほど細かい。せいぜい8~30が適正なので固定値で良い
 #define LIGHT_RADIUS 1.0
-#define LENS_RADIUS 1.0 // 0.0なら焦点ボケ無し。~1.0
-#define FOCUS_DIST 8.0 // 1.0ならもともとと同じ。目標物体との距離
+#define LENS_RADIUS 0.0 // 0.0なら焦点ボケ無し。~1.0
+#define FOCUS_DIST 1.0 // 1.0ならもともとと同じ。目標物体との距離
 
 
 #endif

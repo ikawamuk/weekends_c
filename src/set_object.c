@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 static bool		is_aabb_object(char *line);
+static bool		is_not_aabb_object(char *line);
 static size_t	count_object_num(t_list *line_ptr);
 t_hit_table		*get_object(char *line);
 static int		set_aabb_object(t_hit_table **node, t_list *line_lst, t_hit_table **hit_table_array);
@@ -61,7 +62,7 @@ static int	set_no_aabb_object(t_hit_table **node, t_list *line_lst, t_hit_table 
 	no_aabb_array_size = 0;
 	while (line_lst)
 	{
-		if (ft_strncmp(line_lst->content, "pl", 2) == 0)
+		if (is_not_aabb_object(line_lst->content))
 			hit_table_array[no_aabb_array_size++] = get_object(line_lst->content);
 		line_lst = line_lst->next;
 	}
@@ -101,9 +102,29 @@ static bool	is_aabb_object(char *line)
 	return (false);
 }
 
+static bool	is_not_aabb_object(char *line)
+{
+	static const char	*object_list[3] = {
+		"pl", "co", NULL
+	};
+	static const size_t	object_len[2] = {
+		2, 2
+	};
+	size_t	i;
+
+	i = 0;
+	while (object_list[i])
+	{
+		if (ft_strncmp(line, object_list[i], object_len[i]) == 0)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
 static bool	is_object(char *line)
 {
-	return (is_aabb_object(line) || ft_strncmp(line, "pl", 2) == 0);
+	return (is_aabb_object(line) || is_not_aabb_object(line) == 0);
 }
 
 static size_t	count_object_num(t_list *line_lst)
