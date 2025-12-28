@@ -21,7 +21,7 @@ int	validate_sphere(char *line)
 		return (err_sphere(), EXIT_FAILURE);
 	if (skip_vec(&line, IS_COLOR))
 		return (err_sphere(), EXIT_FAILURE);
-	if (*line == '\n' || *line == '\0')
+	if (*line == '\n' || *line == '\0' || *line == ' ')
 		return (EXIT_SUCCESS);
 	return (err_sphere(), EXIT_FAILURE);
 }
