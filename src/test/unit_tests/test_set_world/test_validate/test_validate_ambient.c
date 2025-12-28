@@ -21,7 +21,7 @@ int	test_validate_ambient()
 	}
 	{
 		fprintf(stdout, "--- error case ---\n");
-		assert(validate_ambient("") == EXIT_SUCCESS && !is_memory_leaked());
+		assert(validate_ambient("") == EXIT_FAILURE && !is_memory_leaked());
 	}
 	return (0);
 }
