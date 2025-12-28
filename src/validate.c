@@ -45,6 +45,9 @@ static int	distribute_validate(char *line)
 	return (EXIT_FAILURE);
 }
 
+/*
+@param line invalid identifered line
+*/
 void	err_distribute(char *line)
 {
 	static char	*msg = "SET .rt's FORMAT CORRECTLY.";
