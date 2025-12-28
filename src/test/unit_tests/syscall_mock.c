@@ -7,8 +7,10 @@ t_list	dummy_head = {0};
 void *__wrap_malloc(size_t size)
 {
 	static int	called_count = 0;
-	called_count++;
-	if (err_syscall == MALLOC && called_count == 3)
+
+	if (err_syscall == MALLOC)
+		called_count++;
+	if (called_count % 3)
 	{
 		errno = _wrap_errno_;
 		return (NULL);

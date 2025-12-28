@@ -49,7 +49,7 @@ int	test_read_rt()
 		{
 			err_syscall = MALLOC;
 			_wrap_errno_ = ENOMEM;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 		}
 		_wrap_errno_ = 0;
 		err_syscall = NOTHING;
