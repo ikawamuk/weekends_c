@@ -1,0 +1,95 @@
+#include <assert.h>
+#include <stdio.h>
+#include "libft.h"
+
+int	validate(t_list *line_lst);
+
+static t_list	*create_line_list(char **str_arr);
+static int		normal_case();
+static int		test_invalid_file_content();
+
+int	test_validate()
+{
+	fprintf(stdout, "\ntest_validate\n");
+	normal_case();
+	test_invalid_file_content();
+	return (0);
+}
+
+static int	normal_case()
+{
+	fprintf(stdout, "--- normal case ---\n");
+	char *line_arr[] = {
+		"A 0.2 255,255,255\n",
+		"C -50.0,0,20 0,0,1 70\n",
+		"L -40.0,50.0,0.0 0.6 10,0,255\n",
+		"sp 0.0,0.0,20.6 12.6 10,0,255\n",
+		NULL
+	};
+	t_list *list = create_line_list(line_arr);
+	assert(validate(list) == EXIT_SUCCESS);
+	ft_lstclear(&list, free);
+	return (0);
+}
+
+static int	no_ambient()
+{
+	char *line_arr[] = {
+		"C -50.0,0,20 0,0,1 70\n",
+		"L -40.0,50.0,0.0 0.6 10,0,255\n",
+		"sp 0.0,0.0,20.6 12.6 10,0,255\n",
+		NULL
+	};
+	t_list *list = create_line_list(line_arr);
+	assert(validate(list) == EXIT_FAILURE);
+	ft_lstclear(&list, free);
+	return (0);
+}
+
+static int	no_camera()
+{
+	char *line_arr[] = {
+		"A 0.2 255,255,255\n",
+		"L -40.0,50.0,0.0 0.6 10,0,255\n",
+		"sp 0.0,0.0,20.6 12.6 10,0,255\n",
+		NULL
+	};
+	t_list *list = create_line_list(line_arr);
+	assert(validate(list) == EXIT_FAILURE);
+	ft_lstclear(&list, free);
+	return (0);
+}
+
+static int	invalid_identifer()
+{
+	char *line_arr[] = {
+		"A 0.2 255,255,255\n",
+		"C -50.0,0,20 0,0,1 70\n",
+		"L -40.0,50.0,0.0 0.6 10,0,255\n",
+		"sp 0.0,0.0,20.6 12.6 10,0,255\n",
+		"er 0.0,0.0,20.6 12.6 10,0,255\n",
+		NULL
+	};
+	t_list *list = create_line_list(line_arr);
+	assert(validate(list) == EXIT_FAILURE);
+	ft_lstclear(&list, free);
+	return (0);
+}
+
+static int	test_invalid_file_content()
+{
+	fprintf(stdout, "--- error case ---\n");
+	no_ambient();
+	no_camera();
+	invalid_identifer();
+	return (0);
+}
+
+static t_list	*create_line_list(char **str_arr)
+{
+	t_list	*list = NULL;
+
+	for (int i = 0; str_arr[i]; i++)
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup(str_arr[i])));
+	return (list);
+}

@@ -25,8 +25,6 @@ int	validate(t_list *line_lst)
 	return (EXIT_SUCCESS);
 }
 
-/*
-*/
 static int	distribute_validate(char *line)
 {
 	if (*line == 'A')
@@ -52,6 +50,6 @@ void	err_distribute(char *line)
 {
 	static char	*msg = "SET .rt's FORMAT CORRECTLY.";
 
-	ft_putendl_fd(line, STDERR_FILENO);
+	ft_putstr_fd(line, STDERR_FILENO);
 	ft_putendl_fd(msg, STDERR_FILENO);
 }

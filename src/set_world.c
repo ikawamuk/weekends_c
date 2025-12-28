@@ -77,7 +77,6 @@ int	read_rt(t_list **line_lst, const char *rt_file)
 		curr->next = ft_lstnew(line);
 		curr = curr->next;
 	}
-
 	if (!curr)
 		return (perror("malloc"), EXIT_FAILURE);
 	*line_lst = head.next;

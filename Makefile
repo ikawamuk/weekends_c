@@ -97,7 +97,9 @@ TESTSRCFILES =	$(addprefix test/, \
 				test_set_world.c \
 				test_check_file_name.c \
 				test_read_rt.c \
-				)))
+				$(addprefix test_validate/, \
+				test_validate.c \
+				))))
 
 TESTSRCS = $(addprefix $(SRCDIR)/, $(TESTSRCFILES))
 TESTOBJS = $(filter-out $(OBJDIR)/main.o, $(OBJS)) $(TESTSRCS)

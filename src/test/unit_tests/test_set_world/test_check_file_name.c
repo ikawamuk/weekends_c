@@ -10,6 +10,7 @@
 int	check_file_name(const char *rt_file);
 int	test_check_file_name()
 {
+	fprintf(stdout, "\ntest_check_file_name\n");
 	alarm(2);
 	{
 		fprintf(stdout, "--- normal case ---\n");
