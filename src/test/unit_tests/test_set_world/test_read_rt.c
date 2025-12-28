@@ -31,25 +31,25 @@ int	test_read_rt()
 		{
 			err_syscall = OPEN;
 			_wrap_errno_ = ENOENT;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 			_wrap_errno_ = EACCES;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 		}
 		{
 			err_syscall = READ;
 			_wrap_errno_ = EBADF;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 			_wrap_errno_ = EISDIR;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 			_wrap_errno_ = EFAULT;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 			_wrap_errno_ = ENOMEM;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 		}
 		{
 			err_syscall = MALLOC;
 			_wrap_errno_ = ENOMEM;
-			assert(read_rt(&line_list, file_name) == EXIT_FAILURE);
+			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 		}
 		_wrap_errno_ = 0;
 		err_syscall = NOTHING;

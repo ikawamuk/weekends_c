@@ -53,7 +53,7 @@ OBJDIR = obj
 
 OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
-INCDIRS = include 
+INCDIRS = include
 
 LIBFTDIR = libft
 LIBFT = $(LIBFTDIR)/libft.a
@@ -87,11 +87,12 @@ SCAN_BUILD		= scan-build
 # --- test ---
 TESTNAME= test_weekend_c
 
-TESTCFlAGS = $(CFLAG) -Wl,--wrap=open,--wrap=read,--wrap=malloc
+TESTCFlAGS = $(CFLAG) -g -O0 -I$(INCDIRS)/test/ -Wl,--wrap=open,--wrap=read,--wrap=malloc,--wrap=free
 
 TESTSRCFILES =	$(addprefix test/, \
 				test.c \
 				$(addprefix unit_tests/, \
+				syscall_mock.c \
 				$(addprefix test_set_world/, \
 				test_set_world.c \
 				test_check_file_name.c \
