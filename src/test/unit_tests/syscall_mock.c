@@ -19,7 +19,6 @@ void *__wrap_malloc(size_t size)
 	while (tail->next)
 		tail = tail->next;
 	tail->next = new_node;
-	fprintf(stderr, "__wrap_malloc: %p\n", tail->next->content);
 	return (p);
 }
 
@@ -30,7 +29,6 @@ void __wrap_free(void *ptr)
 	t_list	*prev = &dummy_head;
 	while (cur)
 	{
-		fprintf(stderr, "__wrap_free: %p\n", cur->content);
 		if (cur->content == ptr)
 		{
 			found = true;
@@ -51,7 +49,6 @@ void __wrap_free(void *ptr)
 
 bool	is_memory_leaked(void)
 {
-	fprintf(stderr, "is memory leaked: %p\n", dummy_head.next);
 	return (dummy_head.next != NULL);
 }
 
