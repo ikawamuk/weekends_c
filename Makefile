@@ -45,7 +45,7 @@ SRCFILES =		main.c \
 				set_object.c \
 				set_light.c \
 				aabb.c \
-				test//unit_tests/test_set_world.c \
+
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -84,6 +84,25 @@ DFLAGS			= -g -O0
 ASAN_FLAGS		= -g -fsanitize=address
 SCAN_BUILD		= scan-build
 
+# --- test ---
+TESTNAME= test_weekend_c
+
+TESTCFlAGS = $(CFLAG) -Wl,--wrap=open
+
+TESTSRCFILES =	$(addprefix test/, \
+				test.c \
+				$(addprefix unit_tests/, \
+				$(addprefix test_set_world/, \
+				test_set_world.c \
+				test_check_file_name.c \
+				test_read_rt.c \
+				)))
+
+TESTSRCS = $(addprefix $(SRCDIR)/, $(TESTSRCFILES))
+TESTOBJS = $(filter-out $(OBJDIR)/main.o, $(OBJS)) $(TESTSRCS)
+
+# --- Rules ---
+
 all: $(NAME)
 
 $(NAME): $(OBJS) $(MLX) $(LIBFT)
@@ -101,8 +120,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-	@$(MAKE) -C $(LIBFTDIR) fclean
-	@$(MAKE) -C $(MLXDIR) clean
+# @$(MAKE) -C $(LIBFTDIR) fclean
+# @$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)
@@ -124,15 +143,15 @@ valgrind: fclean
 	@echo "\n\033[1;36mRunning Valgrind for '$(NAME)'...\033[0m"
 	$(VALGRIND) $(VALGRIND_FLAGS) ./$(NAME)
 
-test: all
-	@$(MAKE) all
-	@echo "\033[1;36mRunning tests with Valgrind...\033[0m"
-	@$(CC) $(CFLAG) test.c $(NAME) -o test_runner
-	$(VALGRIND) $(VALGRIND_FLAGS) ./test_runner
-	@$(RM) test_runner
+test: re
+	@$(RM) $(NAME)
+	@$(MAKE) $(TESTNAME)
+
+$(TESTNAME):$(OBJS) $(MLX) $(LIBFT)
+	$(CC) $(TESTCFlAGS) $(TESTOBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
 scanb: fclean
 	@$(SCAN_BUILD) $(MAKE) all
 
 # --- PHONY TARGETS ---
-.PHONY:		all clean fclean re test debug asan valgrind
+.PHONY:		all clean fclean re test debug asan valgrind scanb

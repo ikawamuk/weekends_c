@@ -61,6 +61,8 @@ int	read_rt(t_list **line_lst, const char *rt_file)
 	t_list	*curr;
 
 	fd = open(rt_file, O_RDONLY);
+	if (fd == -1)
+		return (EXIT_FAILURE);
 	ft_bzero(&head, sizeof(t_list));
 	curr = &head;
 	while (curr)
@@ -75,6 +77,7 @@ int	read_rt(t_list **line_lst, const char *rt_file)
 		curr->next = ft_lstnew(line);
 		curr = curr->next;
 	}
+	
 	if (!curr)
 		return (perror("malloc"), EXIT_FAILURE);
 	*line_lst = head.next;

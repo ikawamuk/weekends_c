@@ -1,40 +1,17 @@
-#include <stdio.h>
 #include <assert.h>
 #include <linux/limits.h>
+#include <stdlib.h>
 #include <string.h>
-#include "world.h"
-
-
-static int	test_check_file_name();
-
-
-int	set_world(t_world *world, const char *rt_file);
-int	test_set_world()
-{
-	test_check_file_name();
-	return (0);
-}
-
-int	read_rt(t_list **line_lst, const char *rt_file);
-static int	test_ead_rt()
-{
-	{
-		// normal case
-		assert(EXIT_SUCCESS);
-	}
-	{
-		// error case
-		assert(EXIT_FAILURE);
-	}
-	return (0);
-}
-
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
 
 int	check_file_name(const char *rt_file);
-static int	test_check_file_name()
+int	test_check_file_name()
 {
+	alarm(2);
 	{
-		// --- normal case ---
+		fprintf(stderr, "--- normal case ---\n");
 		assert(check_file_name("test.rt") == EXIT_SUCCESS);
 		// assert(check_file_name("a.rt") == EXIT_SUCCESS);
 		// assert(check_file_name(" .rt") == EXIT_SUCCESS);
@@ -47,7 +24,7 @@ static int	test_check_file_name()
 		assert(check_file_name(long_name) == EXIT_SUCCESS);
 	}
 	{
-		// --- error case ---
+		fprintf(stderr, "--- error case ---\n");
 		assert(check_file_name("test.txt") == EXIT_FAILURE);
 		assert(check_file_name("a.r") == EXIT_FAILURE);
 		assert(check_file_name("a.") == EXIT_FAILURE);
@@ -67,5 +44,6 @@ static int	test_check_file_name()
 		strcpy(too_long_name + (NAME_MAX - 2), ".rt");
 		// assert(check_file_name(too_long_name) == EXIT_FAILURE);
 	}
+	alarm(0);
 	return (0);
 }
