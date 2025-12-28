@@ -9,6 +9,7 @@
 #include "rt_utils.h"
 #include "world.h"
 
+t_color				phong_color(t_ray ray, const t_world *world);
 t_color				ray_color(t_ray ray, const t_world *world, int depth);
 static t_color		get_pixcel_color(int x, int y, const t_world *world);
 static void			write_loop(void ** mlx, t_img *img, t_color *color_arr, bool ppm_mode);
@@ -40,13 +41,19 @@ static void	pixcel_color_loop(t_color *color_arr, const t_world *world)
 static t_color	get_pixcel_color(int x, int y, const t_world *world)
 {
 	static const double	scale = 1.0 / SAMPLES_PER_PIXCEL;
-	t_color	pixcel_color = construct_vec(0, 0, 0);
+	t_color	pixcel_color = constant_vec(0.0);
+	// if (is_phong)
+	// 	return (phong_color(get_ray(world->camera, (double)x / (WINSIZE_X - 1), \
+	// 	(double)y / (WINSIZE_Y - 1)), world));
 	for (int s = 0; s < SAMPLES_PER_PIXCEL; ++s)
 	{
 		double	u = (x + random_double(0, 1)) / (WINSIZE_X - 1);
 		double	v = (y + random_double(0, 1)) / (WINSIZE_Y - 1);
 		t_ray ray = get_ray(world->camera, u, v);
-		pixcel_color = add_vec(pixcel_color, ray_color(ray, world, 0));
+		if (is_phong)
+			pixcel_color = add_vec(pixcel_color, phong_color(ray, world));
+		else
+			pixcel_color = add_vec(pixcel_color, ray_color(ray, world, 0));
 	}
 	pixcel_color = scal_mul_vec(pixcel_color, scale);
 	return (pixcel_color);
