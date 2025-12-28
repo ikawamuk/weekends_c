@@ -32,7 +32,7 @@ static void	err_light(void)
 	static char	*msg = \
 "\x1b[31m""SET LIGHT'S INFORMATION CORRECTLY.\n" \
 "\x1b[0m""L [Center Coordinate] [light brightness ratio 0-1]" \
-"\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B";
+"\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B""\x1b[0m";
 
 	ft_putendl_fd(msg, STDERR_FILENO);
 }

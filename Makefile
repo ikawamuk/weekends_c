@@ -99,6 +99,7 @@ TESTSRCFILES =	$(addprefix test/, \
 				test_read_rt.c \
 				$(addprefix test_validate/, \
 				test_validate.c \
+				test_validate_ambient.c \
 				))))
 
 TESTSRCS = $(addprefix $(SRCDIR)/, $(TESTSRCFILES))

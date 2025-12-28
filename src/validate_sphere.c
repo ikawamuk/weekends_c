@@ -31,7 +31,7 @@ static void	err_sphere(void)
 	static char	*msg = \
 "\x1b[31m""SET SPHERE'S INFORMATION CORRECTLY.\n" \
 "\x1b[0m""sp [Center Coordinate] [diameter] " \
-"\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B";
+"\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B""\x1b[0m";
 
 	ft_putendl_fd(msg, STDERR_FILENO);
 }

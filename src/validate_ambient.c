@@ -26,7 +26,7 @@ static void	err_ambient(void)
 {
 	static char	*msg = \
 "SET AMBIENT CORRECTLY.\n" \
-"\x1b[0m""A [lighting ratio] ""\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B";
+"\x1b[0m""A [lighting ratio] ""\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B""\x1b[0m";
 
 	ft_putendl_fd(msg, STDERR_FILENO);
 }

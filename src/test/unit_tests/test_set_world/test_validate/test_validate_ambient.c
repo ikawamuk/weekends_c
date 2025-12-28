@@ -1,4 +1,7 @@
+#include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "syscall_mock.h"
 
 int	validate_ambient(char *line);
 
@@ -12,6 +15,14 @@ int	validate_ambient(char *line);
 int	test_validate_ambient()
 {
 	fprintf(stdout, "\ntest_validate_ambient\n");
+	{
+		fprintf(stdout, "--- normal case ---\n");
+		// assert(validate_ambient("") == EXIT_SUCCESS && !is_memory_leaked());
+	}
+	{
+		fprintf(stdout, "--- error case ---\n");
+		assert(validate_ambient("") == EXIT_SUCCESS && !is_memory_leaked());
+	}
 	return (0);
 }
 

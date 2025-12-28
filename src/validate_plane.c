@@ -31,7 +31,7 @@ static void	err_plane(void)
 	static char	*msg = \
 "\x1b[31m""SET PLANE'S INFORMATION CORRECTLY.\n" \
 "\x1b[0m""sp [CORDINATE IN THE PLANE] [3D NORMALIZED NORMAL VECTOR] " \
-"\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B";
+"\x1b[31m""R"",""\x1b[32m""G"",""\x1b[34m""B""\x1b[0m";
 
 	ft_putendl_fd(msg, STDERR_FILENO);
 }
