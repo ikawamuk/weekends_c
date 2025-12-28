@@ -4,8 +4,6 @@
 #include "rt_utils.h"
 #include "libft.h"
 
-static double	degrees_to_radians(const double degrees);
-
 t_camera	set_camera(t_list *line_lst)
 {
 	static char	*def = "0,0,0 0,0,-1 80";
@@ -34,7 +32,7 @@ t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double v
 {
 	static const t_vec3	vup = (t_vec3){0, 1, 0};
 	t_camera	camera;
-	double		theta = degrees_to_radians(vfov * 0.5);
+	double		theta = to_radians(vfov * 0.5);
 	double		h = tan(theta);
 	double		screen_height = 2.0 * h;
 	double		screen_width = screen_height * ASPECT_RATIO;
@@ -49,15 +47,4 @@ t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double v
 	camera.higher_left_corner = add_vec(sub_vec(camera.origin, scal_div_vec(camera.horizontal, 2)), sub_vec(scal_div_vec(camera.vertical, 2), scal_mul_vec(camera.onb[2], FOCUS_DIST)));
 	// higher_left_corner = {origin - horizontal/2 } + {vertical/2 - w)} ;
 	return (camera);
-}
-
-/*
-@brief 度数法を弧度法に変換
-*/
-static double	degrees_to_radians(const double degrees)
-{
-	double	deno;
-
-	deno = 1.0f / 180.0f;
-	return (degrees * M_PI * deno);
 }

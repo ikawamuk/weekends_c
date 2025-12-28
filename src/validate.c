@@ -9,6 +9,7 @@ int			validate_light(char *line);
 int			validate_cylinder(char *line);
 int			validate_plane(char *line);
 int			validate_sphere(char *line);
+int			validate_cone(char *line);
 static int	distribute_validate(char *line);
 void		err_distribute(void);
 
@@ -39,6 +40,8 @@ static int	distribute_validate(char *line)
 		return (validate_cylinder(line + 2));
 	if (ft_strncmp(line, "pl", 2) == 0)
 		return (validate_plane(line + 2));
+	if (ft_strncmp(line, "co", 2) == 0)
+		return (validate_cone(line + 2));
 	err_distribute();
 	return (EXIT_FAILURE);
 }
