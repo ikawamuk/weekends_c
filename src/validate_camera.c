@@ -5,6 +5,7 @@
 
 static void		err_camera(void);
 
+#include <stdio.h>
 int	validate_camera(char *line)
 {
 	if (skip_spaces(&line))
