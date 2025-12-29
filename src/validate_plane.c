@@ -21,6 +21,7 @@ int	validate_plane(char *line)
 		return (err_plane(), EXIT_FAILURE);
 	if (skip_vec(&line, IS_COLOR))
 		return (err_plane(), EXIT_FAILURE);
+	skip_spaces(&line);
 	if (*line == '\n' || *line == '\0')
 		return (EXIT_SUCCESS);
 	return (err_plane(), EXIT_FAILURE);

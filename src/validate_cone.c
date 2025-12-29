@@ -23,6 +23,7 @@ int	validate_cone(char *line)
 		return (err_cone(), EXIT_FAILURE);
 	if (skip_vec(&line, IS_COLOR))
 		return (err_cone(), EXIT_FAILURE);
+	skip_spaces(&line);
 	if (*line == '\n' || *line == '\0')
 		return (EXIT_SUCCESS);
 	return (err_cone(), EXIT_FAILURE);

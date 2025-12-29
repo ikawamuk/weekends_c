@@ -28,6 +28,7 @@ int	validate_cylinder(char *line)
 		return (err_cylinder(), EXIT_FAILURE);
 	if (skip_vec(&line, IS_COLOR))
 		return (err_cylinder(), EXIT_FAILURE);
+	skip_spaces(&line);
 	if (*line == '\n' || *line == '\0')
 		return (EXIT_SUCCESS);
 	return (err_cylinder(), EXIT_FAILURE);
