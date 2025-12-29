@@ -16,6 +16,7 @@ SRCFILES =		main.c \
 				cylinder.c \
 				sphere.c \
 				plane.c \
+				cone.c \
 				hit_table.c \
 				hit_table_list.c \
 				get_object.c \
@@ -40,12 +41,14 @@ SRCFILES =		main.c \
 				validate_plane.c \
 				validate_sphere.c \
 				validate_light.c \
+				validate_cone.c \
 				bvh.c \
 				range.c \
 				set_object.c \
 				set_light.c \
 				aabb.c \
-				bump_texture.c
+				bump_texture.c \
+				phong.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -86,7 +89,7 @@ SCAN_BUILD		= scan-build
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX) $(LIBFT)
+$(NAME): $(OBJS) # $(MLX) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(LIBFT):
@@ -101,8 +104,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-	@$(MAKE) -C $(LIBFTDIR) fclean
-	@$(MAKE) -C $(MLXDIR) clean
+# @$(MAKE) -C $(LIBFTDIR) fclean
+# @$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
 	@$(RM) $(NAME)

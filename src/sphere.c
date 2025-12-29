@@ -14,7 +14,7 @@ void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double soluti
 	rec->ray_in = ray;
 	rec->t = solution;
 	rec->p = at_ray(ray, rec->t); // 交点
-	rec->normal = normalize(scal_div_vec(sub_vec(rec->p, self->center), self->radius)); // 面の向き
+	rec->normal = scal_div_vec(sub_vec(rec->p, self->center), self->radius); // 面の向き
 	rec->mat_ptr = self->hit_table.mat_ptr; // 材質
 	get_sphere_uv(scal_div_vec(sub_vec(rec->p, self->center), self->radius), &rec->u, &rec->v);
 	return ;
@@ -33,7 +33,7 @@ static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_rang
 	{
 		double	root = sqrt(discriminant);
 		double	solution = (-half_b - root)/a;
-		if (check_range(solution, range)) // 本家ではt_min, t_maxで縛り、特定区間内のレイだけ調べるがほとんどレイの始点からinfinityだったので、ここでは省略している。
+		if (check_range(solution, range))
 		{
 			assign_sphere_hitrec(self, rec, solution, ray);
 			return (true);

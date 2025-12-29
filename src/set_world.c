@@ -21,7 +21,7 @@ int				set_object(t_hit_table **node, t_list *line_lst);
 static int		read_rt(t_list **line_lst, const char *rt_file);
 static int		check_file_name(const char *rt_file);
 static void		err_file_name(void);
-static t_color	set_back_ground(t_list *line_lst);
+static void 	set_back_ground(t_world *world, t_list *line_lst);
 
 int	set_world(t_world *world, const char *rt_file)
 {
@@ -35,7 +35,7 @@ int	set_world(t_world *world, const char *rt_file)
 		return (ft_lstclear(&line_lst, free), EXIT_FAILURE);
 	ft_bzero(world, sizeof(t_world));
 	world->camera = set_camera(line_lst);
-	world->back_ground = set_back_ground(line_lst);
+	set_back_ground(world, line_lst);
 	if (set_object(&world->node, line_lst))
 		return (ft_lstclear(&line_lst, free), EXIT_FAILURE);
 	if (set_light(&world->lights, line_lst))
@@ -93,22 +93,20 @@ void	err_file_name(void)
 /*
 @brief 設定されていなかったらデフォルト値を呼び出す
 */
-static t_color	set_back_ground(t_list *line_lst)
+static void set_back_ground(t_world *world, t_list *line_lst)
 {
 	static char	*def = "0.8 100,200,255";
 	char	*line;
-	double	lighting_ratio;
 	t_color	back_ground;
 
 	line = get_word_line(line_lst, "A");
 	if (!line)
 		line = def;
-	lighting_ratio = ft_strtod(line, &line);
+	world->ambient_ratio = ft_strtod(line, &line);
 	skip_spaces(&line);
 	back_ground = get_vec(&line);
-	back_ground = scal_mul_vec(back_ground, lighting_ratio);
 	back_ground = construct_color(back_ground.x, back_ground.y, back_ground.z);
-	return (back_ground);
+	world->back_ground = back_ground;
 }
 
 void	clear_world(t_world *world)
@@ -116,7 +114,6 @@ void	clear_world(t_world *world)
 	clear_htl(world->lights);
 	clear_bvh(world->node);
 	world->node = NULL;
-
 }
 
 // #include "define.h"

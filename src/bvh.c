@@ -139,6 +139,8 @@ void	clear_bvh(t_hit_table *self)
 {
 	t_hit_node	*node;
 
+	if (!self)
+		return ;
 	node = (t_hit_node *)self;
 	if (node->lhs)
 	{

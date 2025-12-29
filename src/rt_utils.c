@@ -91,11 +91,6 @@ int	skip_vec(char **ptr, t_is is)
 		if (i != 3 && *((*ptr)++) != ',')
 			return (EXIT_FAILURE);
 	}
-	if (is == IS_UNIT)
-	{
-		if (d_tmp < 0.999 || 1.001 < d_tmp)
-			return (EXIT_FAILURE);
-	}
 	return (EXIT_SUCCESS);
 }
 
@@ -131,4 +126,12 @@ bool	skip_range(char **line, double min, double max)
 
 	d_tmp = ft_strtod(*line, line);
 	return (min <= d_tmp && d_tmp <= max);
+}
+
+/*
+@brief 度数法を弧度法に変換
+*/
+double	to_radians(const double degrees)
+{
+	return (degrees * M_PI / 180.0);
 }

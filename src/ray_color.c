@@ -22,7 +22,7 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 	if (depth >= MAX_DEPTH)
 		return (construct_vec(0, 0, 0));
 	if (!world->node || world->node->hit(world->node, ray, &rec, range) == false)
-		return (world->back_ground);
+		return (scal_mul_vec(world->back_ground, world->ambient_ratio));
 	
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
 
