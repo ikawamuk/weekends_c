@@ -17,6 +17,7 @@ SRCFILES =		main.c \
 				sphere.c \
 				plane.c \
 				cone.c \
+				triangle.c \
 				hit_table.c \
 				hit_table_list.c \
 				get_object.c \
@@ -42,6 +43,7 @@ SRCFILES =		main.c \
 				validate_sphere.c \
 				validate_light.c \
 				validate_cone.c \
+				validate_triangle.c \
 				bvh.c \
 				range.c \
 				set_object.c \

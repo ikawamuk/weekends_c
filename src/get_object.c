@@ -9,6 +9,7 @@
 #include "light.h"
 #include "plane.h"
 #include "cone.h"
+#include "triangle.h"
 #include "metal.h"
 #include "dielectric.h"
 #include "rt_utils.h"
@@ -20,6 +21,7 @@ t_sphere			*get_light_data(char *line);
 static t_cylinder	*get_cylinder_data(char *line);
 static t_plane		*get_plane_data(char *line);
 static t_cone 		*get_cone_data(char *line);
+static t_tri		*get_triangle_data(char *line);
 
 /*
 @brief 文字列からプリミティブの情報を取得する関数
@@ -34,6 +36,8 @@ t_hit_table	*get_object(char *line)
 		return ((t_hit_table *)get_plane_data(line + 2));
 	if (ft_strncmp("co", line, 2) == 0)
 		return ((t_hit_table *)get_cone_data(line + 2));
+	if (ft_strncmp("tr", line, 2) == 0)
+		return ((t_hit_table *)get_triangle_data(line + 2));
 	if (*line == 'L')
 		return ((t_hit_table *)get_light_data(line + 1));
 	return (NULL);
@@ -68,7 +72,7 @@ t_sphere	*get_light_data(char *line)
 	skip_spaces(&line);
 	point = get_vec(&line);
 	skip_spaces(&line);
-	brightness_ratio = ft_strtod(line, &line) * 100;
+	brightness_ratio = ft_strtod(line, &line);
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
@@ -142,4 +146,23 @@ static t_cone *get_cone_data(char *line)
 	// mat_ptr = (t_material *)gen_lambertian(gen_solid_texture(color));
 	mat_ptr = (t_material *)gen_lambertian(gen_checker_texture(gen_solid_texture(construct_vec(1.0,1.0,1.0)), gen_solid_texture(color)));
 	return (gen_cone(point, direct, half_angle, mat_ptr));
+}
+
+static t_tri	*get_triangle_data(char *line)
+{
+	t_point3	_vertex[3];
+	t_color		color;
+	t_material	*mat_ptr;
+
+	skip_spaces(&line);
+	_vertex[0] = get_vec(&line);
+	skip_spaces(&line);
+	_vertex[1] = get_vec(&line);
+	skip_spaces(&line);
+	_vertex[2] = get_vec(&line);
+	skip_spaces(&line);
+	color = get_vec(&line);
+	color = construct_color(color.x, color.y, color.z);
+	mat_ptr = (t_material *)gen_lambertian(gen_checker_texture(gen_solid_texture(construct_vec(1.0, 1.0, 1.0)), gen_solid_texture(color)));
+	return (gen_triangle(_vertex[0], _vertex[1], _vertex[2], mat_ptr));
 }
