@@ -53,9 +53,8 @@ static t_sphere	*get_sphere_data(char *line)
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
+	mat_ptr = (t_material *)gen_lambertian(gen_bump_texture(color));
 	// mat_ptr = (t_material *)gen_lambertian(gen_solid_texture(color));
-	mat_ptr = (t_material *)gen_metal(color, 0.0);
-	// mat_ptr = (t_material *)gen_dielectric(2.3);
 	return (gen_sphere(point, radius, mat_ptr));
 }
 
@@ -69,7 +68,7 @@ t_sphere	*get_light_data(char *line)
 	skip_spaces(&line);
 	point = get_vec(&line);
 	skip_spaces(&line);
-	brightness_ratio = ft_strtod(line, &line);
+	brightness_ratio = ft_strtod(line, &line) * 100;
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);

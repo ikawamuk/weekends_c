@@ -3,7 +3,7 @@
 #include <math.h>
 #include "define.h"
 
-static t_color	texture_value_check(void *s, double u, double v, t_hit_record rec);
+static t_color	texture_value_check(void *s, double u, double v, t_hit_record *rec);
 
 t_checker_texture	construct_checker_texture(void *even_texture, void *odd_texture)
 {
@@ -24,7 +24,7 @@ t_checker_texture	*gen_checker_texture(void *even_texture, void *odd_texture)
 	return (p);
 }
 
-static t_color	texture_value_check(void *s, double u, double v, t_hit_record rec)
+static t_color	texture_value_check(void *s, double u, double v, t_hit_record *rec)
 {
 	t_checker_texture	*self = s;
 	static const int	N = 20; // 一つのマップを縦横それぞれなん分割するか。多いほど細かい。せいぜい8~30が適正なので固定値で良い

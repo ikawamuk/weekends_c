@@ -47,6 +47,7 @@ SRCFILES =		main.c \
 				set_object.c \
 				set_light.c \
 				aabb.c \
+				bump_texture.c \
 				phong.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
