@@ -11,17 +11,17 @@ static t_color	diffuse_specular_color(t_hit_record hrec, const t_world *world);
 
 t_color	phong_color(t_ray ray, const t_world *world)
 {
-	t_hit_record	hrec;
-	t_range			range;
-	t_color			color;
+	t_hit_record		hrec;
+	t_range				range;
+	t_color				color;
 	t_scatter_record	srec;
 
 	range = construct_range(HIT_T_MIN, INFINITY);
 	if (world->node == NULL || world->node->hit(world->node, ray, &hrec, range) == false)
 		return (world->back_ground);
 	ft_bzero(&color, sizeof(t_color));
-	hrec.mat_ptr->scatter(hrec.mat_ptr, hrec, &srec);
-	color = add_vec(color, scal_mul_vec(scal_mul_vec(srec.attenuation, world->ambient_ratio), 0.3)); // 環境光の影響を追加
+	hrec.mat_ptr->scatter(hrec.mat_ptr, &hrec, &srec);
+	color = add_vec(color, scal_mul_vec(scal_mul_vec(srec.attenuation, world->ambient_ratio), 0.3));
 	color = add_vec(color, scal_mul_vec(mul_vec(diffuse_specular_color(hrec, world), srec.attenuation), 0.7));
 	return (color);
 }

@@ -53,6 +53,8 @@ static int	read_rt(t_list **line_lst, const char *rt_file)
 	t_list	*curr;
 
 	fd = open(rt_file, O_RDONLY);
+	if (fd == -1)
+		return (perror("open"), EXIT_FAILURE);
 	ft_bzero(&head, sizeof(t_list));
 	curr = &head;
 	while (curr)
@@ -64,6 +66,11 @@ static int	read_rt(t_list **line_lst, const char *rt_file)
 			return (perror("malloc"), EXIT_FAILURE);
 		else if (gnl_ret == 0)
 			break ;
+		if (*line == '\n')
+		{
+			free(line);
+			continue ;
+		}
 		curr->next = ft_lstnew(line);
 		curr = curr->next;
 	}
@@ -78,7 +85,7 @@ static int	check_file_name(const char *rt_file)
 	size_t	rt_file_len;
 
 	rt_file_len = ft_strlen(rt_file);
-	if (rt_file_len <= 4 || ft_strcmp(rt_file + rt_file_len - 3, ".rt"))
+	if (rt_file_len <= 3 || ft_strcmp(rt_file + rt_file_len - 3, ".rt"))
 		return (err_file_name(), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
