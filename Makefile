@@ -8,6 +8,7 @@ RMDIR = rm -rf
 SRCDIR = src
 
 SRCFILES =		main.c \
+				mini_rt.c \
 				draw.c \
 				img.c \
 				vec3.c \
@@ -47,12 +48,8 @@ SRCFILES =		main.c \
 				set_object.c \
 				set_light.c \
 				aabb.c \
-<<<<<<< HEAD
+				phong.c \
 
-=======
-				bump_texture.c \
-				phong.c
->>>>>>> origin/fix/read_rt
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -116,7 +113,7 @@ TESTOBJS = $(filter-out $(OBJDIR)/main.o, $(OBJS)) $(TESTSRCS)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) # $(MLX) $(LIBFT)
+$(NAME): $(OBJS) $(MLX) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(LIBFT):

@@ -62,11 +62,7 @@ int	read_rt(t_list **line_lst, const char *rt_file)
 
 	fd = open(rt_file, O_RDONLY);
 	if (fd == -1)
-<<<<<<< HEAD
-		return (EXIT_FAILURE);
-=======
 		return (perror("open"), EXIT_FAILURE);
->>>>>>> origin/fix/read_rt
 	ft_bzero(&head, sizeof(t_list));
 	curr = &head;
 	while (curr)
