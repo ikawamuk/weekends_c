@@ -9,9 +9,12 @@
 typedef struct s_world
 {
 	t_color				back_ground;
+	double				ambient_ratio;
 	t_camera			camera;
 	t_hit_table			*node;
 	t_hit_table_list	lights;
 }	t_world;
+
+t_world	construct_world(t_color back_ground);
 
 #endif

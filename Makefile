@@ -16,6 +16,7 @@ SRCFILES =		main.c \
 				cylinder.c \
 				sphere.c \
 				plane.c \
+				cone.c \
 				hit_table.c \
 				hit_table_list.c \
 				get_object.c \
@@ -40,12 +41,18 @@ SRCFILES =		main.c \
 				validate_plane.c \
 				validate_sphere.c \
 				validate_light.c \
+				validate_cone.c \
 				bvh.c \
 				range.c \
 				set_object.c \
 				set_light.c \
 				aabb.c \
+<<<<<<< HEAD
 
+=======
+				bump_texture.c \
+				phong.c
+>>>>>>> origin/fix/read_rt
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -109,7 +116,7 @@ TESTOBJS = $(filter-out $(OBJDIR)/main.o, $(OBJS)) $(TESTSRCS)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX) $(LIBFT)
+$(NAME): $(OBJS) # $(MLX) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(LIBFT):

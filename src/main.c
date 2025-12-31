@@ -34,7 +34,12 @@ int close_window(void *param)
 	return (0);
 }
 
+<<<<<<< HEAD
 static int	mini_rt(int argc, char *argv[])
+=======
+bool	is_phong = false;
+int	main(int argc, char *argv[])
+>>>>>>> origin/fix/read_rt
 {
 	t_hook_var	var;
 	t_img		img;
@@ -44,6 +49,12 @@ static int	mini_rt(int argc, char *argv[])
 	if (argc == 1)
 		return (fprintf(stderr, "NEED .rt FILE AS AN ARGUMENT\n"), \
 		EXIT_FAILURE);
+
+	// 後で消す。フォンの切り替えスイッチ
+	if (3 <= argc)
+		is_phong = true;
+
+
 	if (set_world(&world, argv[1]))
 		return (EXIT_FAILURE);
 	if (!ppm_mode)

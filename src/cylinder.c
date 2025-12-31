@@ -3,6 +3,9 @@
 #include "range.h"
 #include <stdlib.h> // malloc
 
+static void	get_cylinder_cap_uv(t_point3 offset, t_vec3 normal, double	diameter, double *u, double *v);
+static void	get_cylinder_side_uv(t_point3 offset, t_vec3 direct, double	height, double *u, double *v);
+
 bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self, const t_ray ray, double t)
 {
 	t_point3	_p;
@@ -19,21 +22,26 @@ bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self,
 	rec->ray_in = ray;
 	rec->p = _p;
 	rec->mat_ptr = self->hit_table.mat_ptr;
+	get_cylinder_side_uv(sub_vec(rec->p, self->center), self->direct, self->height, &rec->u, &rec->v);
 
 	m = add_vec(self->center, scal_mul_vec(self->direct, h)); // 衝突点から軸上へ下ろされた垂線と軸の交点
-	rec->normal = normalize(sub_vec(rec->p, m));
+	rec->normal = scal_div_vec(sub_vec(rec->p, m), self->radius);
 	return (true);
 }
 
 void	set_variables(const t_cylinder *self, const t_ray *ray, t_vec3 *abc)
 {
 	t_vec3	oc = sub_vec(ray->origin, self->center);
-	t_vec3	d_d = cross(ray->direct, self->direct);
-	t_vec3	oc_d = cross(oc, self->direct);
 
-	abc->x = dot(d_d, d_d);
-	abc->y = dot(d_d, oc_d);
-	abc->z = dot(oc_d, oc_d) - self->radius * self->radius; 
+	double dot_dd = dot(ray->direct, ray->direct);
+	double dot_da = dot(ray->direct, self->direct);
+	double dot_ococ = dot(oc, oc);
+	double dot_oca = dot(oc, self->direct);
+	double dot_doc = dot(ray->direct, oc);
+
+	abc->x = dot_dd - dot_da * dot_da;
+	abc->y = dot_doc - dot_da * dot_oca;
+	abc->z = dot_ococ - dot_oca * dot_oca - self->radius * self->radius;
 }
 
 bool	check_cap(const t_cylinder *self, const t_ray ray, t_point3 cap_center, t_vec3 cap_normal, double *t_cap)
@@ -106,9 +114,10 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range ran
 			rec->t = t_cap;
 			rec->ray_in = ray;
 			rec->p = at_ray(ray, t_cap);
-			rec->normal = normalize(cap_normal);
+			rec->normal = cap_normal;
 			rec->mat_ptr = self->hit_table.mat_ptr;
 			hit_anything = true;
+			get_cylinder_cap_uv(sub_vec(rec->p, cap_normal), self->direct, self->radius * 2, &rec->u, &rec->v);
 			range.max = t_cap;
 		}
 	}
@@ -120,8 +129,9 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range ran
 			rec->t = t_cap;
 			rec->ray_in = ray;
 			rec->p = at_ray(ray, t_cap);
-			rec->normal = normalize(self->direct);
+			rec->normal = self->direct;
 			rec->mat_ptr = self->hit_table.mat_ptr;
+			get_cylinder_cap_uv(sub_vec(rec->p, cap_normal), self->direct, self->radius * 2, &rec->u, &rec->v);
 			hit_anything = true;
 		}
 	}
@@ -159,7 +169,7 @@ t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, cons
 
 	cylinder.center = _center;
 	cylinder.height = h;
-	cylinder.direct = _direct;
+	cylinder.direct = normalize(_direct);
 	cylinder.radius = r;
 	cylinder.hit_table.mat_ptr = mat_ptr;
 	cylinder.hit_table.hit = hit_cylinder;
@@ -177,4 +187,33 @@ t_cylinder	*gen_cylinder(const t_point3 _center, const t_vec3 _direct, const dou
 		return (NULL);
 	*s = construct_cylinder(_center, _direct, r, h, mat_ptr);
 	return (s);
+}
+
+/*
+@param offset 交点 - 円盤の中心
+*/
+static void	get_cylinder_cap_uv(t_point3 offset, t_vec3 normal, double	diameter, double *u, double *v)
+{
+	t_vec3	onb[3];
+	build_onb(onb, normal);
+
+	*u = (dot(offset, onb[0]) / diameter) + 0.5;
+	*v = (dot(offset, onb[1]) / diameter) + 0.5;
+	return ;
+}
+
+/*
+@param offset 交点 - 円柱の中心
+@param direct  円柱の軸の単位方向ベクトル
+*/
+static void	get_cylinder_side_uv(t_point3 offset, t_vec3 direct, double	height, double *u, double *v)
+{
+	t_vec3	onb[3];
+	build_onb(onb, direct);
+	double	theta = atan2(dot(offset, onb[0]), dot(offset, onb[1]));
+	*u = 1.0 - (theta / (2.0 * M_PI) + 0.5);
+
+	double	h = dot(offset, direct);
+	*v = h / height;
+	return ;
 }

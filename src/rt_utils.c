@@ -74,26 +74,25 @@ int	skip_vec(char **ptr, t_is is)
 {
 	size_t	i;
 	double	d_tmp;
+	char	*tmp_ptr;
 
 	i = 0;
 	d_tmp = 0;
 	while (i++ < 3)
 	{
+		tmp_ptr = *ptr;
 		if (is == IS_UNIT)
 			d_tmp += pow2(ft_strtod(*ptr, ptr));
 		else
 			d_tmp = ft_strtod(*ptr, ptr);
+		if (tmp_ptr == *ptr)
+			return (EXIT_FAILURE);
 		if (is == IS_COLOR)
 		{
 			if (d_tmp < 0 || 255 < d_tmp)
 				return (EXIT_FAILURE);
 		}
 		if (i != 3 && *((*ptr)++) != ',')
-			return (EXIT_FAILURE);
-	}
-	if (is == IS_UNIT)
-	{
-		if (d_tmp < 0.999 || 1.001 < d_tmp)
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -131,4 +130,12 @@ bool	skip_range(char **line, double min, double max)
 
 	d_tmp = ft_strtod(*line, line);
 	return (min <= d_tmp && d_tmp <= max);
+}
+
+/*
+@brief 度数法を弧度法に変換
+*/
+double	to_radians(const double degrees)
+{
+	return (degrees * M_PI / 180.0);
 }

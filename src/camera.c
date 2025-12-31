@@ -4,8 +4,6 @@
 #include "rt_utils.h"
 #include "libft.h"
 
-static double	degrees_to_radians(const double degrees);
-
 t_camera	set_camera(t_list *line_lst)
 {
 	static char	*def = "0,0,0 0,0,-1 80";
@@ -34,30 +32,19 @@ t_camera	construct_camera(const t_point3 _origin, const t_vec3 _orient, double v
 {
 	static const t_vec3	vup = (t_vec3){0, 1, 0};
 	t_camera	camera;
-	double		theta = degrees_to_radians(vfov * 0.5);
+	double		theta = to_radians(vfov * 0.5);
 	double		h = tan(theta);
 	double		screen_height = 2.0 * h;
 	double		screen_width = screen_height * ASPECT_RATIO;
 
-	t_vec3		w = negative_vec(_orient); // lookfrom - lookat
-	t_vec3		u = normalize(cross(vup, w)); // 横軸の単位ベクトル
-	t_vec3		v = cross(w, u); // 縦軸の単位ベクトル
+	camera.onb[2] = negative_vec(_orient); // lookfrom - lookat
+	camera.onb[0] = normalize(cross(vup, camera.onb[2])); // 横軸の単位ベクトル
+	camera.onb[1] = cross(camera.onb[2], camera.onb[0]); // 縦軸の単位ベクトル
 
 	camera.origin = _origin;
-	camera.horizontal = scal_mul_vec(u, screen_width);
-	camera.vertical = scal_mul_vec(v, screen_height);
-	camera.higher_left_corner = add_vec(sub_vec(camera.origin, scal_div_vec(camera.horizontal, 2)), sub_vec(scal_div_vec(camera.vertical, 2), w));
+	camera.horizontal = scal_mul_vec(camera.onb[0], screen_width * FOCUS_DIST);
+	camera.vertical = scal_mul_vec(camera.onb[1], screen_height * FOCUS_DIST);
+	camera.higher_left_corner = add_vec(sub_vec(camera.origin, scal_div_vec(camera.horizontal, 2)), sub_vec(scal_div_vec(camera.vertical, 2), scal_mul_vec(camera.onb[2], FOCUS_DIST)));
 	// higher_left_corner = {origin - horizontal/2 } + {vertical/2 - w)} ;
 	return (camera);
-}
-
-/*
-@brief 度数法を弧度法に変換
-*/
-static double	degrees_to_radians(const double degrees)
-{
-	double	deno;
-
-	deno = 1.0f / 180.0f;
-	return (degrees * M_PI * deno);
 }
