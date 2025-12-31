@@ -8,7 +8,7 @@ t_light	construct_light(t_color emit)
 
 	light.material.scatter = scatter_light;
 	light.material.emitted = emitted_light;
-	light.emit_color = scal_mul_vec(emit, 100);
+	light.emit_color = scal_mul_vec(emit, LIGHT_STRENGTH);
 	return (light);
 }
 
