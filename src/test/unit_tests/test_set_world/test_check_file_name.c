@@ -15,8 +15,8 @@ int	test_check_file_name()
 	{
 		fprintf(stdout, "--- normal case ---\n");
 		assert(check_file_name("test.rt") == EXIT_SUCCESS && !is_memory_leaked());
-		// assert(check_file_name("a.rt") == EXIT_SUCCESS);
-		// assert(check_file_name(" .rt") == EXIT_SUCCESS);
+		assert(check_file_name("a.rt") == EXIT_SUCCESS && !is_memory_leaked());
+		assert(check_file_name(" .rt") == EXIT_SUCCESS && !is_memory_leaked());
 		assert(check_file_name("テスト.rt") == EXIT_SUCCESS && !is_memory_leaked());
 		assert(check_file_name("a..rt") == EXIT_SUCCESS);
 		assert(check_file_name("a.txt.rt") == EXIT_SUCCESS && !is_memory_leaked());
@@ -36,7 +36,7 @@ int	test_check_file_name()
 		assert(check_file_name(".rt") == EXIT_FAILURE && !is_memory_leaked());
 		assert(check_file_name("a.rt ") == EXIT_FAILURE && !is_memory_leaked());
 		assert(check_file_name("a.rt\n") == EXIT_FAILURE && !is_memory_leaked());
-		// assert(check_file_name(".a.rt") == EXIT_FAILURE);
+		assert(check_file_name(".a.rt") == EXIT_FAILURE && !is_memory_leaked());
 		assert(check_file_name("..rt") == EXIT_FAILURE && !is_memory_leaked());
 		assert(check_file_name("\a.rt") == EXIT_FAILURE && !is_memory_leaked());
 		assert(check_file_name("\n.rt") == EXIT_FAILURE && !is_memory_leaked());
@@ -44,7 +44,7 @@ int	test_check_file_name()
 		char too_long_name[NAME_MAX + 2];
 		memset(too_long_name, 'a', NAME_MAX - 2);
 		strcpy(too_long_name + (NAME_MAX - 2), ".rt");
-		// assert(check_file_name(too_long_name) == EXIT_FAILURE);
+		assert(check_file_name(too_long_name) == EXIT_FAILURE && !is_memory_leaked());
 	}
 	alarm(0);
 	return (0);

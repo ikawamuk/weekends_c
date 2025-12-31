@@ -17,7 +17,7 @@ int	test_validate_ambient()
 	fprintf(stdout, "\ntest_validate_ambient\n");
 	{
 		fprintf(stdout, "--- normal case ---\n");
-		// assert(validate_ambient("") == EXIT_SUCCESS && !is_memory_leaked());
+		assert(validate_ambient(" 0.2 255,255,255\n") == EXIT_SUCCESS && !is_memory_leaked());
 	}
 	{
 		fprintf(stdout, "--- error case ---\n");

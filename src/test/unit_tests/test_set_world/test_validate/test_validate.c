@@ -47,7 +47,7 @@ static int	no_ambient()
 		NULL
 	};
 	t_list *list = create_line_list(line_arr);
-	// assert(validate(list) == EXIT_FAILURE);
+	assert(validate(list) == EXIT_FAILURE);
 	ft_lstclear(&list, free);
 	assert(!is_memory_leaked());
 	return (0);
@@ -65,7 +65,7 @@ static int	more_ambient()
 		NULL
 	};
 	t_list *list = create_line_list(line_arr);
-	// assert(validate(list) == EXIT_FAILURE);
+	assert(validate(list) == EXIT_FAILURE);
 	ft_lstclear(&list, free);
 	assert(!is_memory_leaked());
 	return (0);
@@ -80,7 +80,7 @@ static int	no_camera()
 		NULL
 	};
 	t_list *list = create_line_list(line_arr);
-	// assert(validate(list) == EXIT_FAILURE);
+	assert(validate(list) == EXIT_FAILURE);
 	ft_lstclear(&list, free);
 	assert(!is_memory_leaked());
 	return (0);
@@ -98,7 +98,7 @@ static int	more_camera()
 		NULL
 	};
 	t_list *list = create_line_list(line_arr);
-	// assert(validate(list) == EXIT_FAILURE);
+	assert(validate(list) == EXIT_FAILURE);
 	ft_lstclear(&list, free);
 	assert(!is_memory_leaked());
 	return (0);
