@@ -36,6 +36,7 @@ SRCFILES =		main.c \
 				mixture_pdf.c \
 				solid_texture.c \
 				checker_texture.c \
+				bump_texture.c \
 				validate.c \
 				validate_ambient.c \
 				validate_camera.c \
