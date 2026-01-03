@@ -21,7 +21,7 @@ t_color	phong_color(t_ray ray, const t_world *world)
 		return (world->back_ground);
 	ft_bzero(&color, sizeof(t_color));
 	hrec.mat_ptr->scatter(hrec.mat_ptr, &hrec, &srec);
-	color = add_vec(color, scal_mul_vec(scal_mul_vec(srec.attenuation, world->ambient_ratio), 0.3));
+	color = add_vec(color, scal_mul_vec(scal_mul_vec(srec.attenuation, world->ambient_ratio), 0.3)); // 環境光の影響を追加
 	color = add_vec(color, scal_mul_vec(mul_vec(diffuse_specular_color(hrec, world), srec.attenuation), 0.7));
 	return (color);
 }
@@ -53,6 +53,7 @@ static t_color	diffuse_specular_color(t_hit_record hrec, const t_world *world)
 	t_hit_table_node	*curr_light;
 	t_vec3				light_dir; // 反射面から光源への方向ベクトル
 	double				light_dis;
+	const static double				phong_light_strength = 1 / (double)LIGHT_STRENGTH;
 
 	ft_bzero(&diffuse, sizeof(t_color));
 	ft_bzero(&specular, sizeof(t_color));
@@ -64,7 +65,7 @@ static t_color	diffuse_specular_color(t_hit_record hrec, const t_world *world)
 		light_dir = normalize(light_dir);
 		if (is_in_shadow(world, hrec.p, light_dir, light_dis) == false)
 		{
-			t_color	light_color = scal_mul_vec(curr_light->data->mat_ptr->emitted(curr_light->data->mat_ptr, hrec), 0.01);
+			t_color	light_color = scal_mul_vec(curr_light->data->mat_ptr->emitted(curr_light->data->mat_ptr, hrec), phong_light_strength);
 			diffuse = add_vec(diffuse, mul_vec(constant_vec(fmax(0, dot(light_dir, hrec.normal))), light_color));
 			specular = add_vec(specular, mul_vec(calc_specular(hrec, light_dir), light_color));
 		}

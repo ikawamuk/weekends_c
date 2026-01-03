@@ -12,3 +12,4 @@
 !README.md
 !math.md
 !src/test/**/*.c
+!scene/*.rt

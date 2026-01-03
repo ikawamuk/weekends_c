@@ -5,6 +5,7 @@
 
 static void		err_camera(void);
 
+#include <stdio.h>
 int	validate_camera(char *line)
 {
 	if (skip_spaces(&line))
@@ -19,6 +20,7 @@ int	validate_camera(char *line)
 		return (err_camera(), EXIT_FAILURE);
 	if (skip_range(&line, 0, 180) == false) // vertical fov
 		return (err_camera(), EXIT_FAILURE);
+	skip_spaces(&line);
 	if (*line == '\n' || *line == '\0')
 		return (EXIT_SUCCESS);
 	return (err_camera(), EXIT_SUCCESS);
