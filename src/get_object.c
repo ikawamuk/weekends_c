@@ -121,9 +121,9 @@ static t_plane	*get_plane_data(char *line)
 	color = construct_color(color.x, color.y, color.z);
 	mat_ptr = (t_material *)gen_lambertian(gen_bump_texture(color));
 	// mat_ptr = (t_material *)gen_lambertian(gen_solid_texture(color));
-	// mat_ptr = (t_material *)gen_lambertian(\
-	// 	gen_checker_texture(\
-	// 		gen_solid_texture(color), \
+	// mat_ptr = (t_material *)gen_lambertian(
+	// 	gen_checker_texture(
+	// 		gen_solid_texture(color),
 	// 		gen_solid_texture(constant_vec(1.0))));
 	return (gen_plane(point, direct, mat_ptr));
 }
