@@ -22,6 +22,7 @@ int	validate_light(char *line)
 		return (err_light(), EXIT_FAILURE);
 	if (skip_vec(&line, IS_COLOR))
 		return (err_light(), EXIT_FAILURE);
+	skip_spaces(&line);
 	if (*line == '\n' || *line == '\0')
 		return (EXIT_SUCCESS);
 	return (err_light(), EXIT_FAILURE);
