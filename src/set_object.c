@@ -84,16 +84,16 @@ static int	set_no_aabb_object(t_hit_table **node, t_list *line_lst, t_hit_table 
 
 static bool	is_aabb_object(char *line)
 {
-	static const char	*object_list[4] = {
-		"sp", "cy", "L", NULL
+	static const char	*object_list[5] = {
+		"sp", "cy", "tr", "L", NULL
 	};
 	// フォンは光をhit_table_nodeに追加しない。
 	// 突貫工事感あるからこの辺もう少しまともにしたい。
-	static const char	*object_list_phong[3] = {
-		"sp", "cy", NULL
+	static const char	*object_list_phong[4] = {
+		"sp", "cy", "tr", NULL
 	};
-	static const size_t	object_len[3] = {
-		2, 2, 1
+	static const size_t	object_len[4] = {
+		2, 2, 2, 1
 	};
 	const char	**list;
 	size_t	i;
