@@ -1,5 +1,5 @@
 *
-!*/
+!**/
 !minilibx-linux/**
 !minilibx-mac/**
 !libft/Makefile
@@ -11,4 +11,6 @@
 !.gitignore
 !README.md
 !math.md
+!src/test/**/*.c
+!include/test/**/*.h
 !scene/*.rt

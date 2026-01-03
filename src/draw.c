@@ -43,7 +43,7 @@ static t_color	get_pixcel_color(int x, int y, const t_world *world)
 	static const double	scale = 1.0 / SAMPLES_PER_PIXCEL;
 	t_color	pixcel_color = constant_vec(0.0);
 	// if (is_phong)
-	// 	return (phong_color(get_ray(world->camera, (double)x / (WINSIZE_X - 1), \
+	// 	return (phong_color(get_ray(world->camera, (double)x / (WINSIZE_X - 1),
 	// 	(double)y / (WINSIZE_Y - 1)), world));
 	for (int s = 0; s < SAMPLES_PER_PIXCEL; ++s)
 	{

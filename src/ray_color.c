@@ -31,11 +31,10 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 		return (emmited);
 	if (depth > RR_START_DEPTH && killed_by_russian_roulette(&srec.attenuation))
 		return (emmited);
-	
+
 	if (srec.is_specular)
-		return (mul_vec(srec.attenuation, ray_color(srec.specular_ray, world, depth + 1))); // Color_i = albedo * Color_o 
-	
-	
+		return (mul_vec(srec.attenuation, ray_color(srec.specular_ray, world, depth + 1))); // Color_i = albedo * Color_o
+
 	t_color color_in = caluculate_diffused_color(world, rec, srec, emmited, depth);
 	
 	return (color_in);

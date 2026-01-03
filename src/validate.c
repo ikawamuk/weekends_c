@@ -12,7 +12,7 @@ int			validate_sphere(char *line);
 int			validate_cone(char *line);
 int			validate_triangle(char *line);
 static int	distribute_validate(char *line);
-void		err_distribute(void);
+void		err_distribute(char *line);
 void		err_set(char *object);
 
 // もしカメラとambientがセットされていなかったらエラー
@@ -38,7 +38,7 @@ int	validate(t_list *line_lst)
 		err_set("Ambient lighting");
 	if (c_set == 0)
 		err_set("Camera");
-	if (a_set == 0 || c_set == 0)
+	if (a_set != 1 || c_set != 1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -61,14 +61,18 @@ static int	distribute_validate(char *line)
 		return (validate_cone(line + 2));
 	if (ft_strncmp(line, "tr", 2) == 0)
 		return (validate_triangle(line + 2));
-	err_distribute();
+	err_distribute(line);
 	return (EXIT_FAILURE);
 }
 
-void	err_distribute(void)
+/*
+@param line invalid identifered line
+*/
+void	err_distribute(char *line)
 {
 	static char	*msg = "SET .rt's FORMAT CORRECTLY.";
 
+	ft_putstr_fd(line, STDERR_FILENO);
 	ft_putendl_fd(msg, STDERR_FILENO);
 }
 

@@ -74,15 +74,19 @@ int	skip_vec(char **ptr, t_is is)
 {
 	size_t	i;
 	double	d_tmp;
+	char	*tmp_ptr;
 
 	i = 0;
 	d_tmp = 0;
 	while (i++ < 3)
 	{
+		tmp_ptr = *ptr;
 		if (is == IS_UNIT)
 			d_tmp += pow2(ft_strtod(*ptr, ptr));
 		else
 			d_tmp = ft_strtod(*ptr, ptr);
+		if (tmp_ptr == *ptr)
+			return (EXIT_FAILURE);
 		if (is == IS_COLOR)
 		{
 			if (d_tmp < 0 || 255 < d_tmp)

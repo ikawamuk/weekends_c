@@ -18,11 +18,15 @@
 int				validate(t_list *line_lst);
 int				set_light(t_hit_table_list *lights, t_list *line_lst);
 int				set_object(t_hit_table **node, t_list *line_lst);
-static int		read_rt(t_list **line_lst, const char *rt_file);
-static int		check_file_name(const char *rt_file);
+int		read_rt(t_list **line_lst, const char *rt_file);
+int		check_file_name(const char *rt_file);
 static void		err_file_name(void);
 static void 	set_back_ground(t_world *world, t_list *line_lst);
 
+/*
+@param world uninitialized variable pointer
+@param rt_file file name of .rt file: argv[1]
+*/
 int	set_world(t_world *world, const char *rt_file)
 {
 	t_list	*line_lst;
@@ -44,7 +48,11 @@ int	set_world(t_world *world, const char *rt_file)
 	return (EXIT_SUCCESS);
 }
 
-static int	read_rt(t_list **line_lst, const char *rt_file)
+/*
+@param line_list uninitialized variable pointer
+@param .rt file that has valid name
+*/
+int	read_rt(t_list **line_lst, const char *rt_file)
 {
 	int		fd;
 	int		gnl_ret;
@@ -53,6 +61,8 @@ static int	read_rt(t_list **line_lst, const char *rt_file)
 	t_list	*curr;
 
 	fd = open(rt_file, O_RDONLY);
+	if (fd == -1)
+		return (perror("open"), EXIT_FAILURE);
 	ft_bzero(&head, sizeof(t_list));
 	curr = &head;
 	while (curr)
@@ -64,6 +74,11 @@ static int	read_rt(t_list **line_lst, const char *rt_file)
 			return (perror("malloc"), EXIT_FAILURE);
 		else if (gnl_ret == 0)
 			break ;
+		if (*line == '\n')
+		{
+			free(line);
+			continue ;
+		}
 		curr->next = ft_lstnew(line);
 		curr = curr->next;
 	}
@@ -73,12 +88,14 @@ static int	read_rt(t_list **line_lst, const char *rt_file)
 	return (EXIT_SUCCESS);
 }
 
-static int	check_file_name(const char *rt_file)
+int	check_file_name(const char *rt_file)
 {
 	size_t	rt_file_len;
 
+	if (rt_file[0] == '.')
+		return (err_file_name(), EXIT_FAILURE);
 	rt_file_len = ft_strlen(rt_file);
-	if (rt_file_len <= 4 || ft_strcmp(rt_file + rt_file_len - 3, ".rt"))
+	if (rt_file_len <= 3 || ft_strcmp(rt_file + rt_file_len - 3, ".rt"))
 		return (err_file_name(), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

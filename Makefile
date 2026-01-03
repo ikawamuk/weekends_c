@@ -8,6 +8,7 @@ RMDIR = rm -rf
 SRCDIR = src
 
 SRCFILES =		main.c \
+				mini_rt.c \
 				draw.c \
 				img.c \
 				vec3.c \
@@ -35,6 +36,7 @@ SRCFILES =		main.c \
 				mixture_pdf.c \
 				solid_texture.c \
 				checker_texture.c \
+				bump_texture.c \
 				validate.c \
 				validate_ambient.c \
 				validate_camera.c \
@@ -49,8 +51,8 @@ SRCFILES =		main.c \
 				set_object.c \
 				set_light.c \
 				aabb.c \
-				bump_texture.c \
-				phong.c
+				phong.c \
+
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
@@ -58,10 +60,7 @@ OBJDIR = obj
 
 OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
-INCDIRS = include 
-
-LIBFTDIR = libft
-LIBFT = $(LIBFTDIR)/libft.a
+INCDIRS = include
 
 # --- OS DETECTION ---
 UNAME = $(shell uname -s)
@@ -78,9 +77,11 @@ endif
 
 MLX = $(MLXDIR)/libmlx.a
 
-LDFLAGS = -L $(MLXDIR)
-LDLIBS = -lmlx -lm $(MLX_FLAGS)
+LIBFTDIR = libft
+LIBFT = $(LIBFTDIR)/libft.a
 
+LDFLAGS = -L$(MLXDIR) -L$(LIBFTDIR)
+LDLIBS =   -lm -lmlx -lft $(MLX_FLAGS)
 
 # --- DEBUGGING ---
 VALGRIND		= valgrind
@@ -89,10 +90,35 @@ DFLAGS			= -g -O0
 ASAN_FLAGS		= -g -fsanitize=address
 SCAN_BUILD		= scan-build
 
+# --- test ---
+TESTNAME= test_weekend_c
+
+TESTCFLAG=$(CFLAG) -g -O0 -I$(INCDIRS)/test/
+TESTLDFLAGS = $(LDFLAGS) -Wl,--wrap=open,--wrap=read,--wrap=malloc,--wrap=free
+
+TESTSRCFILES =	$(addprefix test/, \
+				test.c \
+				$(addprefix unit_tests/, \
+				syscall_mock.c \
+				$(addprefix test_set_world/, \
+				test_set_world.c \
+				test_check_file_name.c \
+				test_read_rt.c \
+				$(addprefix test_validate/, \
+				test_validate.c \
+				test_validate_ambient.c \
+				))))
+
+TESTSRCS = $(addprefix $(SRCDIR)/, $(TESTSRCFILES)) $(filter-out $(SRCDIR)/main.c, $(SRCS))
+TESTOBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(TESTSRCS))
+
+# --- Rules ---
+
 all: $(NAME)
 
-$(NAME): $(OBJS) # $(MLX) $(LIBFT)
+$(NAME): $(OBJS) $(MLX) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
+	@echo "\n\033[1;32m'$(NAME)' has been created!\033[0m"
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFTDIR) bonus
@@ -106,11 +132,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-# @$(MAKE) -C $(LIBFTDIR) fclean
+	@$(MAKE) -C $(LIBFTDIR) fclean
 # @$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(TESTNAME)
 
 re: fclean all
 
@@ -129,15 +155,19 @@ valgrind: fclean
 	@echo "\n\033[1;36mRunning Valgrind for '$(NAME)'...\033[0m"
 	$(VALGRIND) $(VALGRIND_FLAGS) ./$(NAME)
 
-test: all
-	@$(MAKE) all
-	@echo "\033[1;36mRunning tests with Valgrind...\033[0m"
-	@$(CC) $(CFLAG) test.c $(NAME) -o test_runner
-	$(VALGRIND) $(VALGRIND_FLAGS) ./test_runner
-	@$(RM) test_runner
+debug:
+	@$(MAKE) CFLAG="$(CFLAG) -g"
+
+test: fclean
+	@$(MAKE) CFLAG="$(TESTCFLAG)" LDFLAGS="$(TESTLDFLAGS)" $(TESTNAME)
+	@echo "\033[1;36mRunning tests ...\033[0m"
+	./$(TESTNAME)
+
+$(TESTNAME):$(TESTOBJS) $(MLX) $(LIBFT)
+	$(CC) $(TESTOBJS) $(TESTCFLAG) $(TESTLDFLAGS) $(LDLIBS) -o $@
 
 scanb: fclean
 	@$(SCAN_BUILD) $(MAKE) all
 
 # --- PHONY TARGETS ---
-.PHONY:		all clean fclean re test debug asan valgrind
+.PHONY:		all clean fclean re test debug asan valgrind scanb
