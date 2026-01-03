@@ -107,6 +107,7 @@ char	*get_word_line(t_list *line_lst, const char *word)
 	char	*line;
 	size_t	word_len;
 
+	line = NULL;
 	word_len = ft_strlen(word);
 	while (line_lst)
 	{
@@ -115,6 +116,8 @@ char	*get_word_line(t_list *line_lst, const char *word)
 			break ;
 		line_lst = line_lst->next;
 	}
+	if (!line)
+		return (NULL);
 	line += word_len;
 	skip_spaces(&line);
 	return (line);
