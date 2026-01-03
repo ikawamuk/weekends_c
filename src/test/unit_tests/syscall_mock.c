@@ -9,11 +9,13 @@ void *__wrap_malloc(size_t size)
 	static int	called_count = 0;
 
 	if (err_syscall == MALLOC)
-		called_count++;
-	if (called_count % 3)
 	{
-		errno = _wrap_errno_;
-		return (NULL);
+		called_count++;
+		if (called_count % 3)
+		{
+			errno = _wrap_errno_;
+			return (NULL);
+		}
 	}
 	void	*p = __real_malloc(size);
 	t_list	*new_node =  __real_malloc(sizeof(*new_node));

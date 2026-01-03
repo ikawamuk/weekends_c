@@ -139,10 +139,7 @@ static t_list	*create_line_list(char **str_arr)
 	t_list	*list = NULL;
 
 	for (int i = 0; str_arr[i]; i++)
-	{
-		printf("str arr[i]: %s", str_arr[i]);
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup(str_arr[i])));
-		printf("list head: %s", (char *)list->content);
-	}
+
 	return (list);
 }

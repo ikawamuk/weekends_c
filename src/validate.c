@@ -38,7 +38,7 @@ int	validate(t_list *line_lst)
 		err_set("Ambient lighting");
 	if (c_set == 0)
 		err_set("Camera");
-	if (a_set == 0 || c_set == 0)
+	if (a_set != 1 || c_set != 1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

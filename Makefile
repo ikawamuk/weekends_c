@@ -132,7 +132,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	@$(RMDIR) $(OBJDIR)
-# @$(MAKE) -C $(LIBFTDIR) fclean
+	@$(MAKE) -C $(LIBFTDIR) fclean
 # @$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
