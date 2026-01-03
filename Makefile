@@ -62,9 +62,6 @@ OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 INCDIRS = include
 
-LIBFTDIR = libft
-LIBFT = $(LIBFTDIR)/libft.a
-
 # --- OS DETECTION ---
 UNAME = $(shell uname -s)
 
@@ -80,9 +77,11 @@ endif
 
 MLX = $(MLXDIR)/libmlx.a
 
-LDFLAGS = -L $(MLXDIR)
-LDLIBS = -lmlx -lm $(MLX_FLAGS)
+LIBFTDIR = libft
+LIBFT = $(LIBFTDIR)/libft.a
 
+LDFLAGS = -L$(MLXDIR) -L$(LIBFTDIR)
+LDLIBS =   -lm -lmlx -lft $(MLX_FLAGS)
 
 # --- DEBUGGING ---
 VALGRIND		= valgrind
@@ -94,7 +93,8 @@ SCAN_BUILD		= scan-build
 # --- test ---
 TESTNAME= test_weekend_c
 
-TESTCFlAGS = $(CFLAG) -g -O0 -I$(INCDIRS)/test/ -Wl,--wrap=open,--wrap=read,--wrap=malloc,--wrap=free
+TESTCFLAG=$(CFLAG) -g -O0 -I$(INCDIRS)/test/
+TESTLDFLAGS = $(LDFLAGS) -Wl,--wrap=open,--wrap=read,--wrap=malloc,--wrap=free
 
 TESTSRCFILES =	$(addprefix test/, \
 				test.c \
@@ -109,8 +109,8 @@ TESTSRCFILES =	$(addprefix test/, \
 				test_validate_ambient.c \
 				))))
 
-TESTSRCS = $(addprefix $(SRCDIR)/, $(TESTSRCFILES))
-TESTOBJS = $(filter-out $(OBJDIR)/main.o, $(OBJS)) $(TESTSRCS)
+TESTSRCS = $(addprefix $(SRCDIR)/, $(TESTSRCFILES)) $(filter-out $(SRCDIR)/main.c, $(SRCS))
+TESTOBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(TESTSRCS))
 
 # --- Rules ---
 
@@ -118,6 +118,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(MLX) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
+	@echo "\n\033[1;32m'$(NAME)' has been created!\033[0m"
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFTDIR) bonus
@@ -154,12 +155,16 @@ valgrind: fclean
 	@echo "\n\033[1;36mRunning Valgrind for '$(NAME)'...\033[0m"
 	$(VALGRIND) $(VALGRIND_FLAGS) ./$(NAME)
 
-test: re
-	@$(RM) $(NAME)
-	@$(MAKE) $(TESTNAME)
+debug:
+	@$(MAKE) CFLAG="$(CFLAG) -g"
 
-$(TESTNAME):$(OBJS) $(MLX) $(LIBFT)
-	$(CC) $(TESTCFlAGS) $(TESTOBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
+test: fclean
+	@$(MAKE) CFLAG="$(TESTCFLAG)" LDFLAGS="$(TESTLDFLAGS)" $(TESTNAME)
+	@echo "\033[1;36mRunning tests ...\033[0m"
+	./$(TESTNAME)
+
+$(TESTNAME):$(TESTOBJS) $(MLX) $(LIBFT)
+	$(CC) $(TESTOBJS) $(TESTCFLAG) $(TESTLDFLAGS) $(LDLIBS) -o $@
 
 scanb: fclean
 	@$(SCAN_BUILD) $(MAKE) all

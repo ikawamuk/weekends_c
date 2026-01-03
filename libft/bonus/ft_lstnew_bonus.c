@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khanadat <khanadat@student.42tokyo.jp>     #+#  +:+       +#+        */
+/*   By: ikawamuk <ikawamuk@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-04-29 10:21:43 by khanadat          #+#    #+#             */
-/*   Updated: 2025-04-29 10:21:43 by khanadat         ###   ########.jp       */
+/*   Created: 2025/04/29 10:21:43 by khanadat          #+#    #+#             */
+/*   Updated: 2026/01/03 13:11:42 by ikawamuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@ t_list	*ft_lstnew(void *content)
 		return (NULL);
 	new->content = content;
 	new->next = NULL;
+	printf("new content: %s", (char *)content);
+	printf("new content: %s", (char *)new->content);
 	return (new);
 }

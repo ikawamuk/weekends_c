@@ -22,14 +22,16 @@ int	test_read_rt()
 	{
 		_wrap_errno_ = 0;
 		err_syscall = NOTHING;
-		t_list	*line_list;
+		t_list	*line_list ;
 		fprintf(stdout, "--- normal case ---\n");
-		assert(read_rt(&line_list, file_name) == EXIT_SUCCESS && !is_memory_leaked());
+		assert(read_rt(&line_list, file_name) == EXIT_SUCCESS);
+		ft_lstclear(&line_list, free);
+		assert(!is_memory_leaked());
 	}
 	{
-		t_list	*line_list;
 		fprintf(stdout, "--- error case ---\n");
 		{
+			t_list	*line_list;
 			err_syscall = OPEN;
 			_wrap_errno_ = ENOENT;
 			assert(read_rt(&line_list, file_name) == EXIT_FAILURE&& !is_memory_leaked());
@@ -37,6 +39,7 @@ int	test_read_rt()
 			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 		}
 		{
+			t_list	*line_list;
 			err_syscall = READ;
 			_wrap_errno_ = EBADF;
 			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
@@ -48,6 +51,7 @@ int	test_read_rt()
 			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
 		}
 		{
+			t_list	*line_list;
 			err_syscall = MALLOC;
 			_wrap_errno_ = ENOMEM;
 			assert(read_rt(&line_list, file_name) == EXIT_FAILURE && !is_memory_leaked());
@@ -55,7 +59,6 @@ int	test_read_rt()
 		_wrap_errno_ = 0;
 		err_syscall = NOTHING;
 	}
-	fclose(fp);
 	alarm(0);
 	return (0);
 }
