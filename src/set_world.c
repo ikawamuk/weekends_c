@@ -92,6 +92,8 @@ int	check_file_name(const char *rt_file)
 {
 	size_t	rt_file_len;
 
+	if (rt_file[0] == '.')
+		return (err_file_name(), EXIT_FAILURE);
 	rt_file_len = ft_strlen(rt_file);
 	if (rt_file_len <= 3 || ft_strcmp(rt_file + rt_file_len - 3, ".rt"))
 		return (err_file_name(), EXIT_FAILURE);
