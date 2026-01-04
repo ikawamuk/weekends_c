@@ -14,3 +14,4 @@
 !src/test/**/*.c
 !include/test/**/*.h
 !scene/*.rt
+!docs/*.md
