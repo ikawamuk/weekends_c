@@ -45,6 +45,9 @@ int	validate(t_list *line_lst)
 
 static int	distribute_validate(char *line)
 {
+	static const char *id_table[] = {
+		"A", "C", "sp", "cy", "pl", "co", "tr", NULL
+	};
 	if (*line == 'A')
 		return (validate_ambient(line + 1));
 	if (*line == 'C')
