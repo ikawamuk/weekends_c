@@ -122,8 +122,7 @@ static void set_back_ground(t_world *world, t_list *line_lst)
 	world->ambient_ratio = ft_strtod(line, &line);
 	skip_spaces(&line);
 	back_ground = get_vec(&line);
-	back_ground = construct_color(back_ground.x, back_ground.y, back_ground.z);
-	world->back_ground = back_ground;
+	world->back_ground = construct_color(back_ground.x, back_ground.y, back_ground.z);;
 }
 
 void	clear_world(t_world *world)
