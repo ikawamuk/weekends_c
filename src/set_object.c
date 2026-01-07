@@ -134,6 +134,7 @@ static bool	is_not_aabb_object(char *line)
 
 static bool	is_object(char *line)
 {
+	// なにこれ？
 	return (is_aabb_object(line) || is_not_aabb_object(line) == 0);
 }
 
