@@ -76,6 +76,7 @@ flowchart
 flowchart
 	subgraph set_objects [set objects]
 		direction TB
+
 	end
 ```
 ```mermaid
@@ -100,5 +101,26 @@ flowchart
 			gp2 & gp3-->|color|r[\pixels sample color\]
 		end
 		get_sample_color-->|avarage of samples|output[\pixel color\]
+	end
+```
+```mermaid
+flowchart
+	subgraph calcurate_phong_color [calcurate phong color]
+		direction TB
+		input[/world, ray/]-->if1{hit object?}
+		if1----->|true|cp1[\background color\]
+		if1-->|false|var[\hit record\]
+		var-->cp2[get color record]
+		cp2-->|color record|cp3[calculate ambient color]
+		cp2-->|color record|cp4[[calculate diffuse and specular color]]
+		cp3-->output[\calculated color\]
+		cp4-->output
+	end
+```
+```mermaid
+flowchart
+	subgraph calculate_diffuse_and_specular_color [calculate diffuse and specular color]
+		direction TB
+		input
 	end
 ```

@@ -17,6 +17,7 @@ t_color	phong_color(t_ray ray, const t_world *world)
 	t_scatter_record	srec;
 
 	range = construct_range(HIT_T_MIN, INFINITY);
+	// looks no need range
 	if (world->node == NULL || world->node->hit(world->node, ray, &hrec, range) == false)
 		return (world->back_ground);
 	ft_bzero(&color, sizeof(t_color));
@@ -37,7 +38,7 @@ static bool	is_in_shadow(const t_world *world, t_point3 p, t_vec3 light_dir, dou
 	return (world->node->hit(world->node, to_light, &tmp_rec, range));
 }
 
-t_color	calc_specular(t_hit_record hrec, t_vec3 light_dir)
+static t_color	calc_specular(t_hit_record hrec, t_vec3 light_dir)
 {
 	// ヒットポイントにおいて光線が完全に反射される方向
 	t_vec3	reflect_vec = add_vec(scal_mul_vec(hrec.normal, \
