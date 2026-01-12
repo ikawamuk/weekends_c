@@ -53,7 +53,7 @@ static t_color	diffuse_specular_color(t_hit_record hrec, const t_world *world)
 	t_hit_table_node	*curr_light;
 	t_vec3				light_dir; // 反射面から光源への方向ベクトル
 	double				light_dis;
-	static const double				phong_light_strength = 1 / (double)LIGHT_STRENGTH;
+	static const double	phong_light_strength = 1 / (double)LIGHT_STRENGTH;
 
 	ft_bzero(&diffuse, sizeof(t_color));
 	ft_bzero(&specular, sizeof(t_color));

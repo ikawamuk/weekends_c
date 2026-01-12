@@ -10,75 +10,66 @@ static bool		is_aabb_object(char *line);
 static bool		is_not_aabb_object(char *line);
 static size_t	count_object_num(t_list *line_ptr);
 t_hit_table		*get_object(char *line);
-static int		set_aabb_object(t_hit_table **node, t_list *line_lst, t_hit_table **hit_table_array);
-static int		set_no_aabb_object(t_hit_table **node, t_list *line_lst, t_hit_table **hit_table_array);
+static int		set_one_object(t_hit_table **node, t_list *line_lst);
+int				set_hs_object(t_hit_table **node, t_list *line_lst, bool (*is__object)(char *line));
+
+t_hit_table	*gen_hit_node(t_hit_table *lhs, t_hit_table *rhs);
 
 int	set_object(t_hit_table **node, t_list *line_lst)
 {
-	t_hit_table	**hit_table_array;
-	size_t		array_size;
+	size_t		object_num;
+	t_hit_table	*lhs;
+	t_hit_table	*rhs;
 
-	array_size = count_object_num(line_lst);
-	if (array_size == 0)
+	object_num = count_object_num(line_lst);
+	if (object_num == 0)
 		return (EXIT_SUCCESS);
-	hit_table_array = (t_hit_table **)calloc(array_size, sizeof(t_hit_table *));
-	if (!hit_table_array)
-		return (perror("malloc"), EXIT_FAILURE);
-	set_aabb_object(node, line_lst, hit_table_array);
-	set_no_aabb_object(node, line_lst, hit_table_array);
-	free(hit_table_array);
+	if (object_num == 1)
+		return (set_one_object(node, line_lst));
+	lhs = NULL;
+	rhs = NULL;
+	if (set_hs_object(&lhs, line_lst, is_aabb_object))
+		return (EXIT_FAILURE);
+	if (set_hs_object(&rhs, line_lst, is_not_aabb_object))
+		return (lhs->clear(lhs), EXIT_FAILURE);
+	*node = gen_hit_node(lhs, rhs);
+	if (!*node)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
 /*
 @brief aabbを持つ通常のオブジェクトはそのままBVHを構築する。
 */
-int	set_aabb_object(t_hit_table **node, t_list *line_lst, t_hit_table **hit_table_array)
+int	set_hs_object(t_hit_table **node, t_list *line_lst, bool (*is__object)(char *line))
 {
-	size_t	aabb_array_size;
+	t_hit_table	**hit_table_array;
+	size_t		array_size;
+	t_list		*line_lst_head;
 
-	aabb_array_size = 0;
+	array_size = 0;
+	line_lst_head = line_lst;
 	while (line_lst)
 	{
-		if (is_aabb_object(line_lst->content))
-			hit_table_array[aabb_array_size++] = get_object(line_lst->content);
+		if (is__object(line_lst->content))
+			array_size++;
 		line_lst = line_lst->next;
 	}
-	if (hit_table_array == 0)
+	if (array_size == 0)
 		return (EXIT_SUCCESS);
-	*node = gen_bvh(hit_table_array, 0, aabb_array_size - 1);
-	return (EXIT_SUCCESS);
-}
-
-/*
-@brief aabbを持たない無限プリミティブは右側にまとめて保持する。
-*/
-static int	set_no_aabb_object(t_hit_table **node, t_list *line_lst, t_hit_table **hit_table_array)
-{
-	size_t		no_aabb_array_size;
-	t_hit_node	*root;
-	t_hit_table	*right;
-
-	no_aabb_array_size = 0;
+	hit_table_array = ft_calloc(array_size, sizeof(t_hit_table *));
+	if (!hit_table_array)
+		return (EXIT_SUCCESS);
+	array_size = 0;
+	line_lst = line_lst_head;
 	while (line_lst)
 	{
-		if (is_not_aabb_object(line_lst->content))
-			hit_table_array[no_aabb_array_size++] = get_object(line_lst->content);
+		if (is__object(line_lst->content))
+			hit_table_array[array_size++] = get_object(line_lst->content);
 		line_lst = line_lst->next;
 	}
-	if (no_aabb_array_size == 0)
-		return (EXIT_SUCCESS);
-	right = gen_bvh(hit_table_array, 0, no_aabb_array_size - 1);
-	if (*node == NULL)
-	{
-		*node = right;
-		return (EXIT_SUCCESS);
-	}
-	root = ft_calloc(1, sizeof(t_hit_node));
-	root->lhs = (t_hit_table *)*node;
-	root->rhs = (t_hit_table *)right;
-	root->hit_table = construct_bvh_htl(root);
-	*node = (t_hit_table *)root;
+	*node = gen_bvh(hit_table_array, 0, array_size - 1);
+	free(hit_table_array);
 	return (EXIT_SUCCESS);
 }
 
@@ -96,7 +87,7 @@ static bool	is_aabb_object(char *line)
 		2, 2, 2, 1
 	};
 	const char	**list;
-	size_t	i;
+	size_t		i;
 
 	if (is_phong)
 		list = (const char **)object_list_phong;
@@ -134,7 +125,7 @@ static bool	is_not_aabb_object(char *line)
 
 static bool	is_object(char *line)
 {
-	return (is_aabb_object(line) || is_not_aabb_object(line) == 0);
+	return (is_aabb_object(line) || is_not_aabb_object(line));
 }
 
 static size_t	count_object_num(t_list *line_lst)
@@ -149,4 +140,18 @@ static size_t	count_object_num(t_list *line_lst)
 		line_lst = line_lst->next;
 	}
 	return (count);
+}
+
+static int	set_one_object(t_hit_table **node, t_list *line_lst)
+{
+	while (line_lst)
+	{
+		if (is_object(line_lst->content))
+		{
+			*node = get_object(line_lst->content);
+			return (EXIT_SUCCESS);
+		}
+		line_lst = line_lst->next;
+	}
+	return (EXIT_FAILURE);
 }

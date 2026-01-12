@@ -66,8 +66,8 @@ t_hit_table	construct_bvh_htl(const t_hit_node *node)
 
 	ft_bzero(&htl, sizeof(t_hit_table));
 	htl.aabb = surrounding_box(node->lhs->aabb, node->rhs->aabb);
-	// 下部のノードがどちらも平面の場合のみaabbを持たない。
-	if (node->lhs->have_aabb && node->rhs->have_aabb)
+	// 下部のノードがどちらもaabbをもつときだけaabbを持つ。
+	if (node->lhs->have_aabb || node->rhs->have_aabb)
 		htl.have_aabb = true;
 	htl.hit = hit_bvh;
 	htl.clear = clear_bvh;

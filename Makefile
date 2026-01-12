@@ -46,13 +46,13 @@ SRCFILES =		main.c \
 				validate_light.c \
 				validate_cone.c \
 				validate_triangle.c \
-				bvh.c \
+				bvh_new.c \
+				hit_node.c \
 				range.c \
 				set_object.c \
 				set_light.c \
 				aabb.c \
-				phong.c \
-
+				phong.c
 
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 

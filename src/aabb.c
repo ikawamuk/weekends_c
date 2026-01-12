@@ -66,3 +66,22 @@ static bool	hit_aabb(const t_aabb *self, t_ray ray, t_range range)
 	}
 	return (true);
 }
+
+/*
+@brief calculate aabb's surface area
+*/
+double	surface_area(const t_aabb aabb)
+{
+	double	s[3];
+
+	s[0] = (aabb.max.x - aabb.min.x);
+	s[1] = (aabb.max.y - aabb.min.y);
+	s[2] = (aabb.max.z - aabb.min.z);
+	return (s[0] * s[1] + s[1] * s[2] + s[2] * s[0]);
+}
+
+t_aabb	empty_aabb(void)
+{
+	return (construct_aabb(constant_vec(0), \
+constant_vec(0)));
+}

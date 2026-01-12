@@ -23,5 +23,7 @@ struct s_aabb
 
 t_aabb	construct_aabb(t_point3 _min, t_point3 _max);
 t_aabb	surrounding_box(t_aabb box0, t_aabb box1);
+double	surface_area(const t_aabb aabb);
+t_aabb	empty_aabb(void);
 
 #endif
