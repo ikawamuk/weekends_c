@@ -50,7 +50,6 @@ t_hit_table	*gen_bvh(t_hit_table **objs, size_t start, size_t end)
 {
 	t_aabb	bounding_all;
 	size_t	objs_size = end - start + 1;
-	static int	depth = 0;
 
 	if (objs_size == 1)
 		return (objs[start]);
