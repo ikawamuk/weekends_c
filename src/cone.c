@@ -24,6 +24,7 @@ static void	assign_cone_hitrec(const t_cone *self, const t_ray ray, t_hit_record
 		dot(cp, self->direct) / pow2(cos(self->half_angle))));
 	rec->ray_in = ray;
 	rec->mat_ptr = self->hit_table.mat_ptr;
+	rec->texture_p = self->hit_table.texture_p;
 	get_cone_uv(self, rec, cp);
 	return ;
 }
@@ -59,13 +60,14 @@ bool	hit_cone(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
 	return (false);
 }
 
-t_cone	construct_cone(t_point3 _center, t_vec3 _direct, double _half_angle, void *mat_ptr)
+t_cone	construct_cone(t_point3 _center, t_vec3 _direct, double _half_angle, void *mat_ptr, void *texture_p)
 {
 	t_cone	cone;
 
 	cone.hit_table.hit = hit_cone;
 	cone.hit_table.clear = clear_primitive;
 	cone.hit_table.mat_ptr = mat_ptr;
+	cone.hit_table.texture_p = texture_p;
 	cone.hit_table.have_aabb = false;
 	cone.direct = _direct;
 	cone.half_angle = _half_angle;
@@ -73,13 +75,13 @@ t_cone	construct_cone(t_point3 _center, t_vec3 _direct, double _half_angle, void
 	return (cone);
 }
 
-t_cone	*gen_cone(t_point3 _center, t_vec3 _direct, double _half_angle, void *mat_ptr)
+t_cone	*gen_cone(t_point3 _center, t_vec3 _direct, double _half_angle, void *mat_ptr, void *texture_p)
 {
 	t_cone	*s;
 
 	s = ft_calloc(1, sizeof(t_cone));
 	if (!s)
 		return (NULL);
-	*s = construct_cone(_center, _direct, _half_angle, mat_ptr);
+	*s = construct_cone(_center, _direct, _half_angle, mat_ptr, texture_p);
 	return (s);
 }

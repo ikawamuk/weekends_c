@@ -25,6 +25,7 @@ static bool	hit_triangle(const void *s, const t_ray ray, t_hit_record *rec, t_ra
 		|| dot(self->normal, cross(self->side[2], cp)) < 0)
 		return (false);
 	rec->mat_ptr = self->hit_table.mat_ptr;
+	rec->texture_p = self->hit_table.texture_p;
 	rec->normal = self->normal;
 	rec->p = point;
 	rec->ray_in = ray;

@@ -16,6 +16,7 @@ void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double soluti
 	rec->p = at_ray(ray, rec->t); // 交点
 	rec->normal = scal_div_vec(sub_vec(rec->p, self->center), self->radius); // 面の向き
 	rec->mat_ptr = self->hit_table.mat_ptr; // 材質
+	rec->texture_p = self->hit_table.texture_p; // texture
 	get_sphere_uv(scal_div_vec(sub_vec(rec->p, self->center), self->radius), &rec->u, &rec->v);
 	return ;
 }
@@ -54,7 +55,7 @@ static t_aabb	construct_sphere_aabb(const t_sphere *self)
 							add_vec(self->center, constant_vec(self->radius))));
 }
 
-t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
+t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr, void *texture_p)
 {
 	t_sphere	sphere;
 
@@ -67,15 +68,16 @@ t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr)
 	sphere.hit_table.clear = clear_primitive;
 	sphere.hit_table.have_aabb = true;
 	sphere.hit_table.aabb = construct_sphere_aabb(&sphere);
+	sphere.hit_table.texture_p = texture_p;
 	return (sphere);
 }
 
-t_sphere	*gen_sphere(const t_point3 cen, const double r, void *mat_ptr)
+t_sphere	*gen_sphere(const t_point3 cen, const double r, void *mat_ptr, void *texture_p)
 {
 	t_sphere	*s = malloc(sizeof(*s));
 	if (!s)
 		return (NULL);
-	*s = construct_sphere(cen, r, mat_ptr);
+	*s = construct_sphere(cen, r, mat_ptr, texture_p);
 	return (s);
 }
 

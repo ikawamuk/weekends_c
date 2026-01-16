@@ -22,11 +22,12 @@ bool	hit_plane(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
 	rec->p = at_ray(ray, rec->t);
 	rec->normal = normalize(self->normal); // オブジェクトの法線の向きは固定
 	rec->mat_ptr = self->hit_table.mat_ptr;
+	rec->texture_p = self->hit_table.texture_p;
 	get_plane_uv(sub_vec(rec->p, self->point), rec->normal, &rec->u, &rec->v);
 	return (true);
 }
 
-t_plane	construct_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr)
+t_plane	construct_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr, void *texture_p)
 {
 	t_plane	plane;
 
@@ -34,18 +35,19 @@ t_plane	construct_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr)
 	plane.hit_table.clear = clear_primitive;
 	plane.hit_table.have_aabb = false;
 	plane.hit_table.mat_ptr = mat_ptr;
+	plane.hit_table.texture_p = texture_p;
 	plane.point = p;
 	plane.normal = _normal;
 	return (plane);
 }
 
-t_plane	*gen_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr)
+t_plane	*gen_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr, void *texture_p)
 {
 	t_plane	*s = ft_calloc(1, sizeof(t_plane));
 
 	if (!s)
 		return (NULL);
-	*s = construct_plane(p, _normal, mat_ptr);
+	*s = construct_plane(p, _normal, mat_ptr, texture_p);
 	return (s);
 }
 

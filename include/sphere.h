@@ -13,7 +13,7 @@ typedef struct s_sphere
 	double		radius;
 }	t_sphere;
 
-t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr);
-t_sphere	*gen_sphere(const t_point3 cen, const double r, void *mat_ptr);
+t_sphere	construct_sphere(const t_point3 cen, const double r, void *mat_ptr, void *texture_p);
+t_sphere	*gen_sphere(const t_point3 cen, const double r, void *mat_ptr, void *texture_p);
 
 #endif

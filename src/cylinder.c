@@ -22,6 +22,7 @@ bool	check_and_set_cylinder_hitrecord(t_hit_record *rec, const t_cylinder *self,
 	rec->ray_in = ray;
 	rec->p = _p;
 	rec->mat_ptr = self->hit_table.mat_ptr;
+	rec->texture_p = self->hit_table.texture_p;
 	get_cylinder_side_uv(sub_vec(rec->p, self->center), self->direct, self->height, &rec->u, &rec->v);
 
 	m = add_vec(self->center, scal_mul_vec(self->direct, h)); // 衝突点から軸上へ下ろされた垂線と軸の交点
@@ -116,6 +117,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range ran
 			rec->p = at_ray(ray, t_cap);
 			rec->normal = cap_normal;
 			rec->mat_ptr = self->hit_table.mat_ptr;
+			rec->texture_p = self->hit_table.texture_p;
 			hit_anything = true;
 			get_cylinder_cap_uv(sub_vec(rec->p, cap_normal), self->direct, self->radius * 2, &rec->u, &rec->v);
 			range.max = t_cap;
@@ -131,6 +133,7 @@ bool	hit_cylinder(const void *s, const t_ray ray, t_hit_record *rec, t_range ran
 			rec->p = at_ray(ray, t_cap);
 			rec->normal = self->direct;
 			rec->mat_ptr = self->hit_table.mat_ptr;
+			rec->texture_p = self->hit_table.texture_p;
 			get_cylinder_cap_uv(sub_vec(rec->p, cap_normal), self->direct, self->radius * 2, &rec->u, &rec->v);
 			hit_anything = true;
 		}
@@ -163,7 +166,7 @@ static t_aabb	construct_cylinder_aabb(const t_cylinder *self)
 	return (construct_aabb(_min, _max));
 }
 
-t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr)
+t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr, void *texture_p)
 {
 	t_cylinder	cylinder;
 
@@ -176,16 +179,17 @@ t_cylinder	construct_cylinder(const t_point3 _center, const t_vec3 _direct, cons
 	cylinder.hit_table.clear = clear_primitive;
 	cylinder.hit_table.have_aabb = true;
 	cylinder.hit_table.aabb = construct_cylinder_aabb(&cylinder);
+	cylinder.hit_table.texture_p = texture_p;
 	return (cylinder);
 }
 
-t_cylinder	*gen_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr)
+t_cylinder	*gen_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr, void *texture_p)
 {
 	t_cylinder	*s = ft_calloc(1, sizeof(t_cylinder));
 
 	if (!s)
 		return (NULL);
-	*s = construct_cylinder(_center, _direct, r, h, mat_ptr);
+	*s = construct_cylinder(_center, _direct, r, h, mat_ptr, texture_p);
 	return (s);
 }
 

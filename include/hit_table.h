@@ -7,7 +7,9 @@
 #include "range.h"
 #include "aabb.h"
 
+
 typedef struct s_material t_material;
+typedef struct s_texture t_texture;
 
 /*
 @param ray_in 入射レイ
@@ -22,6 +24,7 @@ typedef struct s_hit_record
 	t_point3	p;
 	t_vec3		normal;
 	t_material	*mat_ptr;
+	t_texture	*texture_p;
 	double		t;
 	double		u;
 	double		v;
@@ -38,6 +41,7 @@ struct s_hit_table
 	bool		have_aabb;
 	t_aabb		aabb;
 	t_material	*mat_ptr;
+	t_texture	*texture_p;
 };
 
 void	clear_primitive(t_hit_table *self);

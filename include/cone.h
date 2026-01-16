@@ -12,6 +12,6 @@ typedef struct s_cone
 	t_point3	center;
 }	t_cone;
 
-t_cone	*gen_cone(t_point3 _center, t_vec3 _direct, double half_angle, void *mat_ptr);
+t_cone	*gen_cone(t_point3 _center, t_vec3 _direct, double half_angle, void *mat_ptr, void *texture_p);
 
 #endif

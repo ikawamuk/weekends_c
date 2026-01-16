@@ -19,6 +19,6 @@ typedef struct s_cylinder
 	double		radius;
 }	t_cylinder;
 
-t_cylinder	*gen_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr);
+t_cylinder	*gen_cylinder(const t_point3 _center, const t_vec3 _direct, const double r, const double h, void *mat_ptr, void *texture_p);
 
 #endif

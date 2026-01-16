@@ -10,6 +10,6 @@ typedef struct s_plane {
 	t_point3	point;
 }	t_plane;
 
-t_plane	*gen_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr);
+t_plane	*gen_plane(const t_point3 p, const t_vec3 _normal, void *mat_ptr, void *texture_p);
 
 #endif
