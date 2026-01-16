@@ -7,6 +7,7 @@
 typedef struct s_texture
 {
 	t_color	(*texture_value)(void *self, double u, double v, t_hit_record *rec);
+	double	(*height_value)(void *self, double u, double v, t_hit_record *rec);
 }	t_texture;
 
 typedef struct s_solid_texture

@@ -9,14 +9,28 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 // static t_vec3	local_normal_sin(double u, double v);
 static t_vec3	local_normal_ripple(double u, double v);
 
+static double	height_value(void *s, double u, double v, t_hit_record *rec);
+
 t_bump_texture	construct_bump_texture(t_color color)
 {
 	t_bump_texture	bump;
 
 	bump.texture.texture_value = texture_value_bump;
+	bump.texture.height_value = height_value;
 	bump.color = color;
 	bump.local_normal = local_normal_ripple;
 	return (bump);
+}
+
+static double	height_value(void *s, double u, double v, t_hit_record *rec)
+{
+	t_bump_texture	*self = s;
+	t_vec3			onb[3];
+	build_onb(onb, rec->normal);
+
+	t_vec3	unit_local_normal = normalize(self->local_normal(u, v));
+	double	height = unit_local_normal.z;
+	return (height);
 }
 
 t_bump_texture	*gen_bump_texture(t_color color)
@@ -36,7 +50,22 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 
 	t_vec3	unit_local_normal = normalize(self->local_normal(u, v));
 	rec->normal = local_onb(onb, unit_local_normal);
+	double offset = 1e-2;
+	rec->p = add_vec(rec->p, scal_mul_vec(rec->normal, offset));
 	return (self->color);
+}
+
+static t_vec3	local_normal_ripple(double u, double v)
+{
+	static double frequency = 150 * M_PI;
+	double strength = 2.0;
+
+	double	r = sqrt(u * u + v * v);
+	double	ripple = cos(r * frequency) * strength;
+
+	double	du = (r == 0) ? 0 : (u / r) * ripple;
+	double	dv = (r == 0) ? 0 : (v / r) * ripple;
+	return (construct_vec(du, dv, 1.0));
 }
 
 // static t_vec3	local_normal_checker(double u, double v)
@@ -61,19 +90,6 @@ static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec
 // 	double	dv = cos(v * frequency) * strength;
 // 	return (construct_vec(du, dv, 1.0));
 // }
-
-static t_vec3	local_normal_ripple(double u, double v)
-{
-	static double frequency = 150 * M_PI;
-	double strength = 2.0;
-
-	double	r = sqrt(u * u + v * v);
-	double	ripple = cos(r * frequency) * strength;
-
-	double	du = (r == 0) ? 0 : (u / r) * ripple;
-	double	dv = (r == 0) ? 0 : (v / r) * ripple;
-	return (construct_vec(du, dv, 1.0));
-}
 
 // レンガ
 // static t_color	texture_value_bump(void *s, double u, double v, t_hit_record *rec)

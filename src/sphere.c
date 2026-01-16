@@ -3,6 +3,7 @@
 #include "sphere.h"
 #include "define.h"
 #include "rt_utils.h"
+#include "texture.h"
 
 static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_range range);
 static double	pdf_value_sphere(void *self, t_point3 p, t_vec3 direction);
@@ -18,10 +19,11 @@ void	assign_sphere_hitrec(const t_sphere *self, t_hit_record *rec, double soluti
 	rec->mat_ptr = self->hit_table.mat_ptr; // 材質
 	rec->texture_p = self->hit_table.texture_p; // texture
 	get_sphere_uv(scal_div_vec(sub_vec(rec->p, self->center), self->radius), &rec->u, &rec->v);
+	
 	return ;
 }
 
-static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
+static bool	hit_sphere_base(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
 {
 	const t_sphere	*self = s;
 	t_vec3	oc = sub_vec(ray.origin, self->center);
@@ -47,6 +49,36 @@ static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_rang
 		}
 	}
 	return (false);
+}
+
+static bool	hit_sphere(const void *s, const t_ray ray, t_hit_record *rec, t_range range)
+{
+	const t_sphere	*self = s;
+
+	if (!hit_sphere_base(self, ray, rec, range))
+		return (false);
+	double	h = 0.0;
+	if (self->hit_table.texture_p && self->hit_table.texture_p->height_value)
+		h = self->hit_table.texture_p->height_value(rec->texture_p, rec->u, rec->v, rec);
+	 double r = self->radius + h;
+
+    // 6. 再ヒット（半径変更）
+    t_vec3 oc = sub_vec(ray.origin, self->center);
+    double a = length_squared_vec(ray.direct);
+    double half_b = dot(oc, ray.direct);
+    double c = dot(oc, oc) - r * r;
+    double disc = half_b * half_b - a * c;
+
+    if (disc <= 0)
+        return false;
+
+    double t = (-half_b - sqrt(disc)) / a;
+    if (!check_range(t, range))
+        return false;
+
+    // 7. rec 確定
+    assign_sphere_hitrec(self, rec, t, ray);
+    return true;
 }
 
 static t_aabb	construct_sphere_aabb(const t_sphere *self)

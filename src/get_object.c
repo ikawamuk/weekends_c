@@ -58,8 +58,8 @@ static t_sphere	*get_sphere_data(char *line)
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
 	// mat_ptr = (t_material *)gen_lambertian(gen_bump_texture(color));
-	mat_ptr = (t_material *)gen_lambertian();
-	t_texture	*texture_p = (t_texture *)gen_solid_texture(color);
+	mat_ptr = (t_material *)gen_metal(0.7);
+	t_texture *texture_p = (t_texture *)gen_checker_texture(gen_solid_texture(construct_vec(0.9, 0.9, 0.9)), gen_solid_texture(color));
 	return (gen_sphere(point, radius, mat_ptr, texture_p));
 }
 
@@ -102,8 +102,9 @@ static t_cylinder	*get_cylinder_data(char *line)
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
-	mat_ptr = (t_material *)gen_lambertian();
-	return (gen_cylinder(center, direct, radius, height, mat_ptr, gen_checker_texture(gen_solid_texture(constant_vec(0.2)), gen_solid_texture(color))));
+	mat_ptr = (t_material *)gen_metal(0.5);
+	t_texture *texture_p = (t_texture *)gen_bump_texture(color);
+	return (gen_cylinder(center, direct, radius, height, mat_ptr, texture_p));
 }
 
 static t_plane	*get_plane_data(char *line)
@@ -120,8 +121,8 @@ static t_plane	*get_plane_data(char *line)
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
-	t_texture	*texture_p = (t_texture *)gen_bump_texture(color);
 	mat_ptr = (t_material *)gen_lambertian();
+	t_texture	*texture_p = (t_texture *)gen_bump_texture(color);
 	// mat_ptr = (t_material *)gen_lambertian(gen_solid_texture(color));
 	// mat_ptr = (t_material *)gen_lambertian(
 	// 	gen_checker_texture(
@@ -148,9 +149,9 @@ static t_cone *get_cone_data(char *line)
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
 	// mat_ptr = (t_material *)gen_lambertian(gen_solid_texture(color));
-	mat_ptr = (t_material *)gen_lambertian();
-	t_texture *p = (t_texture *)gen_checker_texture(gen_solid_texture(construct_vec(1.0,1.0,1.0)), gen_solid_texture(color));
-	return (gen_cone(point, direct, half_angle, mat_ptr, p));
+	mat_ptr = (t_material *)gen_metal(0.1);
+	t_texture *texture_p = (t_texture *)gen_checker_texture(gen_solid_texture(construct_vec(0.9, 0.9, 0.9)), gen_solid_texture(color));
+	return (gen_cone(point, direct, half_angle, mat_ptr, texture_p));
 }
 
 static t_tri	*get_triangle_data(char *line)
@@ -168,6 +169,6 @@ static t_tri	*get_triangle_data(char *line)
 	skip_spaces(&line);
 	color = get_vec(&line);
 	color = construct_color(color.x, color.y, color.z);
-	mat_ptr = (t_material *)gen_metal((color), 0.96);
+	mat_ptr = (t_material *)gen_metal(0.96);
 	return (gen_triangle(_vertex[0], _vertex[1], _vertex[2], mat_ptr));
 }

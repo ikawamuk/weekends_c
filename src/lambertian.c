@@ -20,11 +20,7 @@ bool	scatter_lambertian(void *s, t_hit_record *rec, t_scatter_record *srec)
 {
 	(void)s;
 	srec->is_specular = false;
-	if (rec->texture_p)
-		srec->attenuation = rec->texture_p->texture_value(rec->texture_p, rec->u, rec->v, rec);
-	// else
-		// srec->attenuation = 
-
+	srec->attenuation = rec->texture_p->texture_value(rec->texture_p, rec->u, rec->v, rec);
 	t_vec3			reflect_normal = dot(rec->normal, rec->ray_in.direct) > 0 ? negative_vec(rec->normal) : rec->normal;
 	t_cosine_pdf	*cos_ = generate_cosine_pdf(reflect_normal);
 
