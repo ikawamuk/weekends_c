@@ -50,7 +50,7 @@ t_hit_table	*gen_bvh(t_hit_table **objs, size_t start, size_t end)
 {
 	t_aabb	bounding_all;
 	size_t	objs_size = end - start + 1;
-	static int	depth = 0;
+	// static int	depth = 0;
 
 	if (objs_size == 1)
 		return (objs[start]);
@@ -124,7 +124,7 @@ static void	sort_hit_table_array(t_hit_table **hit_table_array, int start, int e
 		while (start < right && box_compare(*pivot, hit_table_array[right], axis))
 			right--;
 		if (right <= left)
-			break ;	
+			break ;
 		swap_info(&hit_table_array[left++], &hit_table_array[right--]);
 	}
 	swap_info(&hit_table_array[left], pivot);

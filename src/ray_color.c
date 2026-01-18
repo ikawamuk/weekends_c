@@ -23,7 +23,7 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 		return (construct_vec(0, 0, 0));
 	if (!world->node || world->node->hit(world->node, ray, &rec, range) == false)
 		return (scal_mul_vec(world->back_ground, world->ambient_ratio));
-	
+
 	t_color	emmited = rec.mat_ptr->emitted(rec.mat_ptr, rec);
 
 	t_scatter_record	srec;
@@ -48,13 +48,14 @@ static t_color caluculate_diffused_color(const t_world *world, t_hit_record rec,
 		mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, &light_);
 	else
 		mix_ = construct_mixture_pdf(srec.surface_pdf_ptr, NULL); // 暫定的にlightがない場合NULLを渡しているがもっといい方法がありそう。
+
 	
 	t_vec3	scatter_direction = mix_.pdf.random_pdf(&mix_);
 	t_ray	scattered = construct_ray(rec.p, scatter_direction);
 
+	
 	double	surface_pdf = rec.mat_ptr->value_surface_pdf(rec.mat_ptr, rec, scattered);
 	double	sampling_pdf = mix_.pdf.value_pdf(&mix_, scatter_direction);
-
 	t_color color_in = add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(scattered, world, depth + 1)), (surface_pdf / sampling_pdf)));
 	free(srec.surface_pdf_ptr);
 	return (color_in);

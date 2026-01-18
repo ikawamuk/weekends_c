@@ -14,8 +14,8 @@
 #endif
 #define HIT_T_MIN 1e-3
 #define MAX_DEPTH 10
-#define RR_START_DEPTH 10 // ロシアンルーレットを始める深さ。
-#define SAMPLES_PER_PIXCEL 30 // アンチエイリアシングのサンプル数、pdfの功で結構少なくてもいい感じ
+#define RR_START_DEPTH 5 // ロシアンルーレットを始める深さ。
+#define SAMPLES_PER_PIXCEL 50 // アンチエイリアシングのサンプル数、pdfの功で結構少なくてもいい感じ
 #define LIVE_PROBABILITY_MIN 0.05
 #define TILE_SIZE 20 // 一つのマップを縦横それぞれなん分割するか。多いほど細かい。せいぜい8~30が適正なので固定値で良い
 #define LIGHT_RADIUS 1.0

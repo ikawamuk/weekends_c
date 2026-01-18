@@ -37,9 +37,10 @@ static bool	scatter_dielectric(void *s, t_hit_record *rec, t_scatter_record *sre
 		srec->specular_ray = construct_ray(rec->p, reflect(unit_direction, outward_normal));
 	else
 		srec->specular_ray = construct_ray(rec->p, refract(unit_direction, outward_normal, refract_ratio));
-	srec->is_specular = true;
+
+
 	srec->attenuation = construct_color(255,255,255);
 	srec->surface_pdf_ptr = 0;
-	
+	srec->is_specular = true;
 	return (true);
 }
