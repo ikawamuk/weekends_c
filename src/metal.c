@@ -89,10 +89,10 @@ bool	scatter_metal(void *s, t_hit_record *rec, t_scatter_record *srec)
 {
 	t_metal	*self = s;
 
-	srec->attenuation = self->albedo;
 	t_vec3	reflect_normal = dot(rec->normal, rec->ray_in.direct) > 0 ? negative_vec(rec->normal) : rec->normal;
 	t_metal_pdf	*metal_pdf = gen_metal_pdf(reflect_normal, rec->ray_in, self->fuzz);
-	
+
+	srec->attenuation = self->albedo;
 	srec->surface_pdf_ptr = metal_pdf;
 	srec->is_specular = false;
 	return (true);

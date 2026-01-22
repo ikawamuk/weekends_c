@@ -36,7 +36,6 @@ t_color ray_color(t_ray ray, const t_world *world, int depth)
 		return (mul_vec(srec.attenuation, ray_color(srec.specular_ray, world, depth + 1))); // Color_i = albedo * Color_o
 
 	t_color color_in = caluculate_diffused_color(world, rec, srec, emmited, depth);
-	
 	return (color_in);
 }
 
@@ -53,10 +52,10 @@ static t_color caluculate_diffused_color(const t_world *world, t_hit_record rec,
 	t_vec3	scatter_direction = mix_.pdf.random_pdf(&mix_);
 	t_ray	scattered = construct_ray(rec.p, scatter_direction);
 
-	
 	double	surface_pdf = rec.mat_ptr->value_surface_pdf(rec.mat_ptr, rec, scattered);
 	double	sampling_pdf = mix_.pdf.value_pdf(&mix_, scatter_direction);
 	t_color color_in = add_vec(emmited, scal_mul_vec(mul_vec(srec.attenuation, ray_color(scattered, world, depth + 1)), (surface_pdf / sampling_pdf)));
+	// color_out = emmited + albedo * color_in * surface_pdf / sampling_pdf
 	free(srec.surface_pdf_ptr);
 	return (color_in);
 }

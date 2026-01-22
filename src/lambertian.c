@@ -31,6 +31,7 @@ bool	scatter_lambertian(void *s, t_hit_record *rec, t_scatter_record *srec)
 	return (true);
 }
 
+
 /*
 @brief PDF = cosθ / π
 */
